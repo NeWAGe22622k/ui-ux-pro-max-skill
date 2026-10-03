@@ -17,8 +17,8 @@
   --dark: #151a16;           /* footer / dark bands */
   --dark-2: #222a24;
 
-  --font-display: "Cormorant Garamond", Georgia, "Times New Roman", serif;
-  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-display: "Newsreader", Georgia, "Times New Roman", serif;
+  --font-body: "Instrument Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 
   --container: 1240px;
   --gutter: clamp(20px, 5vw, 48px);
@@ -62,7 +62,7 @@ ul { margin: 0; padding: 0; list-style: none; }
 .muted { color: var(--ink-3); }
 
 /* ---------- Typography ---------- */
-.display, .h1, .h2, .h3 { font-family: var(--font-display); font-weight: 500; letter-spacing: -.01em; color: var(--ink); }
+.display, .h1, .h2, .h3 { font-family: var(--font-display); font-weight: 400; letter-spacing: -.01em; color: var(--ink); }
 .display { font-size: clamp(3rem, 8vw, 6.75rem); line-height: .98; letter-spacing: -.02em; }
 .h1 { font-size: clamp(2.6rem, 6vw, 4.75rem); line-height: 1.02; }
 .h2 { font-size: clamp(2.1rem, 4.2vw, 3.4rem); line-height: 1.08; }
@@ -273,7 +273,7 @@ button.card-media:hover img { transform: scale(1.04); }
   display: inline-block; padding: 4px 10px; border: 1px solid var(--line); border-radius: 99px;
   font-size: 11px; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-2); background: var(--surface);
 }
-.card-title { font-family: var(--font-display); font-size: 1.65rem; line-height: 1.15; font-weight: 500; }
+.card-title { font-family: var(--font-display); font-size: 1.6rem; line-height: 1.15; font-weight: 400; }
 .card-text { color: var(--ink-2); font-size: 15px; margin: 0; }
 .card-body .link-arrow { margin-top: auto; padding-top: 12px; }
 .card-location { display: flex; align-items: center; gap: 6px; margin: 0; font-size: 14px; color: var(--ink-2); }

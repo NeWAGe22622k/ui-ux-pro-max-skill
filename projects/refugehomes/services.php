@@ -3,23 +3,23 @@ require __DIR__ . '/includes/lib.php';
 
 $active = 'services';
 $title = 'Services';
-$desc = 'Property management, lettings, residential sales and investment & refurbishment from Refugehomes Ltd.';
+$desc = 'Guaranteed rent for landlords, lettings, residential sales and investment & refurbishment from Refugehomes Ltd.';
 
 $services = [
     [
-        'id' => 'management',
-        'title' => 'Property management',
+        'id' => 'guaranteed-rent',
+        'title' => 'Guaranteed rent',
         'img' => 'harlow-3',
-        'intro' => 'Our management service protects your asset, reduces stress and simplifies ownership. We take a proactive, professional approach so your property stays well maintained, compliant and performing — giving you peace of mind and your tenants a positive living experience.',
+        'intro' => 'We lease your property on an agreed term and pay you a fixed rent every month, whether the property is occupied or not. You get a predictable income with none of the day-to-day work: we find and manage the tenants, coordinate maintenance and keep you informed, so you can own a rental property without running one.',
         'points' => [
-            'Tenant sourcing and thorough referencing',
-            'Rent collection and financial administration',
-            'Compliance and regulatory oversight',
-            'Inspections and maintenance coordination',
-            'Tenant communication and issue resolution',
-            'Guaranteed rent options for landlords',
+            'Fixed rent paid on the same date every month',
+            'Paid even when the property is empty',
+            'Tenant finding and management handled by us',
+            'Routine maintenance and inspections coordinated',
+            'Compliance and safety checks kept up to date',
+            'One point of contact and regular updates',
         ],
-        'cta' => ['contact.php?enquiry=Property%20management', 'Discuss management'],
+        'cta' => ['contact.php?enquiry=Guaranteed%20rent', 'Get a guaranteed rent offer'],
     ],
     [
         'id' => 'lettings',

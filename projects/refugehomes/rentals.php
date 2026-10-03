@@ -52,8 +52,8 @@ require __DIR__ . '/includes/header.php';
       <h2 class="h2">Looking for reliable tenants?</h2>
     </div>
     <div class="reveal">
-      <p class="prose lead">We market your property on the major portals, carry out thorough referencing and can manage the tenancy for you from start to finish — including guaranteed rent options.</p>
-      <a class="link-arrow" href="services.php#management">Our management service <?= icon('arrow-right', 16) ?></a>
+      <p class="prose lead">We market your property on the major portals, carry out thorough referencing and manage the tenancy from start to finish. Or let us take it on with guaranteed rent: a fixed payment every month, even when the property is empty.</p>
+      <a class="link-arrow" href="services.php#guaranteed-rent">About guaranteed rent <?= icon('arrow-right', 16) ?></a>
     </div>
   </div>
 </section>

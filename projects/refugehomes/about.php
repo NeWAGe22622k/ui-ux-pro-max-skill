@@ -49,7 +49,7 @@ require __DIR__ . '/includes/header.php';
         <p class="eyebrow">Why choose us</p>
         <h2 class="h2">What clients can expect from us.</h2>
       </div>
-      <p class="lead">Landlords trust us for dependable, hands-off management. Tenants choose us for quality homes in well-connected locations. Investors work with us for carefully assessed opportunities.</p>
+      <p class="lead">Landlords trust us for guaranteed rent and dependable, hands-off management. Tenants choose us for quality homes in well-connected locations. Investors work with us for carefully assessed opportunities.</p>
     </div>
     <div class="tiles">
       <?php

@@ -6,7 +6,7 @@
     <div class="footer-top">
       <div class="footer-brand">
         <img src="assets/img/logo-white.png" alt="<?= h($s['company']) ?>" width="201" height="76" loading="lazy">
-        <p>A UK property company offering management, lettings, sales and refurbishment for homeowners, landlords and investors.</p>
+        <p>A UK property company offering guaranteed rent, lettings, sales and refurbishment for homeowners, landlords and investors.</p>
         <?php if ($links = social_links()): ?>
           <ul class="social" aria-label="Social media">
             <?php foreach ($links as $l): ?>
@@ -30,7 +30,7 @@
       <div class="footer-col">
         <h2 class="footer-heading">Services</h2>
         <ul>
-          <li><a href="services.php#management">Property management</a></li>
+          <li><a href="services.php#guaranteed-rent">Guaranteed rent</a></li>
           <li><a href="services.php#lettings">Lettings &amp; rentals</a></li>
           <li><a href="services.php#sales">Residential sales</a></li>
           <li><a href="services.php#investment">Investment &amp; refurbishment</a></li>

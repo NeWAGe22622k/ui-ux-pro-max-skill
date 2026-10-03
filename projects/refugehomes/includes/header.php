@@ -7,7 +7,7 @@
  */
 $s = settings();
 $title = $title ?? '';
-$desc = $desc ?? 'Refugehomes Ltd – property management, lettings, sales and refurbishment across the UK. Built on trust.';
+$desc = $desc ?? 'Refugehomes Ltd – guaranteed rent, lettings, sales and refurbishment across the UK. Built on trust.';
 $active = $active ?? '';
 $nav = [
     'home'       => ['index.php', 'Home'],

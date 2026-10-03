@@ -19,7 +19,7 @@ require __DIR__ . '/includes/header.php';
         <h1 class="display">Homes built<br>on <em>trust.</em></h1>
       </div>
       <div class="hero-aside reveal">
-        <p class="lead">Property management, lettings, sales and refurbishment across the UK, delivered with honest advice and careful execution.</p>
+        <p class="lead">Guaranteed rent, lettings, sales and refurbishment across the UK, delivered with honest advice and careful execution.</p>
         <div class="btn-row">
           <a class="btn btn-primary" href="rentals.php">View available homes <?= icon('arrow-right', 18) ?></a>
           <a class="btn btn-outline" href="contact.php">Talk to us</a>
@@ -32,7 +32,7 @@ require __DIR__ . '/includes/header.php';
       <img src="assets/img/placeholder/hero.jpg" alt="A Refugehomes property" width="2400" height="1400" fetchpriority="high">
     </figure>
     <ul class="hero-strip" aria-label="What we do">
-      <li><strong>01</strong> Property management</li>
+      <li><strong>01</strong> Guaranteed rent</li>
       <li><strong>02</strong> Lettings &amp; rentals</li>
       <li><strong>03</strong> Residential sales</li>
       <li><strong>04</strong> Investment &amp; refurbishment</li>
@@ -68,7 +68,7 @@ require __DIR__ . '/includes/header.php';
     <div class="service-list">
       <?php
       $services = [
-          ['management', 'Property management', 'Hands-off management that protects your asset, keeps you compliant and keeps tenants happy.'],
+          ['guaranteed-rent', 'Guaranteed rent', 'A fixed monthly rent for landlords, paid even when the property is empty, with no day-to-day work.'],
           ['lettings', 'Lettings &amp; rentals', 'Quality homes for tenants, and well-matched, referenced tenants for landlords.'],
           ['sales', 'Residential sales', 'Accurate pricing, strong marketing and skilled negotiation, with direct-purchase options.'],
           ['investment', 'Investment &amp; refurbishment', 'Sourcing, analysis and refurbishment that turns the right property into long-term value.'],

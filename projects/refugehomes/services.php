@@ -53,7 +53,7 @@ $services = [
     [
         'id' => 'investment',
         'title' => 'Investment &amp; refurbishment',
-        'img' => 'placeholder/flip1-after-1', 'alt' => '',
+        'img' => 'photos/investment', 'alt' => 'Tradespeople fitting a new floor during a refurbishment',
         'intro' => 'We work closely with investors to identify, assess and execute opportunities built on strong fundamentals. Our approach is insight-led and disciplined, focused on risk awareness, long-term value and well-structured decisions — from acquisition through refurbishment to letting or resale.',
         'points' => [
             'Deal sourcing and opportunity assessment',

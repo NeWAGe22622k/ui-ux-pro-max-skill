@@ -6,7 +6,11 @@
   // Header border once the page scrolls
   var header = document.querySelector('[data-header]');
   if (header) {
-    var onScroll = function () { header.classList.toggle('is-scrolled', window.scrollY > 8); };
+    var scrolled = null;
+    var onScroll = function () {
+      var now = window.scrollY > 8;
+      if (now !== scrolled) { scrolled = now; header.classList.toggle('is-scrolled', now); }
+    };
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
   }

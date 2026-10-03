@@ -59,7 +59,7 @@
   </div>
 </footer>
 
-<script src="assets/js/main.js?v=1" defer></script>
+<script src="assets/js/main.js?v=2" defer></script>
 <?php if (!empty($withListings)): ?>
 <script src="assets/js/listings.js?v=1" defer></script>
 <?php endif; ?>

@@ -272,7 +272,7 @@ function admin_head(string $title, string $section = ''): void
   <meta name="robots" content="noindex, nofollow">
   <title><?= h($title) ?> · Refugehomes admin</title>
   <link rel="icon" type="image/png" href="../assets/img/favicon.png">
-  <link rel="stylesheet" href="admin.css?v=1">
+  <link rel="stylesheet" href="admin.css?v=2">
 </head>
 <body>
 <?php if (is_logged_in()): ?>
@@ -298,7 +298,7 @@ function admin_head(string $title, string $section = ''): void
 
 function admin_foot(): void
 {
-    echo "</main>\n<script src=\"admin.js?v=1\" defer></script>\n</body>\n</html>\n";
+    echo "</main>\n<script src=\"admin.js?v=3\" defer></script>\n</body>\n</html>\n";
 }
 
 /** Thumbnail URL for an image path stored relative to the site root. */

@@ -124,9 +124,7 @@ ul { margin: 0; padding: 0; list-style: none; }
 /* ---------- Header ---------- */
 .site-header {
   position: sticky; top: 0; z-index: 50;
-  background: rgba(247, 246, 242, .88);
-  backdrop-filter: saturate(1.4) blur(12px);
-  -webkit-backdrop-filter: saturate(1.4) blur(12px);
+  background: rgba(247, 246, 242, .97);
   border-bottom: 1px solid transparent;
   transition: border-color .3s, background-color .3s;
 }
@@ -471,7 +469,7 @@ button.card-media:hover img { transform: scale(1.04); }
   overflow: auto; overscroll-behavior: contain;
 }
 .modal-wide { width: min(1240px, calc(100vw - 32px)); }
-.modal::backdrop { background: rgba(21, 26, 22, .72); backdrop-filter: blur(4px); }
+.modal::backdrop { background: rgba(21, 26, 22, .78); }
 .modal[open] { animation: modal-in .35s var(--ease); }
 @keyframes modal-in { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
 .modal-inner { padding: clamp(20px, 3vw, 36px); }

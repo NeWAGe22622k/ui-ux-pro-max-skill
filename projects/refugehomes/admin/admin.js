@@ -13,6 +13,7 @@
   function syncType() {
     var checked = radios.filter(function (r) { return r.checked; })[0];
     var t = checked ? checked.value : 'managed';
+    radios.forEach(function (r) { r.closest('label').classList.toggle('is-checked', r.checked); });
     $$('[data-for-type]').forEach(function (el) { el.hidden = el.getAttribute('data-for-type') !== t; });
   }
   radios.forEach(function (r) { r.addEventListener('change', syncType); });
@@ -55,6 +56,37 @@
     });
   });
 
+  /* ---------- Small preview thumbnails ----------
+     Phone photos are often 12+ megapixels. Showing them full size as previews
+     uses a lot of memory and makes typing in the form laggy on iPads/phones,
+     so each preview is shrunk to a ~320px thumbnail, one photo at a time. */
+  var thumbCache = typeof WeakMap === 'function' ? new WeakMap() : null;
+  var thumbQueue = Promise.resolve();
+  function thumbnail(file) {
+    if (thumbCache && thumbCache.has(file)) return Promise.resolve(thumbCache.get(file));
+    var job = thumbQueue.then(function () {
+      return new Promise(function (resolve) {
+        var src = URL.createObjectURL(file);
+        var im = new Image();
+        im.onload = function () {
+          var s = Math.min(1, 320 / Math.max(im.naturalWidth, im.naturalHeight));
+          var c = document.createElement('canvas');
+          c.width = Math.max(1, Math.round(im.naturalWidth * s));
+          c.height = Math.max(1, Math.round(im.naturalHeight * s));
+          c.getContext('2d').drawImage(im, 0, 0, c.width, c.height);
+          im.onload = im.onerror = null;
+          URL.revokeObjectURL(src);
+          c.toBlob(function (b) { resolve(b ? URL.createObjectURL(b) : ''); }, 'image/jpeg', 0.8);
+        };
+        im.onerror = function () { URL.revokeObjectURL(src); resolve(''); };
+        im.src = src;
+      });
+    });
+    thumbQueue = job.catch(function () {});
+    if (thumbCache) job.then(function (url) { thumbCache.set(file, url); });
+    return job;
+  }
+
   /* ---------- New photos: accumulate selections + previews ---------- */
   var canDT = (function () { try { return !!new DataTransfer(); } catch (e) { return false; } })();
   $$('[data-photos]').forEach(function (group) {
@@ -68,8 +100,9 @@
         var li = document.createElement('li');
         li.className = 'photo';
         var img = document.createElement('img');
-        img.src = URL.createObjectURL(f);
         img.alt = '';
+        img.decoding = 'async';
+        thumbnail(f).then(function (url) { img.src = url; });
         li.appendChild(img);
         var tag = document.createElement('span'); tag.className = 'photo-tag'; tag.textContent = 'New';
         li.appendChild(tag);

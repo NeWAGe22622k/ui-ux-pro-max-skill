@@ -1,0 +1,10 @@
+# Live data written by the admin panel – never commit
+data/auth.json
+data/login-attempts.json
+data/settings.json
+data/unsent-enquiries.log
+data/*.bak
+data/*.tmp
+data/.*.lock
+uploads/*
+!uploads/.htaccess

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1200" height="800" role="img" aria-label="Placeholder image: Flip project 1 · Bathroom">
+<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#EEF1F3"/><stop offset="1" stop-color="#D7DEE3"/></linearGradient></defs>
+<rect width="1200" height="800" fill="url(#g)"/>
+<g transform="translate(0 0)"><g fill="none" stroke="#2F4B5C" stroke-opacity=".38" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"><path d="M430 480 H770 V520 Q770 580 710 580 H490 Q430 580 430 520 Z"/><path d="M480 480 V380 Q480 350 510 350 Q540 350 540 380"/><path d="M520 395 H560"/><path d="M490 580 L475 605 M710 580 L725 605"/></g>
+<text x="600" y="672" text-anchor="middle" font-family="Inter, Helvetica, Arial, sans-serif" font-size="22" font-weight="600" letter-spacing="5" fill="#2F4B5C" fill-opacity=".8">AFTER · PLACEHOLDER</text>
+<text x="600" y="718" text-anchor="middle" font-family="Inter, Helvetica, Arial, sans-serif" font-size="34" fill="#22343F">Flip project 1 · Bathroom</text></g>
+</svg>

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1200" height="800" role="img" aria-label="Placeholder image: Rental 2 · Living room">
+<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#EEF1F3"/><stop offset="1" stop-color="#D7DEE3"/></linearGradient></defs>
+<rect width="1200" height="800" fill="url(#g)"/>
+<g transform="translate(0 0)"><g fill="none" stroke="#2F4B5C" stroke-opacity=".38" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"><path d="M450 520 V470 Q450 450 470 450 H730 Q750 450 750 470 V520"/><path d="M430 520 H770 V570 H430 Z"/><path d="M450 570 V595 M750 570 V595"/><path d="M520 450 V420 H680 V450"/><path d="M560 360 H640 V400 H560 Z"/></g>
+<text x="600" y="672" text-anchor="middle" font-family="Inter, Helvetica, Arial, sans-serif" font-size="22" font-weight="600" letter-spacing="5" fill="#2F4B5C" fill-opacity=".8">PLACEHOLDER IMAGE</text>
+<text x="600" y="718" text-anchor="middle" font-family="Inter, Helvetica, Arial, sans-serif" font-size="34" fill="#22343F">Rental 2 · Living room</text></g>
+</svg>

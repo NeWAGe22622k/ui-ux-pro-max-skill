@@ -1,0 +1,186 @@
+[
+    {
+        "id": "sample-rental-1",
+        "title": "Bright Two-Bed Flat",
+        "location": "[Area], [City], [Postcode]",
+        "price": "£1,150 pcm",
+        "deposit": "[Deposit amount]",
+        "property_type": "Flat",
+        "bedrooms": "2",
+        "bathrooms": "1",
+        "available_from": "[Date] or now",
+        "furnishing": "Unfurnished",
+        "status": "available",
+        "summary": "A light, recently refurbished flat close to shops and transport.",
+        "description": "Placeholder description. Give the full details of the property: layout, condition, nearby amenities, transport links, parking, council tax band and EPC rating.\n\nReplace this text from the admin panel.",
+        "features": [
+            "Gas central heating",
+            "Double glazing",
+            "Close to transport links",
+            "Council tax band [X]",
+            "EPC rating [X]"
+        ],
+        "images": [
+            "assets/img/placeholders/rental-1-exterior.svg",
+            "assets/img/placeholders/rental-1-living.svg",
+            "assets/img/placeholders/rental-1-kitchen.svg",
+            "assets/img/placeholders/rental-1-bedroom.svg",
+            "assets/img/placeholders/rental-1-bathroom.svg",
+            "assets/img/placeholders/rental-1-garden.svg"
+        ],
+        "links": [
+            {
+                "label": "Rightmove",
+                "url": "https://www.rightmove.co.uk/"
+            },
+            {
+                "label": "Zoopla",
+                "url": "https://www.zoopla.co.uk/"
+            },
+            {
+                "label": "OpenRent",
+                "url": "https://www.openrent.co.uk/"
+            }
+        ],
+        "featured": true,
+        "placeholder": true
+    },
+    {
+        "id": "sample-rental-2",
+        "title": "Three-Bed Family House",
+        "location": "[Area], [City], [Postcode]",
+        "price": "£1,450 pcm",
+        "deposit": "[Deposit amount]",
+        "property_type": "Semi-detached",
+        "bedrooms": "3",
+        "bathrooms": "2",
+        "available_from": "[Date]",
+        "furnishing": "Part furnished",
+        "status": "available",
+        "summary": "A family home with private garden and off-street parking.",
+        "description": "Placeholder description. Give the full details of the property: layout, condition, nearby amenities, transport links, parking, council tax band and EPC rating.\n\nReplace this text from the admin panel.",
+        "features": [
+            "Gas central heating",
+            "Double glazing",
+            "Close to transport links",
+            "Council tax band [X]",
+            "EPC rating [X]"
+        ],
+        "images": [
+            "assets/img/placeholders/rental-2-exterior.svg",
+            "assets/img/placeholders/rental-2-living.svg",
+            "assets/img/placeholders/rental-2-kitchen.svg",
+            "assets/img/placeholders/rental-2-bedroom.svg",
+            "assets/img/placeholders/rental-2-bathroom.svg",
+            "assets/img/placeholders/rental-2-garden.svg"
+        ],
+        "links": [
+            {
+                "label": "Rightmove",
+                "url": "https://www.rightmove.co.uk/"
+            },
+            {
+                "label": "Zoopla",
+                "url": "https://www.zoopla.co.uk/"
+            },
+            {
+                "label": "OpenRent",
+                "url": "https://www.openrent.co.uk/"
+            }
+        ],
+        "featured": true,
+        "placeholder": true
+    },
+    {
+        "id": "sample-rental-3",
+        "title": "Double Room in Shared House",
+        "location": "[Area], [City], [Postcode]",
+        "price": "£650 pcm, bills included",
+        "deposit": "[Deposit amount]",
+        "property_type": "Room in HMO",
+        "bedrooms": "1",
+        "bathrooms": "Shared",
+        "available_from": "Now",
+        "furnishing": "Furnished",
+        "status": "available",
+        "summary": "A furnished double room in a professional house share.",
+        "description": "Placeholder description. Give the full details of the property: layout, condition, nearby amenities, transport links, parking, council tax band and EPC rating.\n\nReplace this text from the admin panel.",
+        "features": [
+            "Gas central heating",
+            "Double glazing",
+            "Close to transport links",
+            "Council tax band [X]",
+            "EPC rating [X]"
+        ],
+        "images": [
+            "assets/img/placeholders/rental-3-exterior.svg",
+            "assets/img/placeholders/rental-3-living.svg",
+            "assets/img/placeholders/rental-3-kitchen.svg",
+            "assets/img/placeholders/rental-3-bedroom.svg",
+            "assets/img/placeholders/rental-3-bathroom.svg",
+            "assets/img/placeholders/rental-3-garden.svg"
+        ],
+        "links": [
+            {
+                "label": "Rightmove",
+                "url": "https://www.rightmove.co.uk/"
+            },
+            {
+                "label": "Zoopla",
+                "url": "https://www.zoopla.co.uk/"
+            },
+            {
+                "label": "OpenRent",
+                "url": "https://www.openrent.co.uk/"
+            }
+        ],
+        "featured": true,
+        "placeholder": true
+    },
+    {
+        "id": "sample-rental-4",
+        "title": "One-Bed Apartment",
+        "location": "[Area], [City], [Postcode]",
+        "price": "£895 pcm",
+        "deposit": "[Deposit amount]",
+        "property_type": "Apartment",
+        "bedrooms": "1",
+        "bathrooms": "1",
+        "available_from": "[Date]",
+        "furnishing": "Furnished",
+        "status": "let_agreed",
+        "summary": "A modern one-bed apartment in a well-kept building.",
+        "description": "Placeholder description. Give the full details of the property: layout, condition, nearby amenities, transport links, parking, council tax band and EPC rating.\n\nReplace this text from the admin panel.",
+        "features": [
+            "Gas central heating",
+            "Double glazing",
+            "Close to transport links",
+            "Council tax band [X]",
+            "EPC rating [X]"
+        ],
+        "images": [
+            "assets/img/placeholders/rental-4-exterior.svg",
+            "assets/img/placeholders/rental-4-living.svg",
+            "assets/img/placeholders/rental-4-kitchen.svg",
+            "assets/img/placeholders/rental-4-bedroom.svg",
+            "assets/img/placeholders/rental-4-bathroom.svg",
+            "assets/img/placeholders/rental-4-garden.svg"
+        ],
+        "links": [
+            {
+                "label": "Rightmove",
+                "url": "https://www.rightmove.co.uk/"
+            },
+            {
+                "label": "Zoopla",
+                "url": "https://www.zoopla.co.uk/"
+            },
+            {
+                "label": "OpenRent",
+                "url": "https://www.openrent.co.uk/"
+            }
+        ],
+        "featured": false,
+        "placeholder": true
+    }
+]

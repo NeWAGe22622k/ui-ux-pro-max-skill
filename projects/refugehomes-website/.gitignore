@@ -1,0 +1,6 @@
+# Live data written by the admin panel - never commit
+public_html/private/*.json
+public_html/uploads/*
+!public_html/uploads/.htaccess
+!public_html/uploads/.gitkeep
+public_html/content/*.tmp

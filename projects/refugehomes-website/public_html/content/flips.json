@@ -1,0 +1,101 @@
+[
+    {
+        "id": "sample-flip-1",
+        "title": "Three-Bed Terrace Renovation",
+        "location": "[Area], [City]",
+        "property_type": "Terraced house",
+        "bedrooms": "3",
+        "bathrooms": "1",
+        "completed": "[Month Year]",
+        "summary": "Full strip-out and refurbishment of a tired 1930s terrace.",
+        "description": "Placeholder description. Explain the condition of the property when you bought it, what you changed, and the result.\n\nReplace this text from the admin panel.",
+        "works": [
+            "New kitchen",
+            "Re-plastered and redecorated throughout",
+            "New bathroom",
+            "Rewire and new heating system",
+            "Landscaped garden"
+        ],
+        "before": [
+            "assets/img/placeholders/flip-1-before-exterior.svg",
+            "assets/img/placeholders/flip-1-before-kitchen.svg",
+            "assets/img/placeholders/flip-1-before-living.svg",
+            "assets/img/placeholders/flip-1-before-bathroom.svg"
+        ],
+        "after": [
+            "assets/img/placeholders/flip-1-after-exterior.svg",
+            "assets/img/placeholders/flip-1-after-kitchen.svg",
+            "assets/img/placeholders/flip-1-after-living.svg",
+            "assets/img/placeholders/flip-1-after-bathroom.svg"
+        ],
+        "featured": true,
+        "placeholder": true,
+        "status": "published"
+    },
+    {
+        "id": "sample-flip-2",
+        "title": "Bungalow Transformation",
+        "location": "[Area], [City]",
+        "property_type": "Bungalow",
+        "bedrooms": "2",
+        "bathrooms": "1",
+        "completed": "[Month Year]",
+        "summary": "Reconfigured layout, new kitchen and bathroom, and a refreshed exterior.",
+        "description": "Placeholder description. Explain the condition of the property when you bought it, what you changed, and the result.\n\nReplace this text from the admin panel.",
+        "works": [
+            "New kitchen",
+            "Re-plastered and redecorated throughout",
+            "New bathroom",
+            "Rewire and new heating system",
+            "Landscaped garden"
+        ],
+        "before": [
+            "assets/img/placeholders/flip-2-before-exterior.svg",
+            "assets/img/placeholders/flip-2-before-kitchen.svg",
+            "assets/img/placeholders/flip-2-before-living.svg",
+            "assets/img/placeholders/flip-2-before-bathroom.svg"
+        ],
+        "after": [
+            "assets/img/placeholders/flip-2-after-exterior.svg",
+            "assets/img/placeholders/flip-2-after-kitchen.svg",
+            "assets/img/placeholders/flip-2-after-living.svg",
+            "assets/img/placeholders/flip-2-after-bathroom.svg"
+        ],
+        "featured": true,
+        "placeholder": true,
+        "status": "published"
+    },
+    {
+        "id": "sample-flip-3",
+        "title": "Period Flat Refurbishment",
+        "location": "[Area], [City]",
+        "property_type": "Flat",
+        "bedrooms": "2",
+        "bathrooms": "1",
+        "completed": "[Month Year]",
+        "summary": "Restored original features alongside a modern kitchen and bathroom.",
+        "description": "Placeholder description. Explain the condition of the property when you bought it, what you changed, and the result.\n\nReplace this text from the admin panel.",
+        "works": [
+            "New kitchen",
+            "Re-plastered and redecorated throughout",
+            "New bathroom",
+            "Rewire and new heating system",
+            "Landscaped garden"
+        ],
+        "before": [
+            "assets/img/placeholders/flip-3-before-exterior.svg",
+            "assets/img/placeholders/flip-3-before-kitchen.svg",
+            "assets/img/placeholders/flip-3-before-living.svg",
+            "assets/img/placeholders/flip-3-before-bathroom.svg"
+        ],
+        "after": [
+            "assets/img/placeholders/flip-3-after-exterior.svg",
+            "assets/img/placeholders/flip-3-after-kitchen.svg",
+            "assets/img/placeholders/flip-3-after-living.svg",
+            "assets/img/placeholders/flip-3-after-bathroom.svg"
+        ],
+        "featured": true,
+        "placeholder": true,
+        "status": "published"
+    }
+]

@@ -1,0 +1,82 @@
+[
+    {
+        "id": "sample-managed-1",
+        "title": "Victorian Terrace",
+        "location": "[Area], [City]",
+        "property_type": "Terraced house",
+        "bedrooms": "3",
+        "bathrooms": "1",
+        "summary": "A fully let period home, managed end-to-end on behalf of a private landlord.",
+        "description": "Placeholder description. Describe the property, the area and what Refugehomes looks after here, for example tenant finding, rent collection, maintenance and compliance.\n\nReplace this text from the admin panel.",
+        "images": [
+            "assets/img/placeholders/managed-1-exterior.svg",
+            "assets/img/placeholders/managed-1-living.svg",
+            "assets/img/placeholders/managed-1-kitchen.svg",
+            "assets/img/placeholders/managed-1-bedroom.svg",
+            "assets/img/placeholders/managed-1-bathroom.svg"
+        ],
+        "featured": true,
+        "placeholder": true,
+        "status": "published"
+    },
+    {
+        "id": "sample-managed-2",
+        "title": "Modern Two-Bed Apartment",
+        "location": "[Area], [City]",
+        "property_type": "Apartment",
+        "bedrooms": "2",
+        "bathrooms": "2",
+        "summary": "A city-centre apartment with long-term professional tenants.",
+        "description": "Placeholder description. Add details about the building, transport links and the management services provided.\n\nReplace this text from the admin panel.",
+        "images": [
+            "assets/img/placeholders/managed-2-exterior.svg",
+            "assets/img/placeholders/managed-2-living.svg",
+            "assets/img/placeholders/managed-2-kitchen.svg",
+            "assets/img/placeholders/managed-2-bedroom.svg",
+            "assets/img/placeholders/managed-2-bathroom.svg"
+        ],
+        "featured": true,
+        "placeholder": true,
+        "status": "published"
+    },
+    {
+        "id": "sample-managed-3",
+        "title": "Family Semi-Detached Home",
+        "location": "[Area], [City]",
+        "property_type": "Semi-detached",
+        "bedrooms": "4",
+        "bathrooms": "2",
+        "summary": "A spacious family home with garden, managed since [year].",
+        "description": "Placeholder description. Add details about the property and its management.\n\nReplace this text from the admin panel.",
+        "images": [
+            "assets/img/placeholders/managed-3-exterior.svg",
+            "assets/img/placeholders/managed-3-living.svg",
+            "assets/img/placeholders/managed-3-kitchen.svg",
+            "assets/img/placeholders/managed-3-bedroom.svg",
+            "assets/img/placeholders/managed-3-bathroom.svg"
+        ],
+        "featured": true,
+        "placeholder": true,
+        "status": "published"
+    },
+    {
+        "id": "sample-managed-4",
+        "title": "HMO Shared House",
+        "location": "[Area], [City]",
+        "property_type": "HMO",
+        "bedrooms": "5",
+        "bathrooms": "3",
+        "summary": "A licensed shared house for working professionals.",
+        "description": "Placeholder description. Add details about the rooms, shared spaces and licensing.\n\nReplace this text from the admin panel.",
+        "images": [
+            "assets/img/placeholders/managed-4-exterior.svg",
+            "assets/img/placeholders/managed-4-living.svg",
+            "assets/img/placeholders/managed-4-kitchen.svg",
+            "assets/img/placeholders/managed-4-bedroom.svg",
+            "assets/img/placeholders/managed-4-bathroom.svg"
+        ],
+        "featured": false,
+        "placeholder": true,
+        "status": "published"
+    }
+]

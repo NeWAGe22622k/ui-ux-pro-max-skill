@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1200" height="800" role="img" aria-label="Placeholder image: Managed property 1 · Kitchen">
+<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#EDF2EE"/><stop offset="1" stop-color="#D5E1D8"/></linearGradient></defs>
+<rect width="1200" height="800" fill="url(#g)"/>
+<g transform="translate(0 0)"><g fill="none" stroke="#1B6A2D" stroke-opacity=".38" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"><path d="M420 470 H780 V590 H420 Z"/><path d="M420 500 H780"/><path d="M540 500 V590 M660 500 V590"/><circle cx="480" cy="485" r="9"/><circle cx="520" cy="485" r="9"/><path d="M440 340 H760 V410 H440 Z"/><path d="M600 340 V410"/></g>
+<text x="600" y="672" text-anchor="middle" font-family="Inter, Helvetica, Arial, sans-serif" font-size="22" font-weight="600" letter-spacing="5" fill="#1B6A2D" fill-opacity=".8">PLACEHOLDER IMAGE</text>
+<text x="600" y="718" text-anchor="middle" font-family="Inter, Helvetica, Arial, sans-serif" font-size="34" fill="#21402A">Managed property 1 · Kitchen</text></g>
+</svg>

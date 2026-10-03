@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" width="1000" height="1000" role="img" aria-label="Placeholder image: Team member 1 photo">
+<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F4F1EA"/><stop offset="1" stop-color="#E3DCCD"/></linearGradient></defs>
+<rect width="1000" height="1000" fill="url(#g)"/>
+<g transform="translate(-100 100)"><g fill="none" stroke="#6E5B3A" stroke-opacity=".38" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"><circle cx="600" cy="330" r="85"/><path d="M430 600 Q430 450 600 450 Q770 450 770 600"/></g>
+<text x="600" y="672" text-anchor="middle" font-family="Inter, Helvetica, Arial, sans-serif" font-size="22" font-weight="600" letter-spacing="5" fill="#6E5B3A" fill-opacity=".8">PLACEHOLDER</text>
+<text x="600" y="718" text-anchor="middle" font-family="Inter, Helvetica, Arial, sans-serif" font-size="34" fill="#4A3D27">Team member 1 photo</text></g>
+</svg>

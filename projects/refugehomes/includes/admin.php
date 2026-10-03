@@ -21,12 +21,27 @@ const IMAGE_MAX_EDGE = 2000;   // px – longest side after resizing
 const IMAGE_QUALITY = 82;      // JPEG quality
 const LOGIN_MAX_TRIES = 5;
 const LOGIN_LOCK_SECONDS = 900;
+const SESSION_IDLE_SECONDS = 43200; // stay logged in for 12 hours of inactivity
 
 /* ---------- Auth ---------- */
 
 function auth_data(): array { return load_json('auth', []); }
 function has_password(): bool { return !empty(auth_data()['hash']); }
-function is_logged_in(): bool { return !empty($_SESSION['admin']) && ($_SESSION['admin_ip'] ?? '') === client_ip(); }
+/**
+ * Logged in = a valid session that has been used in the last 12 hours.
+ * (Not tied to the visitor's IP address: phones, iPads with iCloud Private
+ * Relay and hosting proxies change it between requests.)
+ */
+function is_logged_in(): bool
+{
+    if (empty($_SESSION['admin'])) return false;
+    if (time() - (int) ($_SESSION['admin_seen'] ?? 0) > SESSION_IDLE_SECONDS) {
+        unset($_SESSION['admin'], $_SESSION['admin_seen']);
+        return false;
+    }
+    $_SESSION['admin_seen'] = time();
+    return true;
+}
 function client_ip(): string { return (string) ($_SERVER['REMOTE_ADDR'] ?? ''); }
 
 function require_login(): void
@@ -65,7 +80,7 @@ function attempt_login(string $password): bool
         save_json('login-attempts', $tries);
         session_regenerate_id(true);
         $_SESSION['admin'] = true;
-        $_SESSION['admin_ip'] = $ip;
+        $_SESSION['admin_seen'] = time();
         return true;
     }
     $t = $tries[$ip] ?? ['count' => 0, 'until' => 0];
@@ -90,6 +105,11 @@ function csrf_token(): string
 function csrf_field(): string { return '<input type="hidden" name="csrf" value="' . h(csrf_token()) . '">'; }
 function check_csrf(): void
 {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$_POST && (int) ($_SERVER['CONTENT_LENGTH'] ?? 0) > 0) {
+        // PHP drops the whole form when the upload is bigger than post_max_size
+        http_response_code(413);
+        exit('Those photos are too large to upload in one go (limit ' . ini_get('post_max_size') . '). Please go back and add fewer photos at a time.');
+    }
     if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !hash_equals(csrf_token(), (string) ($_POST['csrf'] ?? ''))) {
         http_response_code(400);
         exit('Your session has expired. Please go back, refresh the page and try again.');

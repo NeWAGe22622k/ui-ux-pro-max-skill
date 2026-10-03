@@ -9,7 +9,7 @@ $services = [
     [
         'id' => 'guaranteed-rent',
         'title' => 'Guaranteed rent',
-        'img' => 'harlow-3',
+        'img' => 'photos/guaranteed-rent', 'alt' => 'A landlord relaxing at home, checking his phone',
         'intro' => 'We lease your property on an agreed term and pay you a fixed rent every month, whether the property is occupied or not. You get a predictable income with none of the day-to-day work: we find and manage the tenants, coordinate maintenance and keep you informed, so you can own a rental property without running one.',
         'points' => [
             'Fixed rent paid on the same date every month',
@@ -24,7 +24,7 @@ $services = [
     [
         'id' => 'lettings',
         'title' => 'Lettings &amp; rentals',
-        'img' => 'rental-2',
+        'img' => 'photos/lettings', 'alt' => 'A bright open-plan living room and kitchen',
         'intro' => 'For tenants, we offer quality, well-kept homes in well-connected locations, with honest listings and a responsive point of contact. For landlords, we market your property widely and match it with reliable, fully referenced tenants.',
         'points' => [
             'Homes advertised on the major property portals',
@@ -38,13 +38,13 @@ $services = [
     [
         'id' => 'sales',
         'title' => 'Residential sales',
-        'img' => 'harlow-1',
+        'img' => 'photos/sales', 'alt' => 'A detached family home with a lawn and gravel drive',
         'intro' => 'Selling a property is not always straightforward. Whether your home is ready for the open market or has been sitting unsold, we provide practical solutions tailored to your situation — including direct purchase for sellers who need speed, certainty and discretion.',
         'points' => [
             'Accurate valuation and pricing strategy',
             'Bespoke marketing and property positioning',
             'Skilled negotiation to maximise value',
-            'Direct purchase options for urgent or stalled sales',
+            'Direct purchase of properties in any condition',
             'Transaction coordination through to completion',
             'Clear communication at every stage',
         ],
@@ -53,7 +53,7 @@ $services = [
     [
         'id' => 'investment',
         'title' => 'Investment &amp; refurbishment',
-        'img' => 'flip1-after-1',
+        'img' => 'placeholder/flip1-after-1', 'alt' => '',
         'intro' => 'We work closely with investors to identify, assess and execute opportunities built on strong fundamentals. Our approach is insight-led and disciplined, focused on risk awareness, long-term value and well-structured decisions — from acquisition through refurbishment to letting or resale.',
         'points' => [
             'Deal sourcing and opportunity assessment',
@@ -80,12 +80,26 @@ require __DIR__ . '/includes/header.php';
   </div>
 </section>
 
-<section class="section" style="padding-top:0">
+
+<section class="section-tight section-white condition-band">
+  <div class="container split">
+    <div class="reveal">
+      <p class="eyebrow">Any property, any condition</p>
+      <h2 class="h2">We work with properties in <em>any condition.</em></h2>
+    </div>
+    <div class="reveal">
+      <p class="prose lead">Move-in ready, tired and dated, or in need of a complete renovation: we can help either way. Empty homes, inherited properties, homes with damp or repair issues, and properties that have struggled to sell or let are all welcome. We assess each one honestly and explain your options clearly.</p>
+      <a class="link-arrow" href="contact.php?enquiry=Property%20in%20need%20of%20work">Tell us about your property <?= icon('arrow-right', 16) ?></a>
+    </div>
+  </div>
+</section>
+
+<section class="section">
   <div class="container">
     <?php foreach ($services as $i => $svc): ?>
       <article class="feature" id="<?= $svc['id'] ?>">
         <div class="feature-media reveal">
-          <img src="assets/img/placeholder/<?= $svc['img'] ?>.jpg" alt="" width="1600" height="1100" loading="lazy">
+          <img src="assets/img/<?= $svc['img'] ?>.jpg" alt="<?= h($svc['alt']) ?>" width="1600" height="1100" loading="lazy">
         </div>
         <div class="reveal">
           <p class="eyebrow">0<?= $i + 1 ?></p>

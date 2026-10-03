@@ -29,7 +29,7 @@ require __DIR__ . '/includes/header.php';
   </div>
   <div class="container">
     <figure class="hero-media reveal">
-      <img src="assets/img/placeholder/hero.jpg" alt="A Refugehomes property" width="2400" height="1400" fetchpriority="high">
+      <img src="assets/img/photos/hero.jpg" alt="A row of white stucco terraced houses on a tree-lined street" width="1500" height="844" fetchpriority="high">
     </figure>
     <ul class="hero-strip" aria-label="What we do">
       <li><strong>01</strong> Guaranteed rent</li>
@@ -49,7 +49,7 @@ require __DIR__ . '/includes/header.php';
     <div class="reveal">
       <div class="prose lead">
         <p>Property decisions are among the most significant financial choices people make. We handle them with the care they deserve: clear advice, realistic numbers and steady communication from the first conversation to the last.</p>
-        <p>Whether you are letting a home, selling, or growing a portfolio, you will always know where things stand and what happens next.</p>
+        <p>We work with properties in any condition, from move-in ready homes to those that need a full renovation. Whether you are letting, selling, or growing a portfolio, you will always know where things stand and what happens next.</p>
       </div>
       <a class="link-arrow" href="about.php">More about Refugehomes <?= icon('arrow-right', 16) ?></a>
     </div>

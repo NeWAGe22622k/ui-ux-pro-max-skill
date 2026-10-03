@@ -19,7 +19,7 @@ require __DIR__ . '/includes/header.php';
 </section>
 
 <div class="container banner reveal">
-  <img src="assets/img/placeholder/about.jpg" alt="Refugehomes property" width="1600" height="1200">
+  <img src="assets/img/photos/about.jpg" alt="A bright meeting room with a wooden table and sash windows" width="2000" height="1125">
 </div>
 
 <section class="section">

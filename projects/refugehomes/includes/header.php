@@ -33,7 +33,7 @@ $fullTitle = $title ? $title . ' | ' . $s['company'] : $s['company'] . ' | ' . $
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400;1,6..72,500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css?v=3">
+  <link rel="stylesheet" href="assets/css/style.css?v=4">
   <script>document.documentElement.classList.add('js')</script>
 </head>
 <body class="page-<?= h($active ?: 'default') ?>">
@@ -47,12 +47,12 @@ $fullTitle = $title ? $title . ' | ' . $s['company'] : $s['company'] . ' | ' . $
 
     <nav class="primary-nav" id="primary-nav" aria-label="Main">
       <ul>
-        <?php foreach ($nav as $key => [$href, $label]): ?>
-          <li><a href="<?= $href ?>"<?= $active === $key ? ' aria-current="page"' : '' ?>><?= h($label) ?></a></li>
+        <?php $n = 0; foreach ($nav as $key => [$href, $label]): ?>
+          <li style="--i:<?= $n++ ?>"><a href="<?= $href ?>"<?= $active === $key ? ' aria-current="page"' : '' ?>><?= h($label) ?></a></li>
         <?php endforeach; ?>
-        <li class="nav-cta-mobile"><a href="contact.php"<?= $active === 'contact' ? ' aria-current="page"' : '' ?>>Contact</a></li>
+        <li class="nav-cta-mobile" style="--i:<?= $n ?>"><a href="contact.php"<?= $active === 'contact' ? ' aria-current="page"' : '' ?>>Contact</a></li>
       </ul>
-      <div class="nav-mobile-foot">
+      <div class="nav-mobile-foot" style="--i:<?= $n + 1 ?>">
         <a href="<?= h(tel($s['phone'])) ?>"><?= icon('phone', 18) ?> <?= h($s['phone']) ?></a>
         <a href="mailto:<?= h($s['email']) ?>"><?= icon('mail', 18) ?> <?= h($s['email']) ?></a>
       </div>

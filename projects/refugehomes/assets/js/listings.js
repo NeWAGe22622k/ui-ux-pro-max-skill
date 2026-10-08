@@ -212,7 +212,11 @@
       cards.forEach(function (c) {
         var show = type === 'all' || c.getAttribute('data-type') === type;
         c.hidden = !show;
-        if (show) c.classList.add('is-in');
+        if (show) {
+          c.classList.add('is-in');
+          var m = c.querySelector('.mr');
+          if (m) m.classList.add('mr-in');
+        }
       });
       var empty = $('[data-filter-empty]');
       if (empty) empty.hidden = cards.some(function (c) { return !c.hidden; });

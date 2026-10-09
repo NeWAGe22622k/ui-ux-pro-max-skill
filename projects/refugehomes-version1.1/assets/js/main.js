@@ -11,20 +11,42 @@
     window.addEventListener('scroll', onScroll, { passive: true });
   }
 
-  // Mobile menu
+  // Mobile menu: side drawer
   var toggle = document.querySelector('[data-nav-toggle]');
-  if (toggle) {
-    var setOpen = function (open) {
+  var nav = document.getElementById('primary-nav');
+  if (toggle && nav) {
+    var isOpen = function () { return document.body.classList.contains('nav-open'); };
+    var setOpen = function (open, returnFocus) {
       document.body.classList.toggle('nav-open', open);
       toggle.setAttribute('aria-expanded', String(open));
+      toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      if (open) {
+        var first = nav.querySelector('a');
+        if (first) setTimeout(function () { first.focus({ preventScroll: true }); }, 60);
+      } else if (returnFocus) {
+        toggle.focus();
+      }
     };
-    toggle.addEventListener('click', function () {
-      setOpen(toggle.getAttribute('aria-expanded') !== 'true');
+    toggle.addEventListener('click', function () { setOpen(!isOpen()); });
+    // tap the dimmed page to close
+    Array.prototype.forEach.call(document.querySelectorAll('[data-nav-close]'), function (el) {
+      el.addEventListener('click', function () { setOpen(false); });
     });
+    // close after choosing a link (matters for links to a section on the same page)
+    nav.addEventListener('click', function (e) { if (e.target.closest('a') && isOpen()) setOpen(false); });
+    // swipe the drawer to the right to close it
+    var x0 = null, y0 = 0;
+    nav.addEventListener('touchstart', function (e) { x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; }, { passive: true });
+    nav.addEventListener('touchend', function (e) {
+      if (x0 === null) return;
+      var dx = e.changedTouches[0].clientX - x0, dy = e.changedTouches[0].clientY - y0;
+      x0 = null;
+      if (dx > 60 && Math.abs(dy) < 60) setOpen(false);
+    }, { passive: true });
     document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && document.body.classList.contains('nav-open')) { setOpen(false); toggle.focus(); }
+      if (e.key === 'Escape' && isOpen()) setOpen(false, true);
     });
-    window.addEventListener('resize', function () { if (window.innerWidth > 960) setOpen(false); });
+    window.addEventListener('resize', function () { if (window.innerWidth > 960 && isOpen()) setOpen(false); });
   }
 
   // Reveal on scroll

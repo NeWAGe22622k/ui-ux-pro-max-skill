@@ -153,8 +153,8 @@
       if (!inputs.length) return; // nothing to upload, normal submit
       e.preventDefault();
       var status = editor.querySelector('[data-upload-status]');
-      var btn = editor.querySelector('[data-save]');
-      btn.disabled = true;
+      var btns = $$('[data-save]', editor);
+      btns.forEach(function (b) { b.disabled = true; });
       status.textContent = 'Preparing photos…';
       var fd = new FormData(editor);
       var jobs = inputs.map(function (inp) {
@@ -174,7 +174,7 @@
         });
       }).catch(function () {
         status.textContent = 'Upload failed. Please check your connection and try again.';
-        btn.disabled = false;
+        btns.forEach(function (b) { b.disabled = false; });
       });
     });
   }

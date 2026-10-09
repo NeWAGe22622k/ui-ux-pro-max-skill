@@ -102,7 +102,7 @@ function photo_group(string $key, string $label, array $paths, string $help = ''
       <ul class="photo-list" data-sortable>
         <?php foreach ($paths as $p): ?>
           <li class="photo" draggable="true">
-            <img src="<?= h(admin_src($p)) ?>" alt="">
+            <img src="<?= h(admin_src(img_small($p))) ?>" alt="" loading="lazy">
             <input type="hidden" name="keep_<?= $key ?>[]" value="<?= h($p) ?>">
             <button type="button" class="photo-remove" data-remove aria-label="Remove photo">×</button>
           </li>
@@ -223,5 +223,9 @@ function photo_group(string $key, string $label, array $paths, string $help = ''
       <p class="hint" data-upload-status aria-live="polite"></p>
     </section>
   </aside>
+
+  <div class="mobile-save">
+    <button class="btn btn-primary btn-block" type="submit" data-save><?= $isEdit ? 'Save changes' : 'Add ' . $noun ?></button>
+  </div>
 </form>
 <?php admin_foot(); ?>

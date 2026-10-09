@@ -59,9 +59,19 @@
   </div>
 </footer>
 
+<?php if (($active ?? '') !== 'contact'): ?>
+<nav class="mobile-bar" aria-label="Quick contact">
+  <a href="<?= h(tel($s['phone'])) ?>"><?= icon('phone', 18) ?> Call</a>
+  <?php if (!empty($s['whatsapp'])): ?>
+    <a href="https://wa.me/<?= h(preg_replace('/\D/', '', $s['whatsapp'])) ?>" target="_blank" rel="noopener"><?= icon('whatsapp', 18) ?> WhatsApp</a>
+  <?php endif; ?>
+  <a class="mobile-bar-cta" href="contact.php">Enquire</a>
+</nav>
+<?php endif; ?>
+
 <script src="assets/js/main.js?v=1" defer></script>
 <?php if (!empty($withListings)): ?>
-<script src="assets/js/listings.js?v=1" defer></script>
+<script src="assets/js/listings.js?v=2" defer></script>
 <?php endif; ?>
 </body>
 </html>

@@ -99,7 +99,7 @@ require __DIR__ . '/includes/header.php';
     <?php foreach ($services as $i => $svc): ?>
       <article class="feature" id="<?= $svc['id'] ?>">
         <div class="feature-media reveal">
-          <img src="assets/img/<?= $svc['img'] ?>.jpg" alt="<?= h($svc['alt']) ?>" width="1600" height="1100" loading="lazy">
+          <img <?= img_attrs('assets/img/' . $svc['img'] . '.jpg', '(max-width: 860px) 100vw, 600px') ?> alt="<?= h($svc['alt']) ?>" width="1600" height="1100" loading="lazy">
         </div>
         <div class="reveal">
           <p class="eyebrow">0<?= $i + 1 ?></p>

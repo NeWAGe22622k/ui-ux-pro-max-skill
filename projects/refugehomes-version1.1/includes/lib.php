@@ -165,7 +165,8 @@ function social_links(): array
 /** Data passed to the gallery modal for a property. */
 function property_payload(array $p): array
 {
-    return [
+    $all = array_merge($p['images'] ?? [], $p['before'] ?? [], $p['after'] ?? []);
+    return img_maps($all) + [
         'id'       => $p['id'] ?? '',
         'type'     => $p['type'] ?? 'managed',
         'title'    => $p['title'] ?? '',
@@ -175,6 +176,59 @@ function property_payload(array $p): array
         'before'   => array_values($p['before'] ?? []),
         'after'    => array_values($p['after'] ?? []),
     ];
+}
+
+/* ---------- Responsive images ----------
+ * Every photo has smaller copies next to it (photo-480w.jpg, photo-960w.jpg,
+ * photo-1440w.jpg) so phones download a size that fits their screen.
+ * Copies are made automatically on upload; if one is missing the original is used. */
+const IMG_WIDTHS = [480, 960, 1440];
+
+function img_variant(string $path, int $w): string
+{
+    return preg_replace('/\.(jpe?g|png|webp)$/i', '-' . $w . 'w.jpg', $path);
+}
+
+/** "a-480w.jpg 480w, a-960w.jpg 960w, a.jpg 2000w" – empty when no copies exist. */
+function img_srcset(string $path): string
+{
+    static $cache = [];
+    if (isset($cache[$path])) return $cache[$path];
+    $parts = [];
+    foreach (IMG_WIDTHS as $w) {
+        $v = img_variant($path, $w);
+        if ($v !== $path && is_file(ROOT . '/' . $v)) $parts[] = $v . ' ' . $w . 'w';
+    }
+    if ($parts) {
+        $size = @getimagesize(ROOT . '/' . $path);
+        $parts[] = $path . ' ' . (int) ($size[0] ?? 2000) . 'w';
+    }
+    return $cache[$path] = implode(', ', $parts);
+}
+
+/** src + srcset + sizes attributes for an <img>. */
+function img_attrs(string $path, string $sizes): string
+{
+    $set = img_srcset($path);
+    return 'src="' . h($path) . '"' . ($set ? ' srcset="' . h($set) . '" sizes="' . h($sizes) . '"' : '');
+}
+
+/** Smallest copy of a photo (for thumbnails), or the original. */
+function img_small(string $path): string
+{
+    $v = img_variant($path, IMG_WIDTHS[0]);
+    return ($v !== $path && is_file(ROOT . '/' . $v)) ? $v : $path;
+}
+
+/** Lookup tables passed to the gallery script: path => srcset, path => thumbnail. */
+function img_maps(array $paths): array
+{
+    $sets = []; $small = [];
+    foreach (array_unique($paths) as $p) {
+        if ($s = img_srcset($p)) $sets[$p] = $s;
+        if (($t = img_small($p)) !== $p) $small[$p] = $t;
+    }
+    return ['srcset' => (object) $sets, 'small' => (object) $small];
 }
 
 /** JSON safe to drop inside an HTML attribute. */

@@ -12,8 +12,8 @@ function property_card(array $p): void
     <article class="card prop-card reveal" data-type="<?= $isFlip ? 'flip' : 'managed' ?>" data-payload="<?= json_attr($payload) ?>">
       <?php if ($isFlip && $before && $after): ?>
         <div class="card-media compare" data-compare>
-          <img src="<?= h($after) ?>" alt="<?= h($p['title']) ?> after refurbishment" loading="lazy" decoding="async">
-          <div class="compare-before"><img src="<?= h($before) ?>" alt="<?= h($p['title']) ?> before refurbishment" loading="lazy" decoding="async"></div>
+          <img <?= img_attrs($after, '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 400px') ?> alt="<?= h($p['title']) ?> after refurbishment" loading="lazy" decoding="async">
+          <div class="compare-before"><img <?= img_attrs($before, '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 400px') ?> alt="<?= h($p['title']) ?> before refurbishment" loading="lazy" decoding="async"></div>
           <span class="compare-label compare-label-before">Before</span>
           <span class="compare-label compare-label-after">After</span>
           <span class="compare-handle" aria-hidden="true"><span><?= icon('move', 16) ?></span></span>
@@ -21,7 +21,7 @@ function property_card(array $p): void
         </div>
       <?php else: ?>
         <button type="button" class="card-media" data-open-gallery aria-label="View photos of <?= h($p['title']) ?>">
-          <img src="<?= h(cover($p)) ?>" alt="<?= h($p['title']) ?>" loading="lazy" decoding="async">
+          <img <?= img_attrs(cover($p), '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 400px') ?> alt="<?= h($p['title']) ?>" loading="lazy" decoding="async">
         </button>
       <?php endif; ?>
       <div class="card-body">
@@ -38,7 +38,7 @@ function property_card(array $p): void
 
 function rental_payload(array $r): array
 {
-    return [
+    return img_maps($r['images'] ?? []) + [
         'id'             => $r['id'] ?? '',
         'title'          => $r['title'] ?? '',
         'location'       => $r['location'] ?? '',
@@ -64,7 +64,7 @@ function rental_card(array $r): void
     ?>
     <article class="card rental-card reveal<?= $let ? ' is-let' : '' ?>" id="home-<?= h($d['id']) ?>" data-payload="<?= json_attr($d) ?>">
       <button type="button" class="card-media" data-open-rental aria-label="View details of <?= h($d['title']) ?>">
-        <img src="<?= h(cover($r)) ?>" alt="<?= h($d['title']) ?>" loading="lazy" decoding="async">
+        <img <?= img_attrs(cover($r), '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 400px') ?> alt="<?= h($d['title']) ?>" loading="lazy" decoding="async">
         <span class="status <?= $let ? 'status-let' : 'status-available' ?>"><?= $let ? 'Let agreed' : 'Available' ?></span>
       </button>
       <div class="card-body">
@@ -99,7 +99,7 @@ function listing_modals(): void
           <button type="button" role="tab" data-set="before">Before</button>
           <button type="button" role="tab" data-set="after">After</button>
         </div>
-        <div class="gallery" data-gallery>
+        <div class="gallery" data-gallery data-sizes="(max-width: 860px) 100vw, 1000px">
           <div class="gallery-stage">
             <img alt="" data-g-img>
             <button type="button" class="gallery-nav prev" data-g-prev aria-label="Previous photo"><?= icon('chevron-left', 24) ?></button>
@@ -122,7 +122,7 @@ function listing_modals(): void
           <button type="button" class="icon-btn" data-close aria-label="Close"><?= icon('x', 22) ?></button>
         </header>
         <div class="rental-detail">
-          <div class="gallery" data-gallery>
+          <div class="gallery" data-gallery data-sizes="(max-width: 860px) 100vw, 720px">
             <div class="gallery-stage">
               <img alt="" data-g-img>
               <button type="button" class="gallery-nav prev" data-g-prev aria-label="Previous photo"><?= icon('chevron-left', 24) ?></button>

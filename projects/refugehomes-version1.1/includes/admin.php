@@ -169,6 +169,7 @@ function remove_unused(array $paths): void
     foreach ($paths as $p) {
         if (isset($refs[$p]) || !preg_match('#^uploads/[a-f0-9]{16}\.(jpg|png|webp)$#', $p)) continue;
         @unlink(ROOT . '/' . $p);
+        foreach (IMG_WIDTHS as $w) @unlink(ROOT . '/' . img_variant($p, $w));
     }
 }
 
@@ -223,9 +224,41 @@ function store_upload(string $tmp, ?string &$error = null): ?string
 
     $dest = 'uploads/' . $name . '.jpg';
     $ok = imagejpeg($out, ROOT . '/' . $dest, IMAGE_QUALITY);
+    if ($ok) make_variants($out, $dest);
     imagedestroy($src); imagedestroy($out);
     if (!$ok) { $error = 'Could not save the image.'; return null; }
     return $dest;
+}
+
+/** Save phone/tablet-sized copies of a photo next to it (see img_srcset). */
+function make_variants($gd, string $dest): void
+{
+    $w = imagesx($gd); $h = imagesy($gd);
+    foreach (IMG_WIDTHS as $vw) {
+        if ($vw >= $w * 0.9) continue;           // not worth a copy this close to the original
+        $vh = (int) round($h * $vw / $w);
+        $v = imagecreatetruecolor($vw, $vh);
+        imagecopyresampled($v, $gd, 0, 0, 0, 0, $vw, $vh, $w, $h);
+        imageinterlace($v, true);
+        imagejpeg($v, ROOT . '/' . img_variant($dest, $vw), 80);
+        imagedestroy($v);
+    }
+}
+
+/** Create missing copies for a photo uploaded before copies existed. */
+function ensure_variants(string $path): void
+{
+    if (!function_exists('imagecreatefromjpeg') || !preg_match('#^uploads/[a-f0-9]{16}\.(jpg|png|webp)$#', $path)) return;
+    if (img_srcset($path) !== '' || !is_file(ROOT . '/' . $path)) return;
+    $info = @getimagesize(ROOT . '/' . $path);
+    if (!$info || $info[0] <= IMG_WIDTHS[0] / 0.9) return;
+    $gd = match ($info['mime'] ?? '') {
+        'image/jpeg' => @imagecreatefromjpeg(ROOT . '/' . $path),
+        'image/png'  => @imagecreatefrompng(ROOT . '/' . $path),
+        'image/webp' => @imagecreatefromwebp(ROOT . '/' . $path),
+        default => false,
+    };
+    if ($gd) { make_variants($gd, $path); imagedestroy($gd); }
 }
 
 /** Process a multi-file input (name="field[]"). Returns [paths, errors]. */
@@ -272,7 +305,7 @@ function admin_head(string $title, string $section = ''): void
   <meta name="robots" content="noindex, nofollow">
   <title><?= h($title) ?> · Refugehomes admin</title>
   <link rel="icon" type="image/png" href="../assets/img/favicon.png">
-  <link rel="stylesheet" href="admin.css?v=1">
+  <link rel="stylesheet" href="admin.css?v=2">
 </head>
 <body>
 <?php if (is_logged_in()): ?>
@@ -298,7 +331,7 @@ function admin_head(string $title, string $section = ''): void
 
 function admin_foot(): void
 {
-    echo "</main>\n<script src=\"admin.js?v=1\" defer></script>\n</body>\n</html>\n";
+    echo "</main>\n<script src=\"admin.js?v=2\" defer></script>\n</body>\n</html>\n";
 }
 
 /** Thumbnail URL for an image path stored relative to the site root. */

@@ -29,7 +29,7 @@ require __DIR__ . '/includes/header.php';
   </div>
   <div class="container">
     <figure class="hero-media reveal">
-      <img src="assets/img/photos/hero.jpg" alt="A row of white stucco terraced houses on a tree-lined street" width="1500" height="844" fetchpriority="high">
+      <img <?= img_attrs('assets/img/photos/hero.jpg', '(max-width: 1340px) 100vw, 1240px') ?> alt="A row of white stucco terraced houses on a tree-lined street" width="1500" height="844" fetchpriority="high">
     </figure>
     <ul class="hero-strip" aria-label="What we do">
       <li><strong>01</strong> Guaranteed rent</li>

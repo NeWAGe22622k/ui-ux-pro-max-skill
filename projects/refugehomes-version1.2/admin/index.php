@@ -71,6 +71,20 @@ if (!is_logged_in()) {
 
 /* ---------- Dashboard ---------- */
 $list = valid_list((string) ($_GET['list'] ?? 'properties'));
+
+// Make phone-sized copies of any photos uploaded before that feature existed
+// (a few seconds at a time, so the page never hangs).
+$deadline = microtime(true) + 5;
+foreach (array_keys(LISTS) as $l) {
+    foreach (load_json($l, []) as $it) {
+        foreach (['images', 'before', 'after'] as $k) {
+            foreach ($it[$k] ?? [] as $p) {
+                if (microtime(true) > $deadline) break 4;
+                ensure_variants($p);
+            }
+        }
+    }
+}
 $items = load_json($list, []);
 $isRentals = $list === 'rentals';
 
@@ -101,7 +115,7 @@ admin_head(LISTS[$list], $list);
       $thumb = cover($it);
       ?>
       <li class="row<?= empty($it['published']) ? ' is-hidden' : '' ?>">
-        <img class="row-thumb" src="<?= h(admin_src($thumb)) ?>" alt="" loading="lazy">
+        <img class="row-thumb" src="<?= h(admin_src(img_small($thumb))) ?>" alt="" loading="lazy">
         <div class="row-main">
           <a class="row-title" href="edit.php?list=<?= $list ?>&amp;id=<?= urlencode($id) ?>"><?= h($it['title'] ?? '(untitled)') ?></a>
           <div class="row-meta">

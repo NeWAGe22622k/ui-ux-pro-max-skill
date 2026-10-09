@@ -19,7 +19,7 @@ require __DIR__ . '/includes/header.php';
 </section>
 
 <div class="container banner reveal">
-  <img src="assets/img/photos/about.jpg" alt="A bright meeting room with a wooden table and sash windows" width="2000" height="1125">
+  <img <?= img_attrs('assets/img/photos/about.jpg', '(max-width: 1340px) 100vw, 1240px') ?> alt="A bright meeting room with a wooden table and sash windows" width="2000" height="1125">
 </div>
 
 <section class="section">
@@ -88,7 +88,7 @@ require __DIR__ . '/includes/header.php';
       ];
       foreach ($team as [$name, $role, $img]): ?>
         <article class="person reveal">
-          <img src="assets/img/placeholder/<?= $img ?>.jpg" alt="<?= h($name) ?>" width="900" height="1100" loading="lazy">
+          <img <?= img_attrs('assets/img/placeholder/' . $img . '.jpg', '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 400px') ?> alt="<?= h($name) ?>" width="900" height="1100" loading="lazy">
           <h3><?= h($name) ?></h3>
           <p><?= $role ?></p>
         </article>

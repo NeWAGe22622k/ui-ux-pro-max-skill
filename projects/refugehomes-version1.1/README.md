@@ -114,6 +114,8 @@ Two complete, separate versions of the site live side by side in this repository
 | **version1.1** | `projects/refugehomes-version1.1/` | The site as deployed live in October 2026, with the original Services page (four alternating image/text blocks). |
 | **version1.2** | `projects/refugehomes-version1.2/` | Same site with the redesigned Services page: service index, guaranteed-rent flagship section with "How it works", condition tags, numbered service list, linked audience tiles. |
 
-Snapshots before any later changes: version1.1 = commit `95aa6a1`, version1.2 = commit `550841b`.
+Both versions include the same mobile optimisations (phone-sized photo copies, 44px tap targets, quick-contact bar, swipeable filters, touch-friendly before/after slider, pinned pop-up title and Enquire button, phone-friendly admin with a pinned Save button).
+
+Snapshots before the mobile optimisations: version1.1 = commit `95aa6a1`, version1.2 = commit `550841b`.
 
 **To switch the live site to either version:** upload `refugehomes-version1.1.zip` or `refugehomes-version1.2.zip` to `public_html` and extract it, choosing *Overwrite*. Neither zip contains `data/` or `uploads/`, so listings, photos, settings and the admin password are kept.

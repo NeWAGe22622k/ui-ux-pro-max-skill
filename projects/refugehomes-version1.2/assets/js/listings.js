@@ -25,6 +25,9 @@
     this.images = [];
     this.index = 0;
     this.label = '';
+    this.sizes = root.getAttribute('data-sizes') || '100vw';
+    this.sets = {};
+    this.small = {};
     var self = this;
     this.prev.addEventListener('click', function () { self.go(self.index - 1); });
     this.next.addEventListener('click', function () { self.go(self.index + 1); });
@@ -41,11 +44,14 @@
       if (Math.abs(dx) > 40) self.go(self.index + (dx < 0 ? 1 : -1));
     });
   }
-  Gallery.prototype.set = function (images, label) {
+  Gallery.prototype.set = function (images, label, sets, small) {
     this.images = images || [];
     this.label = label || '';
+    this.sets = sets || {};
+    this.small = small || {};
+    var thumb = this.small;
     this.thumbs.innerHTML = this.images.map(function (src, i) {
-      return '<button type="button" data-i="' + i + '" aria-label="Show photo ' + (i + 1) + '"><img src="' + esc(src) + '" alt="" loading="lazy"></button>';
+      return '<button type="button" data-i="' + i + '" aria-label="Show photo ' + (i + 1) + '"><img src="' + esc(thumb[src] || src) + '" alt="" loading="lazy"></button>';
     }).join('');
     var multi = this.images.length > 1;
     this.prev.hidden = !multi; this.next.hidden = !multi; this.thumbs.hidden = !multi;
@@ -58,6 +64,9 @@
     var img = this.img, src = this.images[this.index];
     img.classList.add('is-loading');
     img.onload = function () { img.classList.remove('is-loading'); };
+    // let the phone pick a size that fits its screen
+    img.removeAttribute('srcset');
+    if (this.sets[src]) { img.sizes = this.sizes; img.srcset = this.sets[src]; }
     img.src = src;
     img.alt = (this.label ? this.label + ' – ' : '') + 'photo ' + (this.index + 1) + ' of ' + n;
     this.count.textContent = (this.index + 1) + ' / ' + n;
@@ -103,7 +112,7 @@
     var current = null;
     var showSet = function (set) {
       $$('button', tabs).forEach(function (b) { b.setAttribute('aria-selected', b.getAttribute('data-set') === set ? 'true' : 'false'); });
-      gGallery.set(current[set], current.title + ' (' + set + ')');
+      gGallery.set(current[set], current.title + ' (' + set + ')', current.srcset, current.small);
     };
     tabs.addEventListener('click', function (e) {
       var b = e.target.closest('button[data-set]');
@@ -123,7 +132,7 @@
       $('[data-g-summary]', gModal).textContent = p.summary || '';
       var isFlip = p.type === 'flip' && p.before.length && p.after.length;
       tabs.hidden = !isFlip;
-      if (isFlip) showSet('after'); else gGallery.set(p.images.length ? p.images : p.after.concat(p.before), p.title);
+      if (isFlip) showSet('after'); else gGallery.set(p.images.length ? p.images : p.after.concat(p.before), p.title, p.srcset, p.small);
       openDialog(gModal);
     });
   }
@@ -176,7 +185,7 @@
       enq.href = 'contact.php?enquiry=' + encodeURIComponent(r.title + ' – ' + r.location);
       enq.hidden = r.status === 'let';
 
-      rGallery.set(r.images, r.title);
+      rGallery.set(r.images, r.title, r.srcset, r.small);
       openDialog(rModal);
       if (r.id) history.replaceState(null, '', '#home-' + r.id);
     };
@@ -201,6 +210,25 @@
     var set = function (v) { c.style.setProperty('--pos', v + '%'); };
     range.addEventListener('input', function () { set(range.value); });
     set(range.value);
+
+    // Drag anywhere on the photo with a finger, mouse or pen.
+    // Vertical swipes still scroll the page (touch-action: pan-y).
+    var active = false, moved = false;
+    var moveTo = function (x) {
+      var r = c.getBoundingClientRect();
+      var v = Math.max(0, Math.min(100, (x - r.left) / r.width * 100));
+      range.value = v;
+      set(v);
+    };
+    c.addEventListener('pointerdown', function (e) {
+      if (e.button > 0) return;
+      active = true; moved = false;
+      if (e.pointerType === 'mouse') moveTo(e.clientX);
+      try { c.setPointerCapture(e.pointerId); } catch (err) {}
+    });
+    c.addEventListener('pointermove', function (e) { if (active) { moved = true; moveTo(e.clientX); } });
+    c.addEventListener('pointerup', function (e) { if (active && !moved) moveTo(e.clientX); active = false; });
+    c.addEventListener('pointercancel', function () { active = false; });
   });
 
   /* ---------- Filter tabs (properties page) ---------- */

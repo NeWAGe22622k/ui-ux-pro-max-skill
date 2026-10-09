@@ -114,7 +114,7 @@ $others = array_slice($services, 1);
         </div>
       </div>
       <div class="flagship-media reveal">
-        <img src="assets/img/<?= $gr['img'] ?>.jpg" alt="<?= h($gr['alt']) ?>" width="1800" height="1013" loading="lazy">
+        <img <?= img_attrs('assets/img/' . $gr['img'] . '.jpg', '(max-width: 1000px) 100vw, 560px') ?> alt="<?= h($gr['alt']) ?>" width="1800" height="1013" loading="lazy">
       </div>
     </div>
 
@@ -187,7 +187,7 @@ $others = array_slice($services, 1);
           </header>
           <div class="svc-main">
             <div class="svc-media reveal">
-              <img src="assets/img/<?= $svc['img'] ?>.jpg" alt="<?= h($svc['alt']) ?>" width="1800" height="1013" loading="lazy">
+              <img <?= img_attrs('assets/img/' . $svc['img'] . '.jpg', '(max-width: 860px) 100vw, 800px') ?> alt="<?= h($svc['alt']) ?>" width="1800" height="1013" loading="lazy">
             </div>
             <div class="svc-body reveal">
               <div>

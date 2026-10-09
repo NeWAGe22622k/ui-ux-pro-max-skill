@@ -101,7 +101,7 @@ admin_head(LISTS[$list], $list);
       $thumb = cover($it);
       ?>
       <li class="row<?= empty($it['published']) ? ' is-hidden' : '' ?>">
-        <img class="row-thumb" src="<?= h(admin_src($thumb)) ?>" alt="" loading="lazy" decoding="async">
+        <img class="row-thumb" src="<?= h(admin_src($thumb)) ?>" alt="" loading="lazy">
         <div class="row-main">
           <a class="row-title" href="edit.php?list=<?= $list ?>&amp;id=<?= urlencode($id) ?>"><?= h($it['title'] ?? '(untitled)') ?></a>
           <div class="row-meta">

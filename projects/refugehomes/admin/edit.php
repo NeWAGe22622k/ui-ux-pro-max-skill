@@ -102,7 +102,7 @@ function photo_group(string $key, string $label, array $paths, string $help = ''
       <ul class="photo-list" data-sortable>
         <?php foreach ($paths as $p): ?>
           <li class="photo" draggable="true">
-            <img src="<?= h(admin_src($p)) ?>" alt="" loading="lazy" decoding="async">
+            <img src="<?= h(admin_src($p)) ?>" alt="">
             <input type="hidden" name="keep_<?= $key ?>[]" value="<?= h($p) ?>">
             <button type="button" class="photo-remove" data-remove aria-label="Remove photo">×</button>
           </li>

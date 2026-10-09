@@ -18,7 +18,7 @@ require __DIR__ . '/includes/header.php';
         <p class="eyebrow">Refugehomes Ltd &middot; Built on trust</p>
         <h1 class="display">Homes built<br>on <em>trust.</em></h1>
       </div>
-      <div class="hero-aside reveal" data-delay="350">
+      <div class="hero-aside reveal">
         <p class="lead">Guaranteed rent, lettings, sales and refurbishment across the UK, delivered with honest advice and careful execution.</p>
         <div class="btn-row">
           <a class="btn btn-primary" href="rentals.php">View available homes <?= icon('arrow-right', 18) ?></a>
@@ -28,14 +28,14 @@ require __DIR__ . '/includes/header.php';
     </div>
   </div>
   <div class="container">
-    <figure class="hero-media reveal" data-delay="150">
+    <figure class="hero-media reveal">
       <img src="assets/img/photos/hero.jpg" alt="A row of white stucco terraced houses on a tree-lined street" width="1500" height="844" fetchpriority="high">
     </figure>
     <ul class="hero-strip" aria-label="What we do">
-      <li class="reveal" data-delay="600"><strong>01</strong> Guaranteed rent</li>
-      <li class="reveal" data-delay="680"><strong>02</strong> Lettings &amp; rentals</li>
-      <li class="reveal" data-delay="760"><strong>03</strong> Residential sales</li>
-      <li class="reveal" data-delay="840"><strong>04</strong> Investment &amp; refurbishment</li>
+      <li><strong>01</strong> Guaranteed rent</li>
+      <li><strong>02</strong> Lettings &amp; rentals</li>
+      <li><strong>03</strong> Residential sales</li>
+      <li><strong>04</strong> Investment &amp; refurbishment</li>
     </ul>
   </div>
 </section>

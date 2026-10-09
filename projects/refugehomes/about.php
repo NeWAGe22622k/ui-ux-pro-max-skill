@@ -18,10 +18,8 @@ require __DIR__ . '/includes/header.php';
   </div>
 </section>
 
-<div class="container">
-  <div class="banner reveal">
-    <img src="assets/img/photos/about.jpg" alt="A bright meeting room with a wooden table and sash windows" width="2000" height="1125">
-  </div>
+<div class="container banner reveal">
+  <img src="assets/img/photos/about.jpg" alt="A bright meeting room with a wooden table and sash windows" width="2000" height="1125">
 </div>
 
 <section class="section">

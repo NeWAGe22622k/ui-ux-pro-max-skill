@@ -4,7 +4,7 @@
 <footer class="site-footer">
   <div class="container">
     <div class="footer-top">
-      <div class="footer-brand reveal">
+      <div class="footer-brand">
         <img src="assets/img/logo-white.png" alt="<?= h($s['company']) ?>" width="201" height="76" loading="lazy">
         <p>A UK property company offering guaranteed rent, lettings, sales and refurbishment for homeowners, landlords and investors.</p>
         <?php if ($links = social_links()): ?>
@@ -16,7 +16,7 @@
         <?php endif; ?>
       </div>
 
-      <div class="footer-col reveal">
+      <div class="footer-col">
         <h2 class="footer-heading">Explore</h2>
         <ul>
           <li><a href="about.php">About us</a></li>
@@ -27,7 +27,7 @@
         </ul>
       </div>
 
-      <div class="footer-col reveal">
+      <div class="footer-col">
         <h2 class="footer-heading">Services</h2>
         <ul>
           <li><a href="services.php#guaranteed-rent">Guaranteed rent</a></li>
@@ -37,7 +37,7 @@
         </ul>
       </div>
 
-      <div class="footer-col reveal">
+      <div class="footer-col">
         <h2 class="footer-heading">Get in touch</h2>
         <ul class="footer-contact">
           <li><?= icon('map-pin', 16) ?><span><?= h($s['address']) ?></span></li>
@@ -59,9 +59,9 @@
   </div>
 </footer>
 
-<script src="assets/js/main.js?v=3" defer></script>
+<script src="assets/js/main.js?v=1" defer></script>
 <?php if (!empty($withListings)): ?>
-<script src="assets/js/listings.js?v=2" defer></script>
+<script src="assets/js/listings.js?v=1" defer></script>
 <?php endif; ?>
 </body>
 </html>

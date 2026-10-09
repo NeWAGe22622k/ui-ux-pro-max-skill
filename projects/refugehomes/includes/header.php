@@ -33,7 +33,7 @@ $fullTitle = $title ? $title . ' | ' . $s['company'] : $s['company'] . ' | ' . $
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400;1,6..72,500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css?v=2">
+  <link rel="stylesheet" href="assets/css/style.css?v=3">
   <script>document.documentElement.classList.add('js')</script>
 </head>
 <body class="page-<?= h($active ?: 'default') ?>">

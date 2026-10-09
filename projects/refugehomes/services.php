@@ -9,6 +9,7 @@ $services = [
     [
         'id' => 'guaranteed-rent',
         'title' => 'Guaranteed rent',
+        'line' => 'A fixed monthly rent for landlords, paid even when the property is empty.',
         'img' => 'photos/guaranteed-rent', 'alt' => 'A landlord relaxing at home, checking his phone',
         'intro' => 'We lease your property on an agreed term and pay you a fixed rent every month, whether the property is occupied or not. You get a predictable income with none of the day-to-day work: we find and manage the tenants, coordinate maintenance and keep you informed, so you can own a rental property without running one.',
         'points' => [
@@ -24,6 +25,7 @@ $services = [
     [
         'id' => 'lettings',
         'title' => 'Lettings &amp; rentals',
+        'line' => 'Quality homes for tenants, and referenced tenants for landlords.',
         'img' => 'photos/lettings', 'alt' => 'A bright open-plan living room and kitchen',
         'intro' => 'For tenants, we offer quality, well-kept homes in well-connected locations, with honest listings and a responsive point of contact. For landlords, we market your property widely and match it with reliable, fully referenced tenants.',
         'points' => [
@@ -38,6 +40,7 @@ $services = [
     [
         'id' => 'sales',
         'title' => 'Residential sales',
+        'line' => 'Valuation, marketing and negotiation, plus direct purchase.',
         'img' => 'photos/sales', 'alt' => 'A detached family home with a lawn and gravel drive',
         'intro' => 'Selling a property is not always straightforward. Whether your home is ready for the open market or has been sitting unsold, we provide practical solutions tailored to your situation — including direct purchase for sellers who need speed, certainty and discretion.',
         'points' => [
@@ -53,6 +56,7 @@ $services = [
     [
         'id' => 'investment',
         'title' => 'Investment &amp; refurbishment',
+        'line' => 'Sourcing, analysis and refurbishment for long-term value.',
         'img' => 'photos/investment', 'alt' => 'Tradespeople fitting a new floor during a refurbishment',
         'intro' => 'We work closely with investors to identify, assess and execute opportunities built on strong fundamentals. Our approach is insight-led and disciplined, focused on risk awareness, long-term value and well-structured decisions — from acquisition through refurbishment to letting or resale.',
         'points' => [
@@ -68,52 +72,138 @@ $services = [
 ];
 
 require __DIR__ . '/includes/header.php';
+$s = settings();
+$gr = $services[0];
+$others = array_slice($services, 1);
 ?>
 
 <section class="page-hero">
-  <div class="container page-hero-split">
-    <div class="reveal">
-      <p class="eyebrow">Services</p>
-      <h1 class="h1">Property services, delivered with <em>precision.</em></h1>
+  <div class="container">
+    <div class="page-hero-split">
+      <div class="reveal">
+        <p class="eyebrow">Services</p>
+        <h1 class="h1">Property services, delivered with <em>precision.</em></h1>
+      </div>
+      <p class="lead reveal">Four ways we help homeowners, landlords and investors. Choose a service to jump straight to it.</p>
     </div>
-    <p class="lead reveal">Our services are built for people who expect more than a transaction. Through careful planning, active management and informed market positioning, we help you get the full potential from your property.</p>
+
+    <nav class="svc-index" aria-label="Our services">
+      <?php foreach ($services as $i => $svc): ?>
+        <a class="reveal" href="#<?= $svc['id'] ?>">
+          <span class="svc-index-num">0<?= $i + 1 ?></span>
+          <span class="svc-index-title"><?= $svc['title'] ?></span>
+          <span class="svc-index-line"><?= h($svc['line']) ?></span>
+          <span class="svc-index-go" aria-hidden="true"><?= icon('arrow-right', 18) ?></span>
+        </a>
+      <?php endforeach; ?>
+    </nav>
   </div>
 </section>
 
+<!-- Flagship: guaranteed rent -->
+<section class="flagship" id="<?= $gr['id'] ?>">
+  <div class="container">
+    <div class="flagship-top">
+      <div class="reveal">
+        <p class="eyebrow">01 &middot; For landlords</p>
+        <h2 class="h2"><?= $gr['title'] ?></h2>
+        <p class="prose lead"><?= h($gr['intro']) ?></p>
+        <div class="btn-row">
+          <a class="btn btn-light" href="<?= $gr['cta'][0] ?>"><?= h($gr['cta'][1]) ?> <?= icon('arrow-right', 18) ?></a>
+          <a class="btn btn-outline-light" href="<?= h(tel($s['phone'])) ?>"><?= icon('phone', 18) ?> <?= h($s['phone']) ?></a>
+        </div>
+      </div>
+      <div class="flagship-media reveal">
+        <img src="assets/img/<?= $gr['img'] ?>.jpg" alt="<?= h($gr['alt']) ?>" width="1800" height="1013" loading="lazy">
+      </div>
+    </div>
 
-<section class="section-tight section-white condition-band">
+    <div class="how">
+      <h3 class="how-title reveal">How it works</h3>
+      <ol class="how-steps">
+        <?php
+        $how = [
+            ['Tell us about your property', 'Share the address and a few details, in any condition. We arrange a visit.'],
+            ['Receive your offer', 'We propose a fixed monthly rent and an agreed term, with no obligation.'],
+            ['We take it from there', 'We find and manage the tenants and coordinate maintenance and safety checks.'],
+            ['Get paid every month', 'Your rent arrives on the same date each month, even when the property is empty.'],
+        ];
+        foreach ($how as $i => [$t, $d]): ?>
+          <li class="reveal">
+            <span class="how-num"><?= $i + 1 ?></span>
+            <h4><?= h($t) ?></h4>
+            <p><?= h($d) ?></p>
+          </li>
+        <?php endforeach; ?>
+      </ol>
+    </div>
+
+    <div class="included reveal">
+      <h3 class="how-title">What's included</h3>
+      <ul class="included-list">
+        <?php foreach ($gr['points'] as $pt): ?>
+          <li><?= icon('check', 18) ?><span><?= h($pt) ?></span></li>
+        <?php endforeach; ?>
+      </ul>
+    </div>
+    <p class="flag-note reveal">Rent and term are agreed for each property. Ask us for a no-obligation offer.</p>
+  </div>
+</section>
+
+<!-- Any condition -->
+<section class="section-tight section-white">
   <div class="container split">
     <div class="reveal">
       <p class="eyebrow">Any property, any condition</p>
       <h2 class="h2">We work with properties in <em>any condition.</em></h2>
     </div>
     <div class="reveal">
-      <p class="prose lead">Move-in ready, tired and dated, or in need of a complete renovation: we can help either way. Empty homes, inherited properties, homes with damp or repair issues, and properties that have struggled to sell or let are all welcome. We assess each one honestly and explain your options clearly.</p>
+      <ul class="conditions" aria-label="Property conditions we work with">
+        <?php foreach (['Move-in ready', 'Tired &amp; dated', 'Needs full renovation', 'Empty or inherited', 'Damp or repair issues', 'Struggling to sell or let'] as $c): ?>
+          <li><?= icon('check', 15) ?> <?= $c ?></li>
+        <?php endforeach; ?>
+      </ul>
+      <p class="prose">Whatever the state of your property, we assess it honestly and explain your options clearly.</p>
       <a class="link-arrow" href="contact.php?enquiry=Property%20in%20need%20of%20work">Tell us about your property <?= icon('arrow-right', 16) ?></a>
     </div>
   </div>
 </section>
 
+<!-- Other services -->
 <section class="section">
   <div class="container">
-    <?php foreach ($services as $i => $svc): ?>
-      <article class="feature" id="<?= $svc['id'] ?>">
-        <div class="feature-media reveal">
-          <img src="assets/img/<?= $svc['img'] ?>.jpg" alt="<?= h($svc['alt']) ?>" width="1600" height="1100" loading="lazy">
-        </div>
-        <div class="reveal">
-          <p class="eyebrow">0<?= $i + 1 ?></p>
-          <h2 class="h2"><?= $svc['title'] ?></h2>
-          <p class="prose"><?= h($svc['intro']) ?></p>
-          <ul class="checklist checklist-2">
-            <?php foreach ($svc['points'] as $pt): ?>
-              <li><?= icon('check', 16) ?><span><?= h($pt) ?></span></li>
-            <?php endforeach; ?>
-          </ul>
-          <a class="link-arrow" href="<?= $svc['cta'][0] ?>"><?= h($svc['cta'][1]) ?> <?= icon('arrow-right', 16) ?></a>
-        </div>
-      </article>
-    <?php endforeach; ?>
+    <div class="section-head">
+      <div class="reveal">
+        <p class="eyebrow">More services</p>
+        <h2 class="h2">Lettings, sales and refurbishment.</h2>
+      </div>
+    </div>
+    <div class="svc-list">
+      <?php foreach ($others as $i => $svc): ?>
+        <article class="svc" id="<?= $svc['id'] ?>">
+          <header class="svc-head">
+            <span class="svc-num">0<?= $i + 2 ?></span>
+            <h2 class="svc-title"><?= $svc['title'] ?></h2>
+          </header>
+          <div class="svc-main">
+            <div class="svc-media reveal">
+              <img src="assets/img/<?= $svc['img'] ?>.jpg" alt="<?= h($svc['alt']) ?>" width="1800" height="1013" loading="lazy">
+            </div>
+            <div class="svc-body reveal">
+              <div>
+                <p class="prose"><?= h($svc['intro']) ?></p>
+                <a class="link-arrow" href="<?= $svc['cta'][0] ?>"><?= h($svc['cta'][1]) ?> <?= icon('arrow-right', 16) ?></a>
+              </div>
+              <ul class="checklist">
+                <?php foreach ($svc['points'] as $pt): ?>
+                  <li><?= icon('check', 16) ?><span><?= h($pt) ?></span></li>
+                <?php endforeach; ?>
+              </ul>
+            </div>
+          </div>
+        </article>
+      <?php endforeach; ?>
+    </div>
   </div>
 </section>
 
@@ -158,17 +248,18 @@ require __DIR__ . '/includes/header.php';
     <div class="tiles">
       <?php
       $who = [
-          ['Homeowners selling', 'Honest advice, accurate pricing and a well-run sale, so you can move on with confidence and without unnecessary stress.'],
-          ['Landlords', 'Professional, consistent management for single properties and growing portfolios, protecting both your income and your asset.'],
-          ['Investors', 'Realistic analysis and disciplined decision-making, whether you are buying your first investment or expanding a portfolio.'],
-          ['Developers &amp; value-add buyers', 'Refurbishment and repositioning grounded in market demand, with projects approached carefully and commercially.'],
+          ['Homeowners selling', 'Honest advice, accurate pricing and a well-run sale, so you can move on with confidence and without unnecessary stress.', 'sales', 'Residential sales'],
+          ['Landlords', 'A fixed monthly rent with guaranteed rent, or reliable tenants through our lettings service, protecting both your income and your asset.', 'guaranteed-rent', 'Guaranteed rent'],
+          ['Investors', 'Realistic analysis and disciplined decision-making, whether you are buying your first investment or expanding a portfolio.', 'investment', 'Investment &amp; refurbishment'],
+          ['Developers &amp; value-add buyers', 'Refurbishment and repositioning grounded in market demand, with projects approached carefully and commercially.', 'investment', 'Investment &amp; refurbishment'],
       ];
-      foreach ($who as $i => [$t, $d]): ?>
-        <div class="tile reveal">
+      foreach ($who as $i => [$t, $d, $to, $label]): ?>
+        <a class="tile tile-link reveal" href="#<?= $to ?>">
           <span class="tile-num">0<?= $i + 1 ?></span>
           <h3><?= $t ?></h3>
           <p><?= $d ?></p>
-        </div>
+          <span class="tile-go"><?= $label ?> <?= icon('arrow-right', 15) ?></span>
+        </a>
       <?php endforeach; ?>
     </div>
   </div>

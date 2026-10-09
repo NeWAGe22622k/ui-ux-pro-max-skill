@@ -104,3 +104,13 @@ Security:
 - After 5 failed logins, that IP address is locked out for 15 minutes.
 - JSON files are written atomically, with a `.bak` copy of the previous version.
 - Uploads are re-encoded as JPEG.
+
+## Versions
+
+| Version | Commit | Notes |
+|---|---|---|
+| **version1.1** | `95aa6a1` (same files as `dd322cf`) | The site as deployed live in October 2026: all pages, real photos, guaranteed rent, Newsreader + Instrument Sans fonts, admin login fix. Backup to revert to. |
+
+**To restore version1.1 on Hostinger:** upload `refugehomes-version1.1.zip` to `public_html` and extract it, choosing *Overwrite*. It contains no `data/` or `uploads/` folders, so listings, photos, settings and the admin password are kept.
+
+**To restore it in this repository:** `git checkout 95aa6a1 -- projects/refugehomes` (keeps `data/` and `uploads/` as committed).

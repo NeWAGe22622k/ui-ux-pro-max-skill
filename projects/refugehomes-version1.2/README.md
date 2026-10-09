@@ -1,4 +1,4 @@
-# Refugehomes Ltd website
+# Refugehomes Ltd website — version1.2
 
 A minimal, professional website for Refugehomes Ltd, with a built-in admin panel for managing properties and rentals. It needs no database and no build step. It runs on any Hostinger plan that has PHP 8.0 or newer, which is every current plan.
 
@@ -78,7 +78,7 @@ If the mail server is ever down, messages are saved to `data/unsent-enquiries.lo
 ## 6. Preview on your own computer (optional)
 
 ```bash
-php -S localhost:8000 -t projects/refugehomes
+php -S localhost:8000 -t projects/refugehomes-version1.2
 ```
 
 Then open http://localhost:8000.
@@ -107,10 +107,13 @@ Security:
 
 ## Versions
 
-| Version | Commit | Notes |
+Two complete, separate versions of the site live side by side in this repository. Each folder is a full site you can upload to Hostinger on its own.
+
+| Version | Folder | What's different |
 |---|---|---|
-| **version1.1** | `95aa6a1` (same files as `dd322cf`) | The site as deployed live in October 2026: all pages, real photos, guaranteed rent, Newsreader + Instrument Sans fonts, admin login fix. Backup to revert to. |
+| **version1.1** | `projects/refugehomes-version1.1/` | The site as deployed live in October 2026, with the original Services page (four alternating image/text blocks). |
+| **version1.2** | `projects/refugehomes-version1.2/` | Same site with the redesigned Services page: service index, guaranteed-rent flagship section with "How it works", condition tags, numbered service list, linked audience tiles. |
 
-**To restore version1.1 on Hostinger:** upload `refugehomes-version1.1.zip` to `public_html` and extract it, choosing *Overwrite*. It contains no `data/` or `uploads/` folders, so listings, photos, settings and the admin password are kept.
+Snapshots before any later changes: version1.1 = commit `95aa6a1`, version1.2 = commit `550841b`.
 
-**To restore it in this repository:** `git checkout 95aa6a1 -- projects/refugehomes` (keeps `data/` and `uploads/` as committed).
+**To switch the live site to either version:** upload `refugehomes-version1.1.zip` or `refugehomes-version1.2.zip` to `public_html` and extract it, choosing *Overwrite*. Neither zip contains `data/` or `uploads/`, so listings, photos, settings and the admin password are kept.

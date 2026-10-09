@@ -1,0 +1,5 @@
+# Uploaded photos only – never run scripts from this folder
+Options -Indexes -ExecCGI
+<FilesMatch "\.(?i:php\d?|phtml|phar|pl|py|cgi|sh|shtml|htm|html|js|svg)$">
+  Require all denied
+</FilesMatch>

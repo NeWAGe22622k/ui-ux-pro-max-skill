@@ -3,6 +3,21 @@
   'use strict';
   document.documentElement.classList.add('js');
 
+  /* ---------- Every page opens at the top ----------
+     Browsers sometimes bring back an old scroll position when a page opens.
+     Unless the link points to a section (e.g. services.php#sales), start at the top. */
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  var userScrolled = false;
+  ['wheel', 'touchstart', 'keydown', 'mousedown'].forEach(function (t) {
+    window.addEventListener(t, function () { userScrolled = true; }, { once: true, passive: true });
+  });
+  var startAtTop = function () {
+    if (location.hash || userScrolled) return;   // never yank someone who has started scrolling
+    try { window.scrollTo({ top: 0, left: 0, behavior: 'instant' }); } catch (e) { window.scrollTo(0, 0); }
+  };
+  startAtTop();
+  window.addEventListener('load', startAtTop);
+
   // Header border once the page scrolls
   var header = document.querySelector('[data-header]');
   if (header) {

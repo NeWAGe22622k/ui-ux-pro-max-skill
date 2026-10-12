@@ -71,7 +71,7 @@ function page_start(string $title, array $opts = []): void
 <link rel="apple-touch-icon" href="<?= e(url('assets/img/logo-badge.png')) ?>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700;6..12,800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;500;600;700;800&display=swap">
 <link rel="stylesheet" href="<?= e(asset('css/app.css')) ?>">
 <script src="<?= e(asset('js/app.js')) ?>" defer></script>
 </head>
@@ -216,7 +216,6 @@ function page_end(): void
 <dialog class="branch-sheet" id="branch-sheet" aria-labelledby="branch-sheet-title" <?= !empty($GLOBALS['__branch_auto_open']) ? 'data-auto-open' : '' ?>>
   <div class="sheet-head">
     <div>
-      <p class="eyebrow">Live stock by store</p>
       <h2 id="branch-sheet-title">Which store do you shop at?</h2>
     </div>
     <form method="dialog"><button class="icon-btn" aria-label="Close"><?= icon('x') ?></button></form>

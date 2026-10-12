@@ -65,7 +65,6 @@ page_start('Contact us', [
 
 <section class="page-hero page-hero-dark">
   <div class="container">
-    <p class="eyebrow">Contact us</p>
     <h1>Ask us anything.</h1>
     <p class="lede">A question, a suggestion or help with anything at all — our team is here to listen and respond, because your experience matters to us.</p>
   </div>

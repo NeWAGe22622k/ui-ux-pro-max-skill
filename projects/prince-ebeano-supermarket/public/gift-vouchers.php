@@ -24,7 +24,6 @@ page_start('Gift vouchers', [
 <section class="page-hero">
   <div class="container split">
     <div>
-      <p class="eyebrow">Gift voucher programme</p>
       <h1>Give the gift of choice.</h1>
       <p class="lede">Whether it's a birthday, a holiday or just because — a Prince Ebeano gift voucher lets them choose exactly what they love.</p>
       <div class="denoms" style="margin-top:1.5rem" aria-label="Available values">
@@ -54,7 +53,6 @@ page_start('Gift vouchers', [
   <div class="container">
     <div class="voucher-band">
       <div>
-        <p class="eyebrow" style="color:var(--forest-deep)">How to buy</p>
         <h2>Pick one up at any store, or call us.</h2>
         <p><?= e($note) ?></p>
         <div class="btn-row" style="display:flex;flex-wrap:wrap;gap:.5rem">
@@ -62,7 +60,7 @@ page_start('Gift vouchers', [
           <a class="btn btn-ghost" style="border-color:var(--forest-deep)" href="<?= e(url('stores.php')) ?>">Find a store</a>
         </div>
       </div>
-      <div class="gift-card" aria-hidden="true" style="transform:rotate(3deg)">
+      <div class="gift-card" aria-hidden="true">
         <div class="gift-card-top"><img src="<?= e(url('assets/img/logo-mark.svg')) ?>" alt=""><span>PRINCE EBEANO<small>SUPERMARKET</small></span></div>
         <span class="gift-card-label">THANK YOU</span>
         <div class="gift-card-bottom"><span class="gift-card-value"><?= e($denoms[array_key_first($denoms)] ?? '₦5,000') ?></span><?= icon('heart', 'icon icon-lg') ?></div>

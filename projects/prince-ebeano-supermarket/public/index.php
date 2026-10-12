@@ -197,7 +197,6 @@ page_start('', ['active' => 'home', 'branch_prompt' => true]);
   <div class="container">
     <div class="voucher-band">
       <div>
-        <p class="eyebrow" style="color:var(--forest-deep)">Gift vouchers</p>
         <h2>The gift of choice — for every occasion.</h2>
         <p>Birthdays, weddings, staff rewards or a simple thank-you. Redeemable at any Prince Ebeano store, with no rush to spend.</p>
         <div class="btn-row"><a class="btn btn-primary" href="<?= e(url('gift-vouchers.php')) ?>">Explore gift vouchers <?= icon('arrow-right', 'icon icon-sm') ?></a></div>

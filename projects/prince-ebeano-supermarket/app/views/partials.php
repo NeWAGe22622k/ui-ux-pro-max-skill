@@ -46,7 +46,8 @@ function product_card(array $p, bool $showCategory = true): string
 
 function section_head(string $eyebrow, string $title, string $sub = '', string $linkHref = '', string $linkLabel = ''): string
 {
-    $html = '<div class="section-head"><div><p class="eyebrow">' . e($eyebrow) . '</p><h2>' . e($title) . '</h2>';
+    // $eyebrow is kept in the signature for existing callers but no longer shown.
+    $html = '<div class="section-head"><div><h2>' . e($title) . '</h2>';
     if ($sub !== '') {
         $html .= '<p class="section-sub">' . e($sub) . '</p>';
     }

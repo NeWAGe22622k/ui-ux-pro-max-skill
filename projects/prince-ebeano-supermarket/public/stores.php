@@ -16,7 +16,6 @@ page_start('Store locator', [
 
 <section class="page-hero page-hero-dark">
   <div class="container">
-    <p class="eyebrow">Store locator</p>
     <h1>Find your nearest Prince Ebeano</h1>
     <p class="lede"><?= count(branches()) ?> stores across <?= e(implode(' and ', array_keys($byCity))) ?>. Tap a store to see what's on its shelves today.</p>
   </div>

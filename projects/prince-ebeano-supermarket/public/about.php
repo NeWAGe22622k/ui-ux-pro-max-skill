@@ -19,7 +19,6 @@ page_start('About us', [
 <section class="page-hero">
   <div class="container split">
     <div>
-      <p class="eyebrow">About Prince Ebeano</p>
       <h1>Your destination for quality products &amp; household essentials.</h1>
       <p class="lede">Our customers are our greatest asset. They are not dependent on us — we are dependent on them. They feed us.</p>
       <p style="margin-top:1.5rem"><a class="btn btn-primary" href="<?= e(url('stores.php')) ?>"><?= icon('map-pin', 'icon icon-sm') ?> Find a store</a>
@@ -34,7 +33,6 @@ page_start('About us', [
 <section class="section">
   <div class="container split">
     <div>
-      <p class="eyebrow">Our story</p>
       <h2>Two brothers, one promise: everyday quality for every family.</h2>
     </div>
     <div>

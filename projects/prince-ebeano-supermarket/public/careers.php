@@ -22,7 +22,6 @@ page_start('Careers', [
 
 <section class="page-hero page-hero-dark">
   <div class="container">
-    <p class="eyebrow">Careers</p>
     <h1>Grow with Prince Ebeano.</h1>
     <p class="lede">We're building a thriving team of young Nigerians — with real training, paid employment and room to grow. Come shape the future of retail with us.</p>
   </div>

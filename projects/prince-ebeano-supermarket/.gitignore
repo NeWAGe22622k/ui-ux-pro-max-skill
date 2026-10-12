@@ -1,0 +1,10 @@
+# Real settings (database password etc.) never go in git
+app/config.php
+
+# Uploaded product photos and QR codes live only on the server
+public/uploads/**
+!public/uploads/.htaccess
+!public/uploads/products/
+!public/uploads/products/.gitkeep
+!public/uploads/qr/
+!public/uploads/qr/.gitkeep

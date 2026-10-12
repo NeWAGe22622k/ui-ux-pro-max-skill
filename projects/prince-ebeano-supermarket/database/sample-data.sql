@@ -63,11 +63,47 @@ SELECT b.id, p.id,
             ELSE 'in_stock' END,
        (50000 + ((p.id * 7919 + b.id * 131) % 120) * 5000),
        NOW() - INTERVAL ((p.id + b.id) % 90) MINUTE,
-       'Demo'
+       ELT(1 + (b.id + p.id) % 6, 'Chioma', 'Emeka', 'Aisha', 'Tunde', 'Ngozi', 'Bola')
 FROM branches b CROSS JOIN products p;
 
+-- Realistic shelf prices (₦), with small differences between stores.
+UPDATE branch_stock s JOIN products p ON p.id = s.product_id
+SET s.price_kobo = 100 * (CASE p.name
+    WHEN 'Coca-Cola 50cl' THEN 500
+    WHEN 'Fanta Orange 50cl' THEN 500
+    WHEN 'Chivita 100% Orange Juice 1L' THEN 2800
+    WHEN 'Nestlé Pure Life Water 75cl' THEN 300
+    WHEN 'Malta Guinness 33cl Can' THEN 800
+    WHEN 'Hollandia Yoghurt Strawberry 1L' THEN 3200
+    WHEN 'Nestlé Milo 400g Tin' THEN 4500
+    WHEN 'Kellogg''s Corn Flakes 500g' THEN 6800
+    WHEN 'Nutribom Rice Infant Cereal 400g' THEN 3900
+    WHEN 'Golden Morn 900g' THEN 5200
+    WHEN 'Quaker Oats 500g' THEN 3500
+    WHEN 'Peak Full Cream Milk Powder 400g' THEN 6500
+    WHEN 'Three Crowns Evaporated Milk 160g' THEN 650
+    WHEN 'Farm Fresh Eggs (Crate of 30)' THEN 6800
+    WHEN 'Blue Band Margarine 450g' THEN 2900
+    WHEN 'Morning Fresh Dishwashing Liquid 900ml' THEN 3400
+    WHEN 'Hypo Bleach 1L' THEN 1600
+    WHEN 'Kenwood Steam Iron' THEN 45000
+    WHEN 'Rite-Tek Blender 1.5L' THEN 38000
+    WHEN 'Dettol Antiseptic Liquid 500ml' THEN 4200
+    WHEN 'Closeup Toothpaste 140g' THEN 1900
+    WHEN 'Nivea Body Lotion 400ml' THEN 7500
+    WHEN 'Nestlé NAN Optipro 1 400g' THEN 18500
+    WHEN 'Molfix Diapers Size 4 (Jumbo)' THEN 14500
+    WHEN 'Pampers Baby Wipes (64)' THEN 2800
+    WHEN 'Sliced Family Bread' THEN 1800
+    WHEN 'McVitie''s Hobnobs 300g' THEN 4800
+    WHEN 'Meat Pie' THEN 1200
+    WHEN 'Four Cousins Sweet Red 75cl' THEN 9500
+    WHEN 'Carlo Rossi Red 75cl' THEN 11000
+    WHEN 'Martell VS Cognac 70cl' THEN 65000
+    ELSE 1000 END + (s.branch_id % 3) * 50);
+
 INSERT INTO category_reviews (branch_id, category_id, reviewed_at, staff_name)
-SELECT b.id, c.id, NOW() - INTERVAL ((b.id + c.id) % 5) HOUR, 'Demo'
+SELECT b.id, c.id, NOW() - INTERVAL ((b.id + c.id) % 5) HOUR, ELT(1 + (b.id + c.id) % 6, 'Chioma', 'Emeka', 'Aisha', 'Tunde', 'Ngozi', 'Bola')
 FROM branches b CROSS JOIN categories c;
 
 INSERT INTO jobs (title, branch_id, summary, is_open) VALUES

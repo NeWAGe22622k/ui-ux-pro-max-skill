@@ -58,7 +58,7 @@
 
     // Shop filters: submit instantly when "hide out of stock" changes.
     document.querySelectorAll('[data-autosubmit]').forEach(function (input) {
-      input.addEventListener('change', function () { input.form.submit(); });
+      input.addEventListener('change', function () { if (input.form.requestSubmit) input.form.requestSubmit(); else input.form.submit(); });
     });
 
     // Photo preview before upload.

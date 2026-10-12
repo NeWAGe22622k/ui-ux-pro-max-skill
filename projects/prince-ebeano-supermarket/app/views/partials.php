@@ -28,7 +28,7 @@ function product_card(array $p, bool $showCategory = true): string
     $status = $p['stock_status'];
     $out = $status === 'out_of_stock';
     ob_start(); ?>
-<article class="product-card<?= $out ? ' is-out' : '' ?>" data-reveal>
+<article class="product-card<?= $out ? ' is-out' : '' ?>" data-pid="<?= (int)$p['id'] ?>" data-reveal>
   <?= product_media($p) ?>
   <div class="product-body">
     <?php if ($showCategory): ?><p class="product-cat"><?= e($p['category_name']) ?></p><?php endif; ?>

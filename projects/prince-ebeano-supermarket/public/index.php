@@ -95,7 +95,7 @@ page_start('', ['active' => 'home', 'branch_prompt' => true]);
         <?php if ($liveRows): ?>
           <ul class="live-list">
             <?php foreach ($liveRows as $r): ?>
-              <li class="live-row">
+              <li class="live-row" data-pid="<?= (int)$r['id'] ?>">
                 <?= product_media($r, 'live-thumb') ?>
                 <span class="live-name"><?= e($r['name']) ?><small><?= $r['price_kobo'] > 0 ? e(naira((int)$r['price_kobo'])) : 'Ask in store' ?></small></span>
                 <?= status_pill($r['stock_status']) ?>

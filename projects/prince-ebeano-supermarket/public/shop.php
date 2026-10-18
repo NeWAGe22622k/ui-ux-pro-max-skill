@@ -64,19 +64,14 @@ page_start($title, [
 ]);
 ?>
 
-<section class="page-hero">
-  <div class="container shop-head">
-    <div>
-      <p class="eyebrow"><?= $branch ? 'Live stock · ' . e($branch['name']) : 'Live stock' ?></p>
-      <h1><?= $category ? e($category['name']) : ($branch ? 'Shop ' . e($branch['name']) : 'Shop') ?></h1>
-      <?php if ($branch): ?>
-        <span class="fresh-line"><?= icon('clock', 'icon icon-sm') ?> Last stock check <?= e(fresh_label(branch_last_checked((int)$branch['id']))) ?></span>
-      <?php else: ?>
-        <p class="lede">Choose your store and we'll show you what's on its shelves right now.</p>
-      <?php endif; ?>
-    </div>
+<section class="page-head">
+  <div class="container">
+    <h1><?= $category ? e($category['name']) . ($branch ? ' at ' . e($branch['name']) : '') : ($branch ? 'Shop ' . e($branch['name']) : 'Shop') ?></h1>
     <?php if ($branch): ?>
-      <button type="button" class="btn btn-ghost" data-open-branch><?= icon('map-pin', 'icon icon-sm') ?> Change store</button>
+      <p class="fresh-line">Last stock check <span class="fresh-time"><?= e(fresh_label(branch_last_checked((int)$branch['id']))) ?></span>.
+        <button type="button" class="btn-link" data-open-branch>Change store</button></p>
+    <?php else: ?>
+      <p>Choose your store and we'll show you what's on its shelves right now.</p>
     <?php endif; ?>
   </div>
 </section>
@@ -94,18 +89,18 @@ page_start($title, [
         <?= icon('search') ?>
         <label for="shop-q" class="visually-hidden">Search products</label>
         <input id="shop-q" type="search" name="q" value="<?= e($search) ?>" placeholder="Search <?= e($category ? strtolower($category['name']) : 'products') ?>…">
-        <button class="btn btn-primary btn-sm" type="submit">Go</button>
+        <button class="btn btn-ghost btn-sm" type="submit">Search</button>
       </div>
       <label class="toggle">
         <input type="checkbox" name="hide_out" value="1" <?= $hideOut ? 'checked' : '' ?> data-autosubmit>
         <span>Hide sold out</span>
       </label>
     </div>
-    <nav class="chips" aria-label="Aisles">
+    <nav class="chips tabs" aria-label="Aisles">
       <a class="chip" href="<?= e(current_url_with(['category' => null, 'q' => null])) ?>" aria-current="<?= !$category ? 'true' : 'false' ?>">All aisles</a>
       <?php foreach (categories() as $c): ?>
         <a class="chip" href="<?= e(current_url_with(['category' => $c['slug'], 'q' => null])) ?>" aria-current="<?= $category && $category['id'] === $c['id'] ? 'true' : 'false' ?>">
-          <?= icon($c['icon'], 'icon icon-sm') ?> <?= e($c['name']) ?> <span class="count"><?= $chipCounts[(int)$c['id']] ?? 0 ?></span>
+          <?= e($c['name']) ?> <span class="count"><?= $chipCounts[(int)$c['id']] ?? 0 ?></span>
         </a>
       <?php endforeach; ?>
     </nav>
@@ -139,9 +134,9 @@ page_start($title, [
       $shown = $browsing ? array_slice($items, 0, $perCategoryPreview) : $items; ?>
     <section class="cat-section" id="<?= e($c['slug']) ?>" aria-labelledby="h-<?= e($c['slug']) ?>">
       <div class="cat-section-head">
-        <h2 id="h-<?= e($c['slug']) ?>"><span class="cat-badge tint-<?= e($c['tint']) ?>"><?= icon($c['icon']) ?></span><?= e($c['name']) ?></h2>
+        <h2 id="h-<?= e($c['slug']) ?>"><?= e($c['name']) ?></h2>
         <span class="fresh-ribbon<?= $fresh ? '' : ' is-stale' ?>">
-          <span class="chip-dot<?= $fresh ? ' is-live' : '' ?>"></span>
+          <span class="chip-dot"></span>
           <?= $review ? 'Freshly checked ' . e(fresh_label($review['reviewed_at'])) . ($review['staff_name'] ? ' by ' . e($review['staff_name']) : '') : 'Not checked yet' ?>
         </span>
       </div>
@@ -149,12 +144,12 @@ page_start($title, [
         <?php foreach ($shown as $p) echo product_card($p, false); ?>
       </div>
       <?php if ($browsing && count($items) > $perCategoryPreview): ?>
-        <p style="margin-top:1rem"><a class="btn btn-ghost" href="<?= e(current_url_with(['category' => $c['slug']])) ?>">See all <?= count($items) ?> in <?= e($c['name']) ?> <?= icon('arrow-right', 'icon icon-sm') ?></a></p>
+        <p style="margin-top:1.25rem"><a class="link-arrow" href="<?= e(current_url_with(['category' => $c['slug']])) ?>">See all <?= count($items) ?> in <?= e($c['name']) ?> <?= icon('arrow-right', 'icon icon-sm') ?></a></p>
       <?php endif; ?>
     </section>
   <?php endforeach; ?>
 
-  <p class="muted" style="margin-top:2.5rem;font-size:.9rem"><?= icon('circle-alert', 'icon icon-sm') ?> Stock is checked by our staff each morning and can change during the day. Prices shown are shelf prices at <?= e($branch['name']) ?>.</p>
+  <p class="muted" style="margin-top:1.5rem;font-size:.88rem">Stock is checked by our staff each morning and can change during the day. Prices shown are shelf prices at <?= e($branch['name']) ?>.</p>
 </div>
 <?php endif; ?>
 

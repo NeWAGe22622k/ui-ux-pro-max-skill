@@ -80,9 +80,9 @@ function page_start(string $title, array $opts = []): void
 
 <div class="topbar">
   <div class="container topbar-inner">
-    <span><?= icon('clock', 'icon icon-sm') ?> Open today <?= e(today_hours()) ?></span>
+    <span>Open today <?= e(today_hours()) ?></span>
     <?php if ($firstPhone): ?>
-      <a href="<?= e(phone_href($firstPhone)) ?>"><?= icon('phone', 'icon icon-sm') ?> <?= e($firstPhone) ?></a>
+      <span>Call <a href="<?= e(phone_href($firstPhone)) ?>"><?= e($firstPhone) ?></a></span>
     <?php endif; ?>
   </div>
 </div>
@@ -122,7 +122,7 @@ function page_start(string $title, array $opts = []): void
   <nav id="mobile-nav" class="mobile-nav" aria-label="Mobile" hidden>
     <div class="container">
       <?php foreach (PUBLIC_NAV as $key => [$label, $href, $ic]): ?>
-        <a href="<?= e(url($href)) ?>"<?= $active === $key ? ' aria-current="page"' : '' ?>><?= icon($ic) ?> <?= e($label) ?></a>
+        <a href="<?= e(url($href)) ?>"<?= $active === $key ? ' aria-current="page"' : '' ?>><?= e($label) ?></a>
       <?php endforeach; ?>
     </div>
   </nav>
@@ -160,10 +160,12 @@ function page_end(): void
 </main>
 
 <footer class="site-footer">
-  <div class="footer-sunburst" aria-hidden="true"></div>
   <div class="container footer-grid">
     <div class="footer-brand">
-      <img src="<?= e(url('assets/img/logo-badge.png')) ?>" width="110" height="110" alt="Prince Ebeano Supermarket logo">
+      <a class="brand" href="<?= e(url()) ?>">
+        <img src="<?= e(url('assets/img/logo-mark.svg')) ?>" width="32" height="32" alt="">
+        <span class="brand-text"><strong>Prince Ebeano</strong><small>Supermarket</small></span>
+      </a>
       <p><?= e(config('store.tagline', '')) ?></p>
       <?php if ($socials): ?>
         <div class="socials">
@@ -185,10 +187,10 @@ function page_end(): void
       <h2 class="footer-title">Call us</h2>
       <ul class="footer-list">
         <?php foreach ($phones as $p): ?>
-          <li><a href="<?= e(phone_href($p)) ?>"><?= icon('phone', 'icon icon-sm') ?> <?= e($p) ?></a></li>
+          <li><a href="<?= e(phone_href($p)) ?>"><?= e($p) ?></a></li>
         <?php endforeach; ?>
         <?php if (config('store.whatsapp')): ?>
-          <li><a href="https://wa.me/<?= e(config('store.whatsapp')) ?>" rel="noopener" target="_blank"><?= icon('message', 'icon icon-sm') ?> Chat on WhatsApp</a></li>
+          <li><a href="https://wa.me/<?= e(config('store.whatsapp')) ?>" rel="noopener" target="_blank">Chat on WhatsApp</a></li>
         <?php endif; ?>
       </ul>
     </div>
@@ -203,7 +205,7 @@ function page_end(): void
   </div>
   <div class="container footer-bottom">
     <span>© <?= date('Y') ?> <?= e(config('store.name')) ?>. All rights reserved.</span>
-    <a href="<?= e(url('admin/login.php')) ?>"><?= icon('lock', 'icon icon-sm') ?> Staff login</a>
+    <a href="<?= e(url('admin/login.php')) ?>">Staff login</a>
   </div>
 </footer>
 
@@ -225,7 +227,6 @@ function page_end(): void
     <?php foreach (branches() as $b): $checked = branch_last_checked((int)$b['id']); ?>
       <li>
         <a href="<?= e(current_url_with(['branch' => $b['slug']])) ?>" class="branch-option<?= $branch && $branch['id'] === $b['id'] ? ' is-current' : '' ?>">
-          <span class="branch-option-icon"><?= icon('store') ?></span>
           <span class="branch-option-text">
             <strong><?= e($b['name']) ?></strong>
             <small><?= e($b['city']) ?><?= $checked ? ' · checked ' . e(fresh_label($checked)) : '' ?></small>

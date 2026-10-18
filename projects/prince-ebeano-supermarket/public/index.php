@@ -55,11 +55,8 @@ if ($bid) {
     }
 }
 
-$inStockCount = $bid
-    ? (int)q_val("SELECT COUNT(*) FROM branch_stock s JOIN products p ON p.id = s.product_id AND p.is_active = 1 WHERE s.branch_id = ? AND s.stock_status IN ('in_stock','low_stock')", [$bid])
-    : (int)q_val('SELECT COUNT(*) FROM products WHERE is_active = 1');
 $branchCount = count(branches());
-$cities = array_unique(array_filter(array_column(branches(), 'city')));
+$cities = array_values(array_unique(array_filter(array_column(branches(), 'city'))));
 
 page_start('', ['active' => 'home', 'branch_prompt' => true]);
 ?>
@@ -96,7 +93,7 @@ page_start('', ['active' => 'home', 'branch_prompt' => true]);
           <ul class="live-list">
             <?php foreach ($liveRows as $r): ?>
               <li class="live-row" data-pid="<?= (int)$r['id'] ?>">
-                <?= product_media($r, 'live-thumb') ?>
+                <?= product_media($r, 'live-thumb', true) ?>
                 <span class="live-name"><?= e($r['name']) ?><small><?= $r['price_kobo'] > 0 ? e(naira((int)$r['price_kobo'])) : 'Ask in store' ?></small></span>
                 <?= status_pill($r['stock_status']) ?>
               </li>
@@ -115,7 +112,6 @@ page_start('', ['active' => 'home', 'branch_prompt' => true]);
         <ul class="live-list">
           <?php foreach (array_slice(branches(), 0, 4) as $b): ?>
             <li><a class="branch-option" href="<?= e(current_url_with(['branch' => $b['slug']])) ?>">
-              <span class="branch-option-icon"><?= icon('store') ?></span>
               <span class="branch-option-text"><strong><?= e($b['name']) ?></strong><small><?= e($b['city']) ?></small></span>
               <?= icon('chevron-right', 'icon icon-sm') ?>
             </a></li>
@@ -127,42 +123,37 @@ page_start('', ['active' => 'home', 'branch_prompt' => true]);
   </div>
 </section>
 
-<div class="container">
-  <div class="stats">
-    <div class="stat"><strong><?= number_format($inStockCount) ?></strong><span><?= $branch ? 'products available at ' . e($branch['name']) : 'products in our catalogue' ?></span></div>
-    <div class="stat"><strong><?= $branchCount ?></strong><span>stores across <?= e(implode(' & ', $cities) ?: 'Nigeria') ?></span></div>
-    <div class="stat"><strong>Daily</strong><span>stock checks by our staff, every morning</span></div>
-  </div>
-</div>
-
 <section class="section">
   <div class="container">
-    <?= section_head('Shop by aisle', 'What are you shopping for?', $branch ? 'Each aisle shows how many items are available at ' . $branch['name'] . ' and when our team last checked it.' : 'Pick an aisle, then choose your store to see live stock.') ?>
-    <div class="cat-grid">
+    <?= section_head('', 'Aisles', $branch
+        ? 'What is available at ' . $branch['name'] . ' and when each aisle was last checked.'
+        : 'Choose an aisle, then pick your store to see what is in stock.') ?>
+    <ul class="aisle-list">
       <?php foreach (categories() as $c):
         $st = $catStats[(int)$c['id']] ?? [];
-        $available = (int)($st['available'] ?? 0);
         $reviewed = $st['reviewed_at'] ?? null; ?>
-        <a class="cat-tile tint-<?= e($c['tint']) ?>" href="<?= e(url('shop.php?category=' . urlencode($c['slug']))) ?>" data-reveal>
-          <span class="cat-icon"><?= icon($c['icon']) ?></span>
-          <span class="cat-arrow"><?= icon('arrow-right', 'icon icon-sm') ?></span>
-          <strong><?= e($c['name']) ?></strong>
-          <?php if ($branch): ?>
-            <span class="cat-count"><?= $available ?> available</span>
-            <span class="cat-fresh"><?= icon('clock', 'icon icon-sm') ?> <?= $reviewed ? 'Checked ' . e(fresh_label($reviewed)) : 'Not checked yet' ?></span>
-          <?php else: ?>
-            <span class="cat-count">Browse aisle</span>
-          <?php endif; ?>
-        </a>
+        <li>
+          <a href="<?= e(url('shop.php?category=' . urlencode($c['slug']))) ?>">
+            <span class="aisle-name"><?= e($c['name']) ?></span>
+            <span class="aisle-meta">
+              <?php if ($branch): ?>
+                <?= (int)($st['available'] ?? 0) ?> available · <span class="aisle-fresh"><?= $reviewed ? 'checked ' . e(fresh_label($reviewed)) : 'not checked yet' ?></span>
+              <?php else: ?>
+                Browse aisle
+              <?php endif; ?>
+            </span>
+            <?= icon('chevron-right', 'icon icon-sm') ?>
+          </a>
+        </li>
       <?php endforeach; ?>
-    </div>
+    </ul>
   </div>
 </section>
 
 <?php if ($restocked): ?>
-<section class="section" style="padding-top:0">
+<section class="section">
   <div class="container">
-    <?= section_head('Fresh on the shelves', $restockTitle . ' at ' . $branch['name'], '', url('shop.php'), 'Shop all') ?>
+    <?= section_head('', $restockTitle . ' at ' . $branch['name'], '', url('shop.php'), 'Shop all') ?>
     <div class="rail">
       <?php foreach ($restocked as $p) echo product_card($p); ?>
     </div>
@@ -170,54 +161,28 @@ page_start('', ['active' => 'home', 'branch_prompt' => true]);
 </section>
 <?php endif; ?>
 
-<section class="section" style="padding-top:0">
+<section class="section-tight">
   <div class="container">
-    <?= section_head('Why Prince Ebeano', 'Our customers are our greatest asset.', 'We are dependent on you — you are not dependent on us. That\'s why we do the little things right.') ?>
-    <div class="values">
-      <div class="value-card" data-reveal>
-        <span class="value-icon tint-green"><?= icon('shield-check') ?></span>
-        <h3>Quality guaranteed</h3>
-        <p>Every product on our shelves is fresh, reliable and carefully sourced — so you shop with confidence every time.</p>
-      </div>
-      <div class="value-card" data-reveal>
-        <span class="value-icon tint-mango"><?= icon('smile') ?></span>
-        <h3>Customer focused</h3>
-        <p>From store layout to service, everything is designed around you for a smooth, convenient shopping experience.</p>
-      </div>
-      <div class="value-card" data-reveal>
-        <span class="value-icon tint-rose"><?= icon('heart') ?></span>
-        <h3>Community centred</h3>
-        <p>We're more than a store — we support local causes, empower families and grow together with our communities.</p>
-      </div>
+    <div class="promo-row">
+      <p><strong>Gift vouchers</strong> for birthdays, weddings and staff rewards. Redeemable at every Prince Ebeano store.</p>
+      <a class="link-arrow" href="<?= e(url('gift-vouchers.php')) ?>">See voucher values <?= icon('arrow-right', 'icon icon-sm') ?></a>
     </div>
   </div>
 </section>
 
-<section class="section" style="padding-top:0">
+<section class="section">
   <div class="container">
-    <div class="voucher-band">
-      <div>
-        <h2>The gift of choice — for every occasion.</h2>
-        <p>Birthdays, weddings, staff rewards or a simple thank-you. Redeemable at any Prince Ebeano store, with no rush to spend.</p>
-        <div class="btn-row"><a class="btn btn-primary" href="<?= e(url('gift-vouchers.php')) ?>">Explore gift vouchers <?= icon('arrow-right', 'icon icon-sm') ?></a></div>
-      </div>
-      <div class="gift-card" aria-hidden="true">
-        <div class="gift-card-top"><img src="<?= e(url('assets/img/logo-mark.svg')) ?>" alt=""><span>PRINCE EBEANO<small>SUPERMARKET</small></span></div>
-        <span class="gift-card-label">GIFT CARD</span>
-        <div class="gift-card-bottom"><span class="gift-card-value">₦50,000</span><?= icon('gift', 'icon icon-lg') ?></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section" style="padding-top:0">
-  <div class="container">
-    <?= section_head('Visit us', 'Find your nearest store', '', url('stores.php'), 'Opening hours & maps') ?>
-    <div class="store-mini">
+    <?= section_head('', 'Visit us', $branchCount . ' stores in ' . implode(' and ', $cities) . '.', url('stores.php'), 'Addresses & directions') ?>
+    <ul class="store-list">
       <?php foreach (branches() as $b): ?>
-        <a href="<?= e(url('stores.php#' . $b['slug'])) ?>"><?= icon('map-pin') ?><span><?= e($b['name']) ?><small><?= e($b['city']) ?></small></span></a>
+        <li>
+          <a href="<?= e(url('stores.php#' . $b['slug'])) ?>">
+            <strong><?= e($b['name']) ?></strong>
+            <span><?= e($b['city']) ?><?= $b['hours_text'] ? ' · ' . e($b['hours_text']) : '' ?></span>
+          </a>
+        </li>
       <?php endforeach; ?>
-    </div>
+    </ul>
   </div>
 </section>
 

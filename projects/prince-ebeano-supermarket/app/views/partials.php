@@ -7,11 +7,19 @@ function status_pill(string $status, string $extraClass = ''): string
     return '<span class="pill pill-' . e($m['class']) . ($extraClass ? ' ' . e($extraClass) : '') . '">' . icon($m['icon'], 'icon icon-sm') . e($m['label']) . '</span>';
 }
 
-/** Product photo, or a tinted tile with the category icon when there is no photo yet. */
-function product_media(array $p, string $class = 'product-media'): string
+/**
+ * Product photo, or a quiet placeholder with a small category icon when there is no photo yet.
+ * $tinted keeps the coloured category tint (used only by the small thumbnails in the hero card).
+ */
+function product_media(array $p, string $class = 'product-media', bool $tinted = false): string
 {
-    $tint = $p['category_tint'] ?? 'green';
-    $html = '<div class="' . e($class) . ' tint-' . e($tint) . '">';
+    $classes = $class;
+    if ($tinted) {
+        $classes .= ' tint-' . ($p['category_tint'] ?? 'green');
+    } elseif (empty($p['image_path'])) {
+        $classes .= ' is-blank';
+    }
+    $html = '<div class="' . e($classes) . '">';
     if (!empty($p['image_path'])) {
         $html .= '<img src="' . e(url($p['image_path'])) . '" alt="" loading="lazy" decoding="async" width="400" height="400">';
     } else {
@@ -28,7 +36,7 @@ function product_card(array $p, bool $showCategory = true): string
     $status = $p['stock_status'];
     $out = $status === 'out_of_stock';
     ob_start(); ?>
-<article class="product-card<?= $out ? ' is-out' : '' ?>" data-pid="<?= (int)$p['id'] ?>" data-reveal>
+<article class="product-card<?= $out ? ' is-out' : '' ?>" data-pid="<?= (int)$p['id'] ?>">
   <?= product_media($p) ?>
   <div class="product-body">
     <?php if ($showCategory): ?><p class="product-cat"><?= e($p['category_name']) ?></p><?php endif; ?>
@@ -72,7 +80,6 @@ function branch_chooser_inline(string $heading = 'Pick your store to see what\'s
   <div class="branch-chooser-grid">
     <?php foreach (branches() as $b): ?>
       <a class="branch-option" href="<?= e(current_url_with(['branch' => $b['slug']])) ?>">
-        <span class="branch-option-icon"><?= icon('store') ?></span>
         <span class="branch-option-text"><strong><?= e($b['name']) ?></strong><small><?= e($b['city']) ?></small></span>
         <?= icon('chevron-right', 'icon icon-sm') ?>
       </a>

@@ -6,11 +6,17 @@ $branch = current_branch();
 $category = ($slug = get_str('category')) !== '' ? category_by_slug($slug) : null;
 $search = get_str('q', 80);
 $hideOut = ($_GET['hide_out'] ?? '') === '1';
-$perCategoryPreview = 8;
+$sorts = [
+    'featured'   => ['Featured', "FIELD(s.stock_status, 'in_stock', 'low_stock', 'out_of_stock'), p.name"],
+    'price_asc'  => ['Price: low to high', 's.price_kobo ASC, p.name'],
+    'price_desc' => ['Price: high to low', 's.price_kobo DESC, p.name'],
+    'name'       => ['Name: A to Z', 'p.name'],
+];
+$sort = array_key_exists($sortIn = get_str('sort', 20), $sorts) ? $sortIn : 'featured';
+$perCategoryPreview = 12;
 
 $groups = [];
 $total = 0;
-$chipCounts = [];
 $reviews = [];
 
 if ($branch) {
@@ -31,7 +37,7 @@ if ($branch) {
     }
     $rows = q_all(
         stock_select_sql() . ' WHERE ' . implode(' AND ', $where) . "
-        ORDER BY c.sort_order, c.name, FIELD(s.stock_status, 'in_stock', 'low_stock', 'out_of_stock'), p.name
+        ORDER BY c.sort_order, c.name, " . $sorts[$sort][1] . "
         LIMIT 3000",
         $params
     );
@@ -40,13 +46,6 @@ if ($branch) {
     }
     $total = count($rows);
 
-    foreach (q_all(
-        "SELECT p.category_id, COUNT(*) AS n FROM branch_stock s JOIN products p ON p.id = s.product_id AND p.is_active = 1
-         WHERE s.branch_id = ? AND s.stock_status IN ('in_stock','low_stock') GROUP BY p.category_id",
-        [$bid]
-    ) as $r) {
-        $chipCounts[(int)$r['category_id']] = (int)$r['n'];
-    }
     foreach (q_all('SELECT category_id, reviewed_at, staff_name FROM category_reviews WHERE branch_id = ?', [$bid]) as $r) {
         $reviews[(int)$r['category_id']] = $r;
     }
@@ -57,6 +56,8 @@ $title = $category ? $category['name'] : ($search !== '' ? 'Search' : 'Shop');
 
 page_start($title, [
     'active' => 'shop',
+    'aisle' => $category ? $category['slug'] : ($search === '' ? 'all' : ''),
+    'search' => $search,
     'branch_prompt' => true,
     'description' => $branch
         ? 'What\'s in stock at Prince Ebeano ' . $branch['name'] . ' today — live stock and prices in Naira.'
@@ -66,9 +67,18 @@ page_start($title, [
 
 <section class="page-head">
   <div class="container">
-    <h1><?= $category ? e($category['name']) . ($branch ? ' at ' . e($branch['name']) : '') : ($branch ? 'Shop ' . e($branch['name']) : 'Shop') ?></h1>
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="<?= e(url()) ?>">Home</a> <span aria-hidden="true">›</span>
+      <?php if ($category || $search !== ''): ?>
+        <a href="<?= e(url('shop.php')) ?>">Shop</a> <span aria-hidden="true">›</span>
+        <span aria-current="page"><?= $category ? e($category['name']) : 'Search' ?></span>
+      <?php else: ?>
+        <span aria-current="page">Shop</span>
+      <?php endif; ?>
+    </nav>
+    <h1><?= $search !== '' ? 'Results for “' . e($search) . '”' : ($category ? e($category['name']) : 'All aisles') ?></h1>
     <?php if ($branch): ?>
-      <p class="fresh-line">Last stock check <span class="fresh-time"><?= e(fresh_label(branch_last_checked((int)$branch['id']))) ?></span>.
+      <p class="fresh-line">Prices and stock at <?= e($branch['name']) ?>, last checked <span class="fresh-time"><?= e(fresh_label(branch_last_checked((int)$branch['id']))) ?></span>.
         <button type="button" class="btn-link" data-open-branch>Change store</button></p>
     <?php else: ?>
       <p>Choose your store and we'll show you what's on its shelves right now.</p>
@@ -80,37 +90,30 @@ page_start($title, [
   <div class="container"><?= branch_chooser_inline() ?></div>
 <?php else: ?>
 
-<div class="filters">
-  <form class="container filters-inner" method="get" action="<?= e(url('shop.php')) ?>" role="search">
+<div class="container">
+  <form class="toolbar" method="get" action="<?= e(url('shop.php')) ?>">
     <input type="hidden" name="branch" value="<?= e($branch['slug']) ?>">
     <?php if ($category): ?><input type="hidden" name="category" value="<?= e($category['slug']) ?>"><?php endif; ?>
-    <div class="filters-row">
-      <div class="filter-search">
-        <?= icon('search') ?>
-        <label for="shop-q" class="visually-hidden">Search products</label>
-        <input id="shop-q" type="search" name="q" value="<?= e($search) ?>" placeholder="Search <?= e($category ? strtolower($category['name']) : 'products') ?>…">
-        <button class="btn btn-ghost btn-sm" type="submit">Search</button>
-      </div>
-      <label class="toggle">
-        <input type="checkbox" name="hide_out" value="1" <?= $hideOut ? 'checked' : '' ?> data-autosubmit>
-        <span>Hide sold out</span>
+    <input type="hidden" name="q" value="<?= e($search) ?>">
+    <p class="toolbar-count"><span data-result-count><?= $total ?></span> product<?= $total === 1 ? '' : 's' ?></p>
+    <div class="toolbar-controls">
+      <label class="check toggle"><input type="checkbox" name="hide_out" value="1" <?= $hideOut ? 'checked' : '' ?> data-autosubmit> Hide sold out</label>
+      <label class="sort">
+        <span>Sort by</span>
+        <select name="sort" data-autosubmit>
+          <?php foreach ($sorts as $key => [$label]): ?>
+            <option value="<?= $key ?>" <?= $sort === $key ? 'selected' : '' ?>><?= e($label) ?></option>
+          <?php endforeach; ?>
+        </select>
       </label>
+      <noscript><button class="btn btn-ghost btn-sm" type="submit">Apply</button></noscript>
     </div>
-    <nav class="chips tabs" aria-label="Aisles">
-      <a class="chip" href="<?= e(current_url_with(['category' => null, 'q' => null])) ?>" aria-current="<?= !$category ? 'true' : 'false' ?>">All aisles</a>
-      <?php foreach (categories() as $c): ?>
-        <a class="chip" href="<?= e(current_url_with(['category' => $c['slug'], 'q' => null])) ?>" aria-current="<?= $category && $category['id'] === $c['id'] ? 'true' : 'false' ?>">
-          <?= e($c['name']) ?> <span class="count"><?= $chipCounts[(int)$c['id']] ?? 0 ?></span>
-        </a>
-      <?php endforeach; ?>
-    </nav>
   </form>
 </div>
 
 <div class="container">
   <?php if ($search !== ''): ?>
-    <p class="results-meta"><?= $total ?> result<?= $total === 1 ? '' : 's' ?> for “<?= e($search) ?>” at <?= e($branch['name']) ?>
-      · <a href="<?= e(current_url_with(['q' => null])) ?>">Clear search</a></p>
+    <p class="results-meta"><a href="<?= e(current_url_with(['q' => null])) ?>">Clear search</a></p>
   <?php endif; ?>
 
   <?php if (!$groups): ?>
@@ -134,7 +137,7 @@ page_start($title, [
       $shown = $browsing ? array_slice($items, 0, $perCategoryPreview) : $items; ?>
     <section class="cat-section" id="<?= e($c['slug']) ?>" aria-labelledby="h-<?= e($c['slug']) ?>">
       <div class="cat-section-head">
-        <h2 id="h-<?= e($c['slug']) ?>"><?= e($c['name']) ?></h2>
+        <h2 id="h-<?= e($c['slug']) ?>"<?= $category ? ' class="visually-hidden"' : '' ?>><?= e($c['name']) ?></h2>
         <span class="fresh-ribbon<?= $fresh ? '' : ' is-stale' ?>">
           <span class="chip-dot"></span>
           <?= $review ? 'Freshly checked ' . e(fresh_label($review['reviewed_at'])) . ($review['staff_name'] ? ' by ' . e($review['staff_name']) : '') : 'Not checked yet' ?>
@@ -144,7 +147,7 @@ page_start($title, [
         <?php foreach ($shown as $p) echo product_card($p, false); ?>
       </div>
       <?php if ($browsing && count($items) > $perCategoryPreview): ?>
-        <p style="margin-top:1.25rem"><a class="link-arrow" href="<?= e(current_url_with(['category' => $c['slug']])) ?>">See all <?= count($items) ?> in <?= e($c['name']) ?> <?= icon('arrow-right', 'icon icon-sm') ?></a></p>
+        <p style="margin-top:1.25rem"><a class="link-arrow" href="<?= e(current_url_with(['category' => $c['slug']])) ?>">View all <?= count($items) ?> in <?= e($c['name']) ?> <?= icon('chevron-right', 'icon icon-sm') ?></a></p>
       <?php endif; ?>
     </section>
   <?php endforeach; ?>

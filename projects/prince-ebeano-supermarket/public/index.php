@@ -5,55 +5,36 @@ require __DIR__ . '/../app/bootstrap.php';
 $branch = current_branch();
 $bid = $branch ? (int)$branch['id'] : null;
 
-// Per-category numbers for the chosen branch.
-$catStats = [];
+// Everything the chosen store carries, grouped by aisle (in stock first).
+$byCat = [];
+$reviews = [];
 if ($bid) {
-    foreach (q_all(
-        "SELECT p.category_id,
-                SUM(s.stock_status IN ('in_stock','low_stock')) AS available,
-                COUNT(*) AS carried
-         FROM branch_stock s JOIN products p ON p.id = s.product_id AND p.is_active = 1
-         WHERE s.branch_id = ? GROUP BY p.category_id",
-        [$bid]
-    ) as $row) {
-        $catStats[(int)$row['category_id']] = $row;
+    $rows = q_all(stock_select_sql() . " WHERE s.branch_id = ?
+        ORDER BY FIELD(s.stock_status, 'in_stock', 'low_stock', 'out_of_stock'), p.name", [$bid]);
+    foreach (q_all('SELECT category_id, reviewed_at, staff_name FROM category_reviews WHERE branch_id = ?', [$bid]) as $row) {
+        $reviews[(int)$row['category_id']] = $row;
     }
-    foreach (q_all('SELECT category_id, reviewed_at FROM category_reviews WHERE branch_id = ?', [$bid]) as $row) {
-        $catStats[(int)$row['category_id']]['reviewed_at'] = $row['reviewed_at'];
-    }
+} else {
+    $rows = q_all('SELECT p.id, p.name, p.image_path, p.category_id FROM products p WHERE p.is_active = 1 ORDER BY p.name');
+}
+foreach ($rows as $row) {
+    $byCat[(int)$row['category_id']][] = $row;
 }
 
 $liveRows = $bid ? q_all(stock_select_sql() . ' WHERE s.branch_id = ? ORDER BY s.updated_at DESC LIMIT 5', [$bid]) : [];
 $lastChecked = $bid ? branch_last_checked($bid) : null;
 
-// "Just restocked": back in stock in the last 2 days. Falls back to what's on the shelves now.
-$restocked = [];
-$restockTitle = 'Just restocked';
-if ($bid) {
-    $restocked = q_all(
-        stock_select_sql() . "
-        JOIN (SELECT product_id, MAX(created_at) AS at FROM stock_updates
-              WHERE branch_id = ? AND new_status = 'in_stock' AND (old_status IS NULL OR old_status <> 'in_stock')
-                AND created_at >= (NOW() - INTERVAL 2 DAY)
-              GROUP BY product_id) r ON r.product_id = p.id
-        WHERE s.branch_id = ? AND s.stock_status = 'in_stock'
-        ORDER BY r.at DESC LIMIT 12",
-        [$bid, $bid]
-    );
-    if (count($restocked) < 4) {
-        // Too few to fill the rail: top up with other items on the shelves now.
-        $restockTitle = 'On the shelves now';
-        $seen = array_column($restocked, 'id');
-        foreach (q_all(stock_select_sql() . " WHERE s.branch_id = ? AND s.stock_status = 'in_stock' ORDER BY s.updated_at DESC LIMIT 12", [$bid]) as $row) {
-            if (count($restocked) >= 12) {
-                break;
-            }
-            if (!in_array($row['id'], $seen, true)) {
-                $restocked[] = $row;
-            }
-        }
-    }
-}
+// Back in stock in the last 2 days.
+$restocked = $bid ? q_all(
+    stock_select_sql() . "
+    JOIN (SELECT product_id, MAX(created_at) AS at FROM stock_updates
+          WHERE branch_id = ? AND new_status = 'in_stock' AND (old_status IS NULL OR old_status <> 'in_stock')
+            AND created_at >= (NOW() - INTERVAL 2 DAY)
+          GROUP BY product_id) r ON r.product_id = p.id
+    WHERE s.branch_id = ? AND s.stock_status = 'in_stock'
+    ORDER BY r.at DESC LIMIT 12",
+    [$bid, $bid]
+) : [];
 
 $branchCount = count(branches());
 $cities = array_values(array_unique(array_filter(array_column(branches(), 'city'))));
@@ -125,47 +106,64 @@ page_start('', ['active' => 'home', 'branch_prompt' => true]);
 
 <section class="section">
   <div class="container">
-    <?= section_head('', 'Aisles', $branch
-        ? 'What is available at ' . $branch['name'] . ' and when each aisle was last checked.'
-        : 'Choose an aisle, then pick your store to see what is in stock.') ?>
-    <ul class="aisle-list">
+    <?= section_head('', 'Shop by aisle', '', url('shop.php'), 'All aisles') ?>
+    <div class="aisle-cards">
       <?php foreach (categories() as $c):
-        $st = $catStats[(int)$c['id']] ?? [];
-        $reviewed = $st['reviewed_at'] ?? null; ?>
-        <li>
-          <a href="<?= e(url('shop.php?category=' . urlencode($c['slug']))) ?>">
-            <span class="aisle-name"><?= e($c['name']) ?></span>
-            <span class="aisle-meta">
-              <?php if ($branch): ?>
-                <?= (int)($st['available'] ?? 0) ?> available · <span class="aisle-fresh"><?= $reviewed ? 'checked ' . e(fresh_label($reviewed)) : 'not checked yet' ?></span>
-              <?php else: ?>
-                Browse aisle
-              <?php endif; ?>
-            </span>
-            <?= icon('chevron-right', 'icon icon-sm') ?>
-          </a>
-        </li>
+        $items = $byCat[(int)$c['id']] ?? [];
+        $withPhoto = array_values(array_filter($items, fn($r) => !empty($r['image_path'])));
+        $cover = $withPhoto[0] ?? ['image_path' => null];
+        $cover['category_icon'] = $c['icon'];
+        $names = array_map(fn($r) => preg_replace('/\s+\d.*$/', '', $r['name']), array_slice($items, 0, 3));
+        $available = count(array_filter($items, fn($r) => in_array($r['stock_status'] ?? '', ['in_stock', 'low_stock'], true))); ?>
+        <a class="aisle-card" href="<?= e(url('shop.php?category=' . urlencode($c['slug']))) ?>">
+          <?php if ($cover['image_path']): ?><?= product_media($cover, 'aisle-card-media') ?><?php else: ?><span class="aisle-card-icon"><?= icon($c['icon']) ?></span><?php endif; ?>
+          <span class="aisle-card-name"><?= e($c['name']) ?></span>
+          <span class="aisle-card-sub"><?= $names ? e(implode(', ', $names)) . '…' : 'Coming soon' ?></span>
+          <?php if ($branch): ?><span class="aisle-card-count"><?= $available ?> available</span><?php endif; ?>
+        </a>
       <?php endforeach; ?>
-    </ul>
-  </div>
-</section>
-
-<?php if ($restocked): ?>
-<section class="section">
-  <div class="container">
-    <?= section_head('', $restockTitle . ' at ' . $branch['name'], '', url('shop.php'), 'Shop all') ?>
-    <div class="rail">
-      <?php foreach ($restocked as $p) echo product_card($p); ?>
     </div>
   </div>
 </section>
+
+<?php if (!$branch): ?>
+<section class="section">
+  <div class="container"><?= branch_chooser_inline('Choose your store to see prices and what is in stock') ?></div>
+</section>
 <?php endif; ?>
+
+<?php if ($restocked): ?>
+<section class="section shelf">
+  <div class="container">
+    <?= section_head('', 'Back in stock at ' . $branch['name'], 'Items our staff restocked in the last two days.', url('shop.php'), 'View all') ?>
+    <?= product_rail($restocked, 'Back in stock') ?>
+  </div>
+</section>
+<?php endif; ?>
+
+<?php if ($branch): foreach (categories() as $c):
+    $items = $byCat[(int)$c['id']] ?? [];
+    if (!$items) continue;
+    $review = $reviews[(int)$c['id']] ?? null; ?>
+<section class="section shelf" id="aisle-<?= e($c['slug']) ?>">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <h2><?= e($c['name']) ?></h2>
+        <p class="section-sub"><span class="fresh-ribbon<?= $review && is_today($review['reviewed_at']) ? '' : ' is-stale' ?>"><span class="chip-dot"></span><?= $review ? 'Checked ' . e(fresh_label($review['reviewed_at'])) . ($review['staff_name'] ? ' by ' . e($review['staff_name']) : '') : 'Not checked yet' ?></span></p>
+      </div>
+      <a class="link-arrow" href="<?= e(url('shop.php?category=' . urlencode($c['slug']))) ?>">View all <?= count($items) ?> <?= icon('chevron-right', 'icon icon-sm') ?></a>
+    </div>
+    <?= product_rail(array_slice($items, 0, 12), $c['name']) ?>
+  </div>
+</section>
+<?php endforeach; endif; ?>
 
 <section class="section-tight">
   <div class="container">
     <div class="promo-row">
       <p><strong>Gift vouchers</strong> for birthdays, weddings and staff rewards. Redeemable at every Prince Ebeano store.</p>
-      <a class="link-arrow" href="<?= e(url('gift-vouchers.php')) ?>">See voucher values <?= icon('arrow-right', 'icon icon-sm') ?></a>
+      <a class="link-arrow" href="<?= e(url('gift-vouchers.php')) ?>">See voucher values <?= icon('chevron-right', 'icon icon-sm') ?></a>
     </div>
   </div>
 </section>
@@ -183,6 +181,14 @@ page_start('', ['active' => 'home', 'branch_prompt' => true]);
         </li>
       <?php endforeach; ?>
     </ul>
+  </div>
+</section>
+
+<section class="section about-note">
+  <div class="container">
+    <h2>Prince Ebeano Supermarket in Lagos and Abuja</h2>
+    <p>Since 2009, Prince Ebeano has grown into a trusted chain of supermarkets across Lagos and Abuja, stocking groceries, drinks, toiletries, mothercare, household items, wine and spirits.</p>
+    <p>This website shows what is on the shelves at each of our stores, with shelf prices in Naira. Our staff check every aisle each morning, so you can plan your trip before you leave home. To buy, visit any Prince Ebeano store.</p>
   </div>
 </section>
 

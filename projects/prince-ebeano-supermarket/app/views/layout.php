@@ -11,6 +11,9 @@ const PUBLIC_NAV = [
     'contact'  => ['Contact', 'contact.php', 'phone'],
 ];
 
+/** Store-information pages, shown as small links in the strip above the header. */
+const INFO_NAV = ['stores', 'about', 'vouchers', 'careers', 'contact'];
+
 /** The current page URL with some query parameters changed. */
 function current_url_with(array $changes): string
 {
@@ -80,10 +83,12 @@ function page_start(string $title, array $opts = []): void
 
 <div class="topbar">
   <div class="container topbar-inner">
-    <span>Open today <?= e(today_hours()) ?></span>
-    <?php if ($firstPhone): ?>
-      <span>Call <a href="<?= e(phone_href($firstPhone)) ?>"><?= e($firstPhone) ?></a></span>
-    <?php endif; ?>
+    <span>Open today <?= e(today_hours()) ?><?php if ($firstPhone): ?> · Call <a href="<?= e(phone_href($firstPhone)) ?>"><?= e($firstPhone) ?></a><?php endif; ?></span>
+    <nav class="topbar-links" aria-label="Store information">
+      <?php foreach (INFO_NAV as $key): [$label, $href] = PUBLIC_NAV[$key]; ?>
+        <a href="<?= e(url($href)) ?>"<?= $active === $key ? ' aria-current="page"' : '' ?>><?= e($label) ?></a>
+      <?php endforeach; ?>
+    </nav>
   </div>
 </div>
 
@@ -94,18 +99,12 @@ function page_start(string $title, array $opts = []): void
       <span class="brand-text"><strong>Prince Ebeano</strong><small>Supermarket</small></span>
     </a>
 
-    <nav class="main-nav" aria-label="Main">
-      <?php foreach (PUBLIC_NAV as $key => [$label, $href]): if ($key === 'home') continue; ?>
-        <a href="<?= e(url($href)) ?>"<?= $active === $key ? ' aria-current="page"' : '' ?>><?= e($label) ?></a>
-      <?php endforeach; ?>
-    </nav>
-
     <button type="button" class="branch-pill" data-open-branch aria-haspopup="dialog" aria-controls="branch-sheet">
       <?= icon('map-pin', 'icon') ?>
       <span class="branch-pill-text">
         <?php if ($branch): $checked = branch_last_checked((int)$branch['id']); ?>
           <strong><?= e($branch['name']) ?></strong>
-          <small><?= $checked ? 'Checked ' . e(fresh_label($checked)) : 'Choose to see stock' ?></small>
+          <small><?= $checked ? 'Checked ' . e(fresh_label($checked)) : 'Not checked yet' ?></small>
         <?php else: ?>
           <strong>Choose store</strong>
           <small>to see live stock</small>
@@ -114,14 +113,31 @@ function page_start(string $title, array $opts = []): void
       <?= icon('chevron-down', 'icon icon-sm') ?>
     </button>
 
+    <form class="header-search" action="<?= e(url('shop.php')) ?>" method="get" role="search">
+      <?= icon('search') ?>
+      <label for="site-q" class="visually-hidden">Search products</label>
+      <input id="site-q" name="q" type="search" value="<?= e($opts['search'] ?? '') ?>" placeholder="Search products<?= $branch ? ' at ' . e($branch['name']) : '' ?>" autocomplete="off">
+      <button class="btn btn-primary btn-sm" type="submit">Search</button>
+    </form>
+
     <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="mobile-nav" data-nav-toggle>
       <?= icon('menu', 'icon icon-open') ?><?= icon('x', 'icon icon-close') ?>
       <span class="visually-hidden">Menu</span>
     </button>
   </div>
+
+  <nav class="aisle-bar" aria-label="Aisles">
+    <div class="container aisle-bar-inner">
+      <a href="<?= e(url('shop.php')) ?>"<?= ($opts['aisle'] ?? '') === 'all' ? ' aria-current="page"' : '' ?>>All aisles</a>
+      <?php foreach (categories() as $c): ?>
+        <a href="<?= e(url('shop.php?category=' . urlencode($c['slug']))) ?>"<?= ($opts['aisle'] ?? '') === $c['slug'] ? ' aria-current="page"' : '' ?>><?= e($c['name']) ?></a>
+      <?php endforeach; ?>
+    </div>
+  </nav>
+
   <nav id="mobile-nav" class="mobile-nav" aria-label="Mobile" hidden>
     <div class="container">
-      <?php foreach (PUBLIC_NAV as $key => [$label, $href, $ic]): ?>
+      <?php foreach (PUBLIC_NAV as $key => [$label, $href]): ?>
         <a href="<?= e(url($href)) ?>"<?= $active === $key ? ' aria-current="page"' : '' ?>><?= e($label) ?></a>
       <?php endforeach; ?>
     </div>

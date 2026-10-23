@@ -56,6 +56,36 @@
       revealables.forEach(function (el) { el.classList.add('is-visible'); });
     }
 
+    // Product rows: previous / next buttons on wider screens.
+    const chevron = function (d) {
+      return '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="' + d + '"/></svg>';
+    };
+    document.querySelectorAll('.rail-wrap').forEach(function (wrap) {
+      const rail = wrap.querySelector('.rail');
+      if (!rail) return;
+      const make = function (cls, label, path, dir) {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'rail-btn ' + cls;
+        btn.setAttribute('aria-label', label);
+        btn.innerHTML = chevron(path);
+        btn.addEventListener('click', function () {
+          rail.scrollBy({ left: dir * rail.clientWidth * 0.9, behavior: reduceMotion ? 'auto' : 'smooth' });
+        });
+        wrap.appendChild(btn);
+        return btn;
+      };
+      const prev = make('prev', 'Scroll left', 'm15 18-6-6 6-6', -1);
+      const next = make('next', 'Scroll right', 'm9 18 6-6-6-6', 1);
+      const update = function () {
+        prev.disabled = rail.scrollLeft < 4;
+        next.disabled = rail.scrollLeft + rail.clientWidth >= rail.scrollWidth - 4;
+      };
+      rail.addEventListener('scroll', update, { passive: true });
+      window.addEventListener('resize', update);
+      update();
+    });
+
     // Shop filters: submit instantly when "hide out of stock" changes.
     document.querySelectorAll('[data-autosubmit]').forEach(function (input) {
       input.addEventListener('change', function () { if (input.form.requestSubmit) input.form.requestSubmit(); else input.form.submit(); });

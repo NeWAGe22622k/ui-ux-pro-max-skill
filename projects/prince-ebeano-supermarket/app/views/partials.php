@@ -36,7 +36,7 @@ function product_card(array $p, bool $showCategory = true): string
     $status = $p['stock_status'];
     $out = $status === 'out_of_stock';
     ob_start(); ?>
-<article class="product-card<?= $out ? ' is-out' : '' ?>" data-pid="<?= (int)$p['id'] ?>">
+<article class="product-card<?= $out ? ' is-out' : '' ?>" data-pid="<?= (int)$p['id'] ?>" data-price="<?= (int)$p['price_kobo'] ?>" data-status="<?= e($status) ?>">
   <?= product_media($p) ?>
   <div class="product-body">
     <?php if ($showCategory): ?><p class="product-cat"><?= e($p['category_name']) ?></p><?php endif; ?>
@@ -100,4 +100,14 @@ function stock_select_sql(): string
             FROM branch_stock s
             JOIN products p   ON p.id = s.product_id AND p.is_active = 1
             JOIN categories c ON c.id = p.category_id';
+}
+
+/** Horizontal product row with previous/next buttons (buttons are added by app.js). */
+function product_rail(array $products, string $label): string
+{
+    $html = '<div class="rail-wrap"><div class="rail" tabindex="0" aria-label="' . e($label) . '">';
+    foreach ($products as $p) {
+        $html .= product_card($p);
+    }
+    return $html . '</div></div>';
 }

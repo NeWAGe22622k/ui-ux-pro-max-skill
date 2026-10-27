@@ -64,6 +64,49 @@
     window.addEventListener('resize', function () { if (window.innerWidth > 960 && isOpen()) setOpen(false); });
   }
 
+  /* ---------- Homepage numbers count up from 0 when they come into view ----------
+     The real figure stays in the page for search engines and screen readers;
+     only the visible digits animate. Works with "150+", "£10m+", "1,200" etc. */
+  var counters = document.querySelectorAll('.stat-value, .impact-value');
+  var still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (counters.length && 'IntersectionObserver' in window && !still) {
+    var countUp = function (el) {
+      var shown = el.querySelector('[data-count]');
+      var m = el.getAttribute('data-final').match(/^(\D*)([\d,]*\.?\d+)(.*)$/);
+      var target = parseFloat(m[2].replace(/,/g, '')), decimals = (m[2].split('.')[1] || '').length;
+      var commas = m[2].indexOf(',') > -1, start = null, duration = 1800;
+      var fmt = function (n) {
+        var s = n.toFixed(decimals);
+        return commas ? s.replace(/\B(?=(\d{3})+(?!\d))/g, ',') : s;
+      };
+      var step = function (t) {
+        if (start === null) start = t;
+        var p = Math.min(1, (t - start) / duration);
+        var eased = 1 - Math.pow(1 - p, 3);              // fast start, gentle finish
+        shown.textContent = m[1] + fmt(target * eased) + m[3];
+        if (p < 1) window.requestAnimationFrame(step);
+      };
+      window.requestAnimationFrame(step);
+    };
+    var countIO = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        countIO.unobserve(entry.target);
+        countUp(entry.target);
+      });
+    }, { threshold: 0.6 });
+    Array.prototype.forEach.call(counters, function (el) {
+      var final = el.textContent.trim();
+      var m = final.match(/^(\D*)([\d,]*\.?\d+)(.*)$/);
+      if (!m) return;                                     // not a number (e.g. "Many"): leave as is
+      el.setAttribute('data-final', final);
+      el.innerHTML = '<span class="sr-only"></span><span aria-hidden="true" data-count></span>';
+      el.firstChild.textContent = final;
+      el.lastChild.textContent = m[1] + '0' + m[3];
+      countIO.observe(el);
+    });
+  }
+
   // Reveal on scroll
   var items = document.querySelectorAll('.reveal');
   if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {

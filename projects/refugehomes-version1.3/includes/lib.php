@@ -81,7 +81,7 @@ function settings(): array
             'hero_stat3_value' => '150+', 'hero_stat3_label' => 'Residents accommodated',
             'hero_stat4_value' => '20+',  'hero_stat4_label' => 'Homes improved',
             'impact1_value' => '50+',   'impact1_title' => 'Landlord partnerships',   'impact1_text' => 'Trusted relationships with landlords across the UK.',
-            'impact2_value' => '200+',  'impact2_title' => 'Residents housed',        'impact2_text' => 'People supported into safe, comfortable homes.',
+            'impact2_value' => '150+',  'impact2_title' => 'Residents housed',        'impact2_text' => 'People supported into safe, comfortable homes.',
             'impact3_value' => '£10m+', 'impact3_title' => 'Capital raised',          'impact3_text' => 'Investment secured to grow our portfolio and create impact.',
             'impact4_value' => '£5m+',  'impact4_title' => 'Property value improved', 'impact4_text' => 'Through refurbishment, repositioning and active management.',
             'impact5_value' => '20+',   'impact5_title' => 'Homes refurbished',       'impact5_text' => 'Bringing empty or tired properties back to life.',

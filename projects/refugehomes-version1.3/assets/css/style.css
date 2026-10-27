@@ -665,6 +665,7 @@ a.tile-link:hover .tile-go .icon { transform: translateX(3px); }
 /* ---------- Homepage (version1.3) ---------- */
 .hero-stats li { flex-direction: column; align-items: flex-start; gap: 2px; padding-top: 20px; padding-bottom: 22px; }
 .hero-stats .stat-num { font-size: 12px; letter-spacing: .08em; color: var(--brand); }
+.stat-value, .impact-value { font-variant-numeric: tabular-nums; }
 .hero-stats .stat-value { font-family: var(--font-display); font-size: clamp(1.9rem, 3vw, 2.5rem); font-weight: 400; line-height: 1.1; color: var(--ink); }
 .hero-stats .stat-label { font-size: 14px; color: var(--ink-2); }
 .h2-wide { max-width: 22ch; }

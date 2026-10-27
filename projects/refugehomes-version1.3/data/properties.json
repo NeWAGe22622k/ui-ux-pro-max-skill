@@ -1,0 +1,57 @@
+[
+    {
+        "id": "harlow-family-home",
+        "type": "flip",
+        "title": "Family home refurbishment",
+        "location": "Harlow, Essex",
+        "summary": "A carefully refurbished residential property, redesigned for everyday living, long-term value and strong local demand.",
+        "images": [],
+        "before": ["assets/img/placeholder/flip1-before-1.jpg", "assets/img/placeholder/flip1-before-2.jpg"],
+        "after": ["assets/img/placeholder/flip1-after-1.jpg", "assets/img/placeholder/flip1-after-2.jpg", "assets/img/placeholder/harlow-2.jpg", "assets/img/placeholder/harlow-3.jpg"],
+        "published": true
+    },
+    {
+        "id": "leeds-development",
+        "type": "managed",
+        "title": "Residential development",
+        "location": "Leeds, West Yorkshire",
+        "summary": "A strategic development focused on quality execution and an efficient layout, positioned for a growing regional market.",
+        "images": ["assets/img/placeholder/leeds-1.jpg", "assets/img/placeholder/leeds-2.jpg", "assets/img/placeholder/leeds-3.jpg"],
+        "before": [],
+        "after": [],
+        "published": true
+    },
+    {
+        "id": "london-residence",
+        "type": "managed",
+        "title": "Contemporary residence",
+        "location": "London",
+        "summary": "A contemporary home with refined finishes in a prime urban location, managed for steady income and long-term growth.",
+        "images": ["assets/img/placeholder/london-1.jpg", "assets/img/placeholder/london-2.jpg", "assets/img/placeholder/london-3.jpg"],
+        "before": [],
+        "after": [],
+        "published": true
+    },
+    {
+        "id": "sample-terrace-refurb",
+        "type": "flip",
+        "title": "[PLACEHOLDER] Victorian terrace refurbishment",
+        "location": "[PLACEHOLDER] Town, County",
+        "summary": "Sample flip project. Replace or delete this in the admin panel.",
+        "images": [],
+        "before": ["assets/img/placeholder/flip2-before-1.jpg", "assets/img/placeholder/flip2-before-2.jpg"],
+        "after": ["assets/img/placeholder/flip2-after-1.jpg", "assets/img/placeholder/flip2-after-2.jpg"],
+        "published": true
+    },
+    {
+        "id": "sample-managed-apartment",
+        "type": "managed",
+        "title": "[PLACEHOLDER] City-centre apartment",
+        "location": "[PLACEHOLDER] Town, County",
+        "summary": "Sample managed property. Replace or delete this in the admin panel.",
+        "images": ["assets/img/placeholder/managed-1.jpg", "assets/img/placeholder/managed-2.jpg"],
+        "before": [],
+        "after": [],
+        "published": true
+    }
+]

@@ -1,0 +1,62 @@
+[
+    {
+        "id": "sample-two-bed-harlow",
+        "title": "[SAMPLE] Two-bedroom terraced house",
+        "location": "Harlow, Essex",
+        "price_pcm": 1450,
+        "bedrooms": 2,
+        "bathrooms": 1,
+        "property_type": "House",
+        "furnished": "Unfurnished",
+        "available_from": "Available now",
+        "deposit": "£1,673",
+        "description": "Sample listing. A bright, freshly decorated two-bedroom home close to the town centre, schools and the station.\n\nReplace or delete this listing in the admin panel.",
+        "features": ["Newly fitted kitchen", "Private rear garden", "Gas central heating", "Off-street parking", "EPC rating C"],
+        "images": ["assets/img/placeholder/rental-1.jpg", "assets/img/placeholder/rental-2.jpg", "assets/img/placeholder/rental-3.jpg", "assets/img/placeholder/rental-5.jpg"],
+        "links": [
+            {"platform": "Rightmove", "url": "https://www.rightmove.co.uk/"},
+            {"platform": "Zoopla", "url": "https://www.zoopla.co.uk/"}
+        ],
+        "status": "available",
+        "published": true
+    },
+    {
+        "id": "sample-one-bed-apartment",
+        "title": "[SAMPLE] One-bedroom apartment",
+        "location": "[PLACEHOLDER] Town, County",
+        "price_pcm": 1150,
+        "bedrooms": 1,
+        "bathrooms": 1,
+        "property_type": "Apartment",
+        "furnished": "Furnished",
+        "available_from": "1 November",
+        "deposit": "£1,326",
+        "description": "Sample listing. A modern apartment with an open-plan living space, ideal for a professional tenant.\n\nReplace or delete this listing in the admin panel.",
+        "features": ["Open-plan living and kitchen", "Lift access", "Close to transport links", "Bills not included"],
+        "images": ["assets/img/placeholder/rental-4.jpg", "assets/img/placeholder/rental-2.jpg", "assets/img/placeholder/rental-3.jpg"],
+        "links": [
+            {"platform": "OpenRent", "url": "https://www.openrent.co.uk/"},
+            {"platform": "SpareRoom", "url": "https://www.spareroom.co.uk/"}
+        ],
+        "status": "available",
+        "published": true
+    },
+    {
+        "id": "sample-three-bed-house",
+        "title": "[SAMPLE] Three-bedroom family home",
+        "location": "[PLACEHOLDER] Town, County",
+        "price_pcm": 1795,
+        "bedrooms": 3,
+        "bathrooms": 2,
+        "property_type": "House",
+        "furnished": "Part furnished",
+        "available_from": "Let agreed",
+        "deposit": "£2,071",
+        "description": "Sample listing showing how a home looks once it has been let. Set the status to \"Let agreed\" in the admin panel, or unpublish it to hide it entirely.",
+        "features": ["Three double bedrooms", "Family bathroom and en-suite", "Garden and driveway"],
+        "images": ["assets/img/placeholder/harlow-1.jpg", "assets/img/placeholder/rental-5.jpg"],
+        "links": [{"platform": "Rightmove", "url": "https://www.rightmove.co.uk/"}],
+        "status": "let",
+        "published": true
+    }
+]

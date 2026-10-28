@@ -672,6 +672,14 @@ a.tile-link:hover .tile-go .icon { transform: translateX(3px); }
 .section-head .h2-wide { max-width: 22ch; }
 .accent { color: var(--brand); }
 .section-head .h2-line { max-width: none; }
+/* Why we exist: a calmer, more compact statement section */
+.why { padding: clamp(56px, 7vw, 100px) 0; }
+.why .split { gap: 32px clamp(40px, 6vw, 96px); }
+.why .h2 { font-size: clamp(1.85rem, 3.1vw, 2.65rem); }
+.why .eyebrow { margin-bottom: 16px; }
+.why .prose { font-size: 15px; line-height: 1.65; max-width: 60ch; }
+.why .prose p { margin-bottom: .85em; }
+.why .link-arrow { margin-top: 20px; }
 .impact-intro { max-width: 40ch; font-size: 1rem; }
 .section-sub { margin-top: 18px; max-width: 56ch; }
 .prose-strong { color: var(--ink); font-weight: 500; }

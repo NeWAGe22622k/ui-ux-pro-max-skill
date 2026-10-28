@@ -56,7 +56,7 @@ require __DIR__ . '/includes/header.php';
 </section>
 
 <!-- Why we exist -->
-<section class="section">
+<section class="section why">
   <div class="container split">
     <div class="reveal">
       <p class="eyebrow">Why we exist</p>

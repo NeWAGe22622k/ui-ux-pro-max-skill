@@ -214,11 +214,11 @@ def fx(cars):
     cou = cars["CAR_coupe"]
     d0, d1 = K.COUPE_KEYS["dust"]
     base = coupe_pos(cou, d0)
-    dust_m = mat("FX_dust", K.C["dust"], rough=1.0, alpha=0.75)
+    dust_m = mat("FX_dust", K.C["dust"], rough=1.0, alpha=0.45)
     bw = mat("FX_bag_white", K.C["bag_white"], rough=0.6)
     bb = mat("FX_bag_blue", K.C["bag_blue"], rough=0.6)
     mb = MeshBuilder()
-    mb.sphere(dust_m, (0, 0, 0), 0.06, segs=6, rings=4)
+    mb.sphere(dust_m, (0, 0, 0), 0.06, segs=12, rings=8)
     dust_mesh = mb.to_object("FX_dust_src", "FX").data
     bpy.data.objects.remove(bpy.data.objects["FX_dust_src"])
     frames = list(range(d0 - 1, d1 + 1, 2))
@@ -230,7 +230,7 @@ def fx(cars):
         out = Vector((p0.x - base.x, p0.y - base.y, 0)).normalized() if (p0 - base).length > 0.1 else Vector((1, 0, 0))
         v0 = out * rnd.uniform(2.5, 6.0) + Vector((0, 0, rnd.uniform(0.8, 3.0)))
         k = rnd.uniform(1.2, 2.2)
-        sc0 = rnd.uniform(0.4, 1.1)
+        sc0 = rnd.uniform(0.3, 0.8)
         locs, scs = [], []
         for f in frames:
             t = max(0.0, (f - start) / K.FPS)

@@ -254,16 +254,19 @@ def hero_sedan():
 def coupe():
     S = K.COUPE
     root = car("CAR_coupe", S, K.C["coupe_black"], kind="coupe", metallic=0.3, rough=0.15, coat=1.0)
+    pb = bpy.data.materials["PAINT_CAR_coupe"].node_tree.nodes["Principled BSDF"]
+    pb.inputs["Specular IOR Level"].default_value = 0.2   # keeps the hood from mirroring the hazy sky white
+    pb.inputs["Coat IOR"].default_value = 1.3
     c = K.C
     bar = mat("CAR_coupe_lightbar", c["lightbar"], emission=c["lightbar"], strength=K.COUPE_KEYS["lightbar_base"])
     head = mat("CAR_coupe_headlight", c["headlight"], emission=c["headlight"], strength=0.6)
     tail = mat("CAR_coupe_tailbar", c["lightbar"], emission=c["lightbar"], strength=K.COUPE_KEYS["lightbar_base"])
     mb = MeshBuilder()
     W = S["W"]
-    mb.box(bar, (2.27, 0, 0.605), (0.05, W * 0.90, 0.03))      # on the nose's top edge (reads in mirrors)
+    mb.box(bar, (2.335, 0, 0.605), (0.05, W * 0.88, 0.03))     # high on the nose (reads in mirrors)
     mb.box(tail, (-2.45, 0, 0.74), (0.04, W * 0.92, 0.035))
     for s in (1, -1):
-        mb.box(head, (2.31, s * (W / 2 - 0.24), 0.565), (0.06, 0.34, 0.045))
+        mb.box(head, (2.38, s * (W / 2 - 0.26), 0.55), (0.06, 0.32, 0.045))
     lights = mb.to_object("CAR_coupe_lights", COL, parent=root)
     # underglow
     ug = mat("FX_coupe_underglow", c["underglow"], emission=c["underglow"], strength=0.0)

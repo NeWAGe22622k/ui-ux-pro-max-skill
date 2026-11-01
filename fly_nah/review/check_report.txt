@@ -1,0 +1,13 @@
+=== FLY NAH AUTOMATED CHECKS ===
+[PASS]  1. cameras S01..S10 + S03B exist, render ranges match, >= 96 frames
+[PASS]  2. no text objects / no image textures -- 0 text objects, 0 image textures
+[PASS]  3. every car left-hand drive (steering wheel on +Y) -- 34 cars OK; kekes centre-steered (handlebar), exempt: 2
+[PASS]  4. no vehicle bounding boxes overlap (every 6 frames) -- 36 vehicles, 144 samples
+[PASS]  5. camera clearance >= 0.3 m (every 4 frames; S02/S03/S03B exempt from sedan) -- min: S01 0.84, S02 >2, S03 >2, S03B >2, S04 0.52, S05 0.94, S06 2.20, S07 0.51, S08 >2, S09 0.42, S10 >2
+[PASS]  6. coupe >= 1.2 m above sedan roof during 745-780 -- min clearance 2.15 m
+[PASS]  7. coupe wheel axles within 5 deg of vertical at f700 -- angles 0.3, 0.3, 0.3, 0.3
+[PASS]  8. HERO head/arm clear the door frame 505-600 -- head reaches +0.28 m beyond the window line
+[PASS]  9. coupe is the only near-black car paint -- ['PAINT_CAR_coupe']
+[PASS] 10. jaw keys between 515-565 -- 117 keys, source: fallback (2.10s)
+
+OVERALL: ALL PASS

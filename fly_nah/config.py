@@ -263,6 +263,7 @@ MAX_MP4_MB = 49
 # shots rendered with Cycles instead of EEVEE on this machine (EEVEE planar probe is noise under CPU/llvmpipe)
 ENGINE_OVERRIDE = {"S03": "cycles"}
 CYCLES_SAMPLES = 48
+CYCLES_SAMPLES_FAST = 24       # S03 in the "fast" final preset
 REVIEW_EEVEE_SAMPLES = 8   # review stills only; finals use the scene setting
 
 # ---------------------------------------------------------------- Lagos set dressing

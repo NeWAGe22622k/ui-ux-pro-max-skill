@@ -100,7 +100,7 @@ def _engine_for(sc, shot, engine):
     if engine == "eevee" and shot in K.ENGINE_OVERRIDE:
         sc.render.engine = "CYCLES"
         sc.cycles.device = "CPU"
-        sc.cycles.samples = K.CYCLES_SAMPLES
+        sc.cycles.samples = K.CYCLES_SAMPLES_FAST if QUALITY == "fast" else K.CYCLES_SAMPLES
         sc.cycles.use_denoising = True
     elif engine == "eevee":
         sc.render.engine = "BLENDER_EEVEE"
@@ -280,7 +280,10 @@ def final(shots, engine):
     rows = []
     sdir = os.path.join(K.RENDER_DIR, "stills")
     os.makedirs(sdir, exist_ok=True)
-    tag = "" if engine == "eevee" else f"_{engine}"
+    if engine == "eevee":   # full EEVEE keeps the plain shot name; the fast preset gets its own files
+        tag = "_eevee_fast" if QUALITY == "fast" else ""
+    else:
+        tag = f"_{engine}"
     crf = 14 if engine != "workbench" else 17
     for s in K.SHOTS:
         if shots and s[0] not in shots:

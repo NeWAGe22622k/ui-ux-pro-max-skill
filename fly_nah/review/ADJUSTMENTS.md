@@ -1,5 +1,15 @@
 # Fly Nah: changes from the brief (and why)
 
+## Revision 4 (Phase 4)
+- **Opening flicker fixed.** At 100 m up, the road, lane paint, patches and ground were z-fighting (brown
+  flashes and stripes). Every camera now has its own near-clip distance (S01's is animated as the drone
+  descends) and the road layers are spaced a few mm apart.
+- **Coupe paint is satin black** (coat 0.3, roughness 0.35, specular 0.1). Glossy paint mirrored the hazy sky and
+  read light tan at 1080p.
+- **Finals at 1920x1080** come in three versions: `*_workbench.mp4` (flat lighting), `*_eevee_fast.mp4` (8 samples,
+  coarser shadows, no fast GI) and `*.mp4` (full EEVEE, 16 samples). S03 uses Cycles in both EEVEE versions
+  (24 / 48 samples). Measured CPU time per frame: Workbench about 5-18 s, EEVEE fast about 95 s, EEVEE full about 195 s.
+
 ## Revision 3 (your review notes)
 - **Two lanes each way.** The BRT lane, BRT kerb and BRT bus are gone, and so is the outer lane (L4). Our side is
   now L2 (inner) plus L3 (HERO's lane) with a hard shoulder outside it. The oncoming side mirrors it. The median
@@ -66,8 +76,8 @@
 10. **Coupe button** moved to the centre-console top (0.16, 0.08, 0.80) so it shows over the dash in S07. It is
     still within HORNER's right-hand reach.
 11a. **Coupe body**: wheel radius 0.34 m (not set in the brief) and a slightly taller nose (0.68 m), so the
-    wheel wells don't cut through the front fenders. Paint stays glossy black, coat 1.0, roughness 0.15. Specular
-    level is 0.2 and coat IOR 1.3, so the hood doesn't mirror the bright hazy sky as white (it must read black).
+    wheel wells don't cut through the front fenders. The paint is satin black (see Revision 4), so the hood
+    doesn't mirror the bright hazy sky (it must read black).
 12. **Generic cars**: 7 distinct designs (sedan/SUV/hatch in white, red, dark blue, beige, grey), reused as
     linked copies (27 generic cars) so every lane has traffic. More minibuses in L2/L4, and 2 stopped cars ahead
     of the minibus in L3 (the "jammed traffic ahead" HERO points at). None are black.

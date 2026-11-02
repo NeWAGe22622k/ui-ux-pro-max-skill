@@ -258,8 +258,11 @@ def coupe():
     S = K.COUPE
     root = car("CAR_coupe", S, K.C["coupe_black"], kind="coupe", metallic=0.3, rough=0.15, coat=1.0)
     pb = bpy.data.materials["PAINT_CAR_coupe"].node_tree.nodes["Principled BSDF"]
-    pb.inputs["Specular IOR Level"].default_value = 0.2   # keeps the hood from mirroring the hazy sky white
+    pb.inputs["Specular IOR Level"].default_value = K.COUPE_PAINT["spec"]   # hood must not mirror the hazy sky white
     pb.inputs["Coat IOR"].default_value = 1.3
+    pb.inputs["Coat Weight"].default_value = K.COUPE_PAINT["coat"]
+    pb.inputs["Coat Roughness"].default_value = K.COUPE_PAINT["coat_rough"]
+    pb.inputs["Roughness"].default_value = K.COUPE_PAINT["rough"]
     c = K.C
     bar = mat("CAR_coupe_lightbar", c["lightbar"], emission=c["lightbar"], strength=K.COUPE_KEYS["lightbar_base"])
     head = mat("CAR_coupe_headlight", c["headlight"], emission=c["headlight"], strength=0.6)

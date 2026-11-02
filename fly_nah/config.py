@@ -112,6 +112,7 @@ COUPE = dict(L=4.8, W=1.95, H=1.30, clear=0.14, belt=0.80, wheel_r=0.34, wheel_w
                       (-2.40, 0.82), (-2.44, 0.45), (-2.30, 0.22), (-2.10, 0.14)],
              seat_hip=(-0.32, 0.40, 0.33), dash_x=(0.30, 0.75), dash_z=0.80,
              well_inner=0.45, well_r=0.38)
+COUPE_PAINT = dict(coat=0.3, coat_rough=0.1, rough=0.35, spec=0.1)   # satin black: must read black, not mirror the sky
 COUPE_BUTTON = (0.16, 0.08, 0.80)   # centre-console top, right-hand reach, visible over the dash
 WHEEL_FOLD_DEG = 90.0
 WHEEL_SLIDE = 0.10
@@ -258,6 +259,7 @@ CLEARANCE = 0.3
 CLIP_START = dict(S01=None, S02=0.08, S03=0.3, S03B=0.08, S04=0.1, S05=0.2, S06=0.2, S07=0.1, S08=0.2, S09=0.1, S10=0.15)
 S01_CLIP_KEYS = [(37, 2.0), (150, 2.0), (220, 0.5), (270, 0.2), (300, 0.08)]
 CLIP_END = 1500.0
+MAX_MP4_MB = 49
 # shots rendered with Cycles instead of EEVEE on this machine (EEVEE planar probe is noise under CPU/llvmpipe)
 ENGINE_OVERRIDE = {"S03": "cycles"}
 CYCLES_SAMPLES = 48

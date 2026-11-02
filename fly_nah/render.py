@@ -23,6 +23,7 @@ import config as K  # noqa: E402
 
 PY = sys.executable if "blender" not in os.path.basename(sys.executable).lower() else "python3"
 CHUNK = 24
+QUALITY = "full"
 
 
 def _args():
@@ -36,6 +37,7 @@ def _args():
     ap.add_argument("--out", default="")
     ap.add_argument("--res", default="")
     ap.add_argument("--frames", default="")
+    ap.add_argument("--quality", default="full")
     return ap.parse_args(argv)
 
 
@@ -83,6 +85,10 @@ def _setup(bpy, engine, res):
         sc.render.engine = "BLENDER_EEVEE"
         if w < 1920:
             sc.eevee.taa_render_samples = K.REVIEW_EEVEE_SAMPLES
+        if QUALITY == "fast":   # cheaper EEVEE preset for CPU-only machines
+            sc.eevee.taa_render_samples = 8
+            sc.eevee.shadow_resolution_scale = 0.25
+            sc.eevee.use_fast_gi = False
         sc.view_settings.view_transform = "AgX"
         sc.view_settings.look = "AgX - Medium High Contrast"
         sc.render.use_compositing = True
@@ -229,7 +235,7 @@ def sequence(out_dir, start, end, engine, res, shot=""):
                 os.remove(p)
         t = time.time()
         args = ["--mode", "w_seq", "--engine", engine, "--res", f"{res[0]}x{res[1]}", "--out", out_dir,
-                "--start", str(a), "--end", str(b)]
+                "--start", str(a), "--end", str(b), "--quality", QUALITY]
         if shot:
             args += ["--shot", shot]
         _spawn(args)
@@ -270,25 +276,35 @@ def ffprobe(mp4):
 
 
 def final(shots, engine):
+    """Per-shot 1920x1080 render (frames -> H.264 MP4, no audio) + mid-shot PNG still + ffprobe table."""
     rows = []
-    os.makedirs(os.path.join(K.RENDER_DIR, "stills"), exist_ok=True)
+    sdir = os.path.join(K.RENDER_DIR, "stills")
+    os.makedirs(sdir, exist_ok=True)
+    tag = "" if engine == "eevee" else f"_{engine}"
+    crf = 14 if engine != "workbench" else 17
     for s in K.SHOTS:
         if shots and s[0] not in shots:
             continue
         name, _, _, a, b, stem = s
-        fdir = os.path.join(K.RENDER_DIR, "frames", stem)
-        sequence(fdir, a, b, "workbench" if engine == "workbench" else engine, (1920, 1080), shot=name)
-        mp4 = os.path.join(K.RENDER_DIR, f"{stem}.mp4" if engine != "workbench" else f"{stem}_workbench.mp4")
-        encode(fdir, a, b, mp4, crf=14)
+        fdir = os.path.join(K.RENDER_DIR, "frames", f"{stem}{tag}")
+        t = time.time()
+        sequence(fdir, a, b, engine, (1920, 1080), shot=name)
+        mp4 = os.path.join(K.RENDER_DIR, f"{stem}{tag}.mp4")
+        encode(fdir, a, b, mp4, crf=crf)
+        if os.path.getsize(mp4) > K.MAX_MP4_MB * 1e6:   # keep every file under the size limit
+            encode(fdir, a, b, mp4, crf=crf + 4)
         mid = (a + b) // 2
-        shutil.copy(os.path.join(fdir, f"{mid:04d}.png"), os.path.join(K.RENDER_DIR, "stills", f"{stem}_f{mid:03d}.png"))
+        shutil.copy(os.path.join(fdir, f"{mid:04d}.png"), os.path.join(sdir, f"{stem}{tag}_f{mid:03d}.png"))
         w, h, fps, n = ffprobe(mp4)
         ok = (w, h) == (1920, 1080) and abs(fps - K.FPS) < 1e-3 and n == b - a + 1
         rows.append((os.path.basename(mp4), w, h, fps, n, b - a + 1, os.path.getsize(mp4) / 1e6, ok))
-        print(f"[final] {rows[-1]}", flush=True)
-    print("\nfile                              res        fps   frames/expected  MB    ok")
+        print(f"[final] {name} done in {(time.time() - t) / 60:.1f} min -> {rows[-1]}", flush=True)
+    lines = ["file                                   res        fps  frames/expected   MB    check"]
     for r in rows:
-        print(f"{r[0]:34s} {r[1]}x{r[2]}  {r[3]:.0f}   {r[4]}/{r[5]}        {r[6]:5.1f} {'PASS' if r[7] else 'FAIL'}")
+        lines.append(f"{r[0]:38s} {r[1]}x{r[2]}  {r[3]:.0f}   {r[4]}/{r[5]}        {r[6]:5.1f}  {'PASS' if r[7] else 'FAIL'}")
+    print("\n".join(lines))
+    with open(os.path.join(K.RENDER_DIR, f"ffprobe_report{tag}.txt"), "w") as fh:
+        fh.write("\n".join(lines) + "\n")
 
 
 def testframe(shot, engine):
@@ -297,7 +313,8 @@ def testframe(shot, engine):
     out = os.path.join(K.RENDER_DIR, "test")
     os.makedirs(out, exist_ok=True)
     t = time.time()
-    _spawn(["--mode", "w_stills", "--engine", engine, "--res", "1920x1080", "--out", out, "--frames", f"{shot}:{mid}"])
+    _spawn(["--mode", "w_stills", "--engine", engine, "--res", "1920x1080", "--out", out, "--frames", f"{shot}:{mid}",
+            "--quality", QUALITY])
     dt = time.time() - t
     total = sum(x[4] - x[3] + 1 for x in K.SHOTS)
     print(f"test frame {shot} f{mid} ({engine}, 1920x1080): {dt:.1f}s incl. file load")
@@ -305,7 +322,9 @@ def testframe(shot, engine):
 
 
 def main():
+    global QUALITY
     a = _args()
+    QUALITY = a.quality
     if a.mode.startswith("w_"):
         worker_frames(a)
         return

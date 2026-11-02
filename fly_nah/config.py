@@ -254,6 +254,10 @@ CAM = dict(
     S10=dict(lens=35.0, fstop=8.0, pos=(5.0, -13.55, 0.4), look=(60.0, -19.5, 12.0), creep=1.5),
 )
 CLEARANCE = 0.3
+# near clip per camera (m). Too small a near clip at long range = depth flicker (z-fighting) on the road layers.
+CLIP_START = dict(S01=None, S02=0.08, S03=0.3, S03B=0.08, S04=0.1, S05=0.2, S06=0.2, S07=0.1, S08=0.2, S09=0.1, S10=0.15)
+S01_CLIP_KEYS = [(37, 2.0), (150, 2.0), (220, 0.5), (270, 0.2), (300, 0.08)]
+CLIP_END = 1500.0
 # shots rendered with Cycles instead of EEVEE on this machine (EEVEE planar probe is noise under CPU/llvmpipe)
 ENGINE_OVERRIDE = {"S03": "cycles"}
 CYCLES_SAMPLES = 48

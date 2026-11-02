@@ -13,8 +13,9 @@ def _cam(name, lens, fstop):
     cd.lens = lens
     cd.sensor_width = K.SENSOR
     cd.sensor_fit = "HORIZONTAL"
-    cd.clip_start = 0.02
-    cd.clip_end = 3000
+    shot = name[4:]
+    cd.clip_start = K.CLIP_START.get(shot) or 0.1
+    cd.clip_end = K.CLIP_END
     cd.dof.use_dof = True
     cd.dof.aperture_fstop = fstop
     ob = bpy.data.objects.new(name, cd)
@@ -70,6 +71,7 @@ def build(cars, hero, horner):
     _track(cam, tgt)
     (fa, la), (fb, lb) = K.S01_LENS
     set_keys(cam.data, "lens", 0, [37, fa, fb], [la, la, lb])
+    set_keys(cam.data, "clip_start", 0, [f for f, _ in K.S01_CLIP_KEYS], [v for _, v in K.S01_CLIP_KEYS])
     ff, fl = [], []
     (f_ahead, _), (f_h, _) = K.S01_FOCUS
     for f in (37, 100, 150, 220, 260, f_ahead):

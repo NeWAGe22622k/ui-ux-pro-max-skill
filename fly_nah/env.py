@@ -39,7 +39,7 @@ def build():
 
     # ground
     mb = MeshBuilder()
-    mb.box(M["earth"], (0, 0, -0.06), (2400, 2400, 0.1))
+    mb.box(M["earth"], (0, 0, -0.10), (2400, 2400, 0.1))   # top 5 cm below the road: no depth fighting
     mb.to_object("ENV_ground", COL)
 
     # road surface (both carriageways + shoulders)
@@ -79,10 +79,10 @@ def build():
     for y in dashed:
         x = x0 + 1
         while x < x1 - 3:
-            mb.box(M["paint"], (x + 1.5, y, 0.003), (3.0, 0.12, 0.006))
+            mb.box(M["paint"], (x + 1.5, y, 0.004), (3.0, 0.12, 0.008))
             x += 9.0
     for y in (K.LANES["L3"] - K.LANE_W / 2 + 0.15, K.OPP_EDGE - 0.15, K.MEDIAN["y"] - 0.4, K.MEDIAN["y"] + 0.4):
-        mb.box(M["paint"], (xc, y, 0.003), (L, 0.12, 0.006))
+        mb.box(M["paint"], (xc, y, 0.004), (L, 0.12, 0.008))
     mb.to_object("ENV_lane_markings", COL)
 
     _street_lights(M)

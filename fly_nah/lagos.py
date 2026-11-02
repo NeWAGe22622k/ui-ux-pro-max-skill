@@ -370,16 +370,16 @@ def _road_wear(M, rnd):
     lanes = list(K.LANES.values()) + list(K.OPP_LANES)
     for y in lanes:
         for s in (-0.8, 0.8):
-            mb.box(M["track"], ((x0 + x1) / 2, y + s, 0.0015), (x1 - x0, 0.5, 0.003))
+            mb.box(M["track"], ((x0 + x1) / 2, y + s, 0.002), (x1 - x0, 0.5, 0.004))
     mb.to_object("ENV_wheel_tracks", COL)
     mb = MeshBuilder()
     for (x, y, w, d) in L["patches"]:
-        mb.box(M["patch"], (x, y, 0.004), (w, d, 0.006))
+        mb.box(M["patch"], (x, y, 0.006), (w, d, 0.012))
     mb.to_object("ENV_road_patches", COL)
     mb = MeshBuilder()
     for (x, y, r) in L["potholes"]:
-        mb.cyl(M["mud"], (x, y, 0.005), r, 0.008, segs=18)
-        mb.cyl(M["sand"], (x + 0.1, y, 0.004), r * 1.35, 0.006, segs=18)
+        mb.cyl(M["mud"], (x, y, 0.012), r, 0.012, segs=18)
+        mb.cyl(M["sand"], (x + 0.1, y, 0.0075), r * 1.35, 0.015, segs=18)
     # sand drifts along the shoulder edge and the median base
     my = K.MEDIAN["y"]
     for y, w in ((K.SHOULDER[0] + 0.45, 0.9), (my - 0.55, 0.45), (my + 0.55, 0.45), (K.OPP_SHOULDER[1] - 0.4, 0.8)):
@@ -387,7 +387,7 @@ def _road_wear(M, rnd):
         while x < x1:
             ln = rnd.uniform(6, 22)
             if rnd.random() < 0.75:
-                mb.box(M["sand"], (x + ln / 2, y + rnd.uniform(-0.1, 0.1), 0.006), (ln, w * rnd.uniform(0.6, 1.1), 0.01))
+                mb.box(M["sand"], (x + ln / 2, y + rnd.uniform(-0.1, 0.1), 0.01), (ln, w * rnd.uniform(0.6, 1.1), 0.02))
             x += ln + rnd.uniform(1, 8)
     mb.to_object("ENV_sand_potholes", COL)
 

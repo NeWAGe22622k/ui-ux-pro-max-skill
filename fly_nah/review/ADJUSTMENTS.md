@@ -16,7 +16,7 @@
     satellite dishes.
   - Shipping-container shops with open doors and goods. Colourful segmented umbrellas over trader tables with
     produce. Generators, plain colour signboards, kiosks.
-  - Black-and-yellow painted kerbs on the pavements, the BRT lane and the median base. Open drainage gutters
+  - White-and-black painted kerbs on the pavements, the BRT lane and the median base. Open drainage gutters
     with cover slabs.
   - Concrete electricity poles every 38 m with sagging cables and pole-mounted transformers.
   - Worn, patched asphalt with darker wheel tracks, sand drifts along the shoulder and median, muddy

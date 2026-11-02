@@ -118,8 +118,8 @@ def materials():
         sand=pmat("ENV_sand", (0.42, 0.33, 0.22), "sand", rough=1.0, scale=2.0, dark=0.75),
         mud=mat("ENV_pothole_water", (0.06, 0.05, 0.035), rough=0.08),
         gutter=mat("ENV_gutter_sludge", (0.05, 0.06, 0.04), rough=0.4),
-        yellow=pmat("ENV_kerb_yellow", (0.75, 0.55, 0.03), "concrete", rough=0.7, scale=3.0, dark=0.7),
-        black=mat("ENV_kerb_black", (0.02, 0.02, 0.02), rough=0.7),
+        kerb_light=pmat("ENV_kerb_white", L["kerb_colours"][0], "concrete", rough=0.7, scale=3.0, dark=0.75),
+        kerb_dark=mat("ENV_kerb_black", L["kerb_colours"][1], rough=0.7),
         zinc=pmat("ENV_zinc_rusty", (0.33, 0.32, 0.31), "zinc", rough=0.55, metallic=0.4, scale=1.5,
                   alt=(0.30, 0.12, 0.04)),
         zinc_new=pmat("ENV_zinc_grey", (0.42, 0.43, 0.44), "zinc", rough=0.4, metallic=0.6, scale=1.0, dark=0.8),
@@ -396,10 +396,10 @@ def _kerbs_and_gutters(M):
     mb = MeshBuilder()
     blk = L["kerb_block"]
     n = int((x1 - x0) / blk)
-    # painted kerbs: road-side pavement kerbs, BRT kerb, median base band
+    # painted kerbs (white / black): road-side pavement kerbs, BRT kerb, median base band
     for i in range(n):
         x = x0 + (i + 0.5) * blk
-        m = M["yellow"] if i % 2 == 0 else M["black"]
+        m = M["kerb_light"] if i % 2 == 0 else M["kerb_dark"]
         mb.box(m, (x, K.PAVEMENT_RIGHT[1], 0.11), (blk, 0.22, 0.22))
         mb.box(m, (x, K.PAVEMENT_LEFT[0], 0.11), (blk, 0.22, 0.22))
         mb.box(m, (x, K.BRT_KERB["y"], 0.09), (blk, 0.27, 0.18))

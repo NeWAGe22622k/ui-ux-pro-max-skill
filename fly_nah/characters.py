@@ -264,7 +264,7 @@ def add_envelope(arm):
     return _attach(arm, "hand.R", mb, "CHR_hero_envelope", sub=False)
 
 
-def add_tray(arm):
+def add_tray(arm, name="CHR_hawker_tray"):
     m = mat("CHR_hawker_tray", K.C["tray"], metallic=0.8, rough=0.35)
     o = mat("CHR_hawker_oranges", K.C["oranges"], rough=0.5)
     b = arm.data.bones["head"]
@@ -273,19 +273,19 @@ def add_tray(arm):
     mb.cyl(m, top + Vector((0, 0, 0.03)), 0.33, 0.06, segs=28, r2=0.36)
     for i, (x, y) in enumerate([(0, 0), (0.12, 0.05), (-0.1, 0.1), (0.05, -0.13), (-0.12, -0.08), (0.18, -0.1), (-0.02, 0.2)]):
         mb.sphere(o, top + Vector((x, y, 0.1 + (0.05 if i == 0 else 0))), 0.045, segs=10, rings=6)
-    return _attach(arm, "head", mb, "CHR_hawker_tray", sub=False)
+    return _attach(arm, "head", mb, name, sub=False)
 
 
-def add_wrapper(arm, c1, c2):
-    m1 = mat("CHR_hawker_wrapper", c1, rough=0.7)
-    m2 = mat("CHR_hawker_wrapper_band", c2, rough=0.7)
+def add_wrapper(arm, c1, c2, name="CHR_hawker_wrapper"):
+    m1 = mat(f"{name}_m", c1, rough=0.7)
+    m2 = mat(f"{name}_band", c2, rough=0.7)
     b = arm.data.bones["pelvis"]
     p = b.head_local
     mb = MeshBuilder()
     mb.cyl(m1, p + Vector((0, 0, -0.30)), 0.17, 0.72, segs=20, r2=0.15)
     mb.cyl(m2, p + Vector((0, 0, -0.40)), 0.215, 0.1, segs=20, r2=0.205)
     mb.cyl(m2, p + Vector((0, 0, -0.12)), 0.19, 0.08, segs=20)
-    return _attach(arm, "pelvis", mb, "CHR_hawker_wrapper", sub=False)
+    return _attach(arm, "pelvis", mb, name, sub=False)
 
 
 def add_headscarf(arm, c):

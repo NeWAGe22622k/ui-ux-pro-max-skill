@@ -120,7 +120,8 @@ def traffic(cars):
     for (n, x, v) in K.KEKES:
         _const_speed(cars[n], K.KEKE_Y, x, v)
     for i, (lane, x, design) in enumerate(K.OPP_TRAFFIC):
-        _const_speed(cars[f"CAR_generic_opp_{i:02d}"], K.OPP_LANES[lane], x, K.OPP_SPEED, direction=-1)
+        n = f"CAR_{design}_{i:02d}" if isinstance(design, str) else f"CAR_generic_opp_{i:02d}"
+        _const_speed(cars[n], K.OPP_LANES[lane], x, K.OPP_SPEED, direction=-1)
 
 # ============================================================================ coupe
 
@@ -156,25 +157,15 @@ def coupe_anim(cars):
              [0, math.radians(1), math.radians(-1), math.radians(0.8), 0, 0, math.radians(-4), math.radians(-6), math.radians(-3)])
     set_keys(cou, "rotation_euler", 0, [g1, 795, 820, 846], [0, math.radians(9), math.radians(6), math.radians(2)])
     set_keys(cou, "rotation_euler", 2, [g1, 815, 846], [0, math.radians(-12), math.radians(-14)])
-    # wheels: roll with the crawl, then fold into hover fans and spin
-    fa, fb = ck["fold"]
+    # wheels: roll with the crawl, then stay upright and still (the air jets do the lifting)
     r = cou["wheel_r"]
     for piv in [o for o in cou.children if o.name.startswith("EMP_coupe_wheel")]:
-        s = 1 if piv.location.y > 0 else -1
-        y0 = piv.location.y
-        fcr = set_keys(piv, "rotation_euler", 0, [fa, fb], [0, s * math.radians(K.WHEEL_FOLD_DEG)])
-        flatten_keys(fcr)
-        fcy = set_keys(piv, "location", 1, [fa, fb], [y0, y0 + s * K.WHEEL_SLIDE])
-        flatten_keys(fcy)
         wh = piv.children[0]
         roll = [(x - xs[0]) / r for x in xs[:4]]
-        spin_end = roll[-1] + 2 * math.pi * 2.0 * (F1 - fa) / K.FPS
-        fw = set_keys(wh, "rotation_euler", 1, [1, K.SEDAN_STOP_F, a, b, fa, fb, F1],
-                      roll + [roll[-1], roll[-1] + 6.0, spin_end])
+        fw = set_keys(wh, "rotation_euler", 1, [1, K.SEDAN_STOP_F, a, b], roll)
         kpw = fw.keyframe_points
         kpw[0].interpolation = kpw[1].interpolation = "LINEAR"
-        kpw[5].interpolation = "LINEAR"
-        flatten_keys(fw, {a, b, fa})
+        flatten_keys(fw, {a, b})
     # emissive materials
     lb = K.COUPE_KEYS["lightbar_base"]
     for mn in ("CAR_coupe_lightbar", "CAR_coupe_tailbar"):
@@ -185,8 +176,6 @@ def coupe_anim(cars):
     (u0, s0), (u1, s1) = ck["underglow"]
     fcu = set_keys(ug.node_tree, EMIS, 0, [u0, u1], [s0, s1])
     fcu.keyframe_points[0].handle_right_type = "AUTO_CLAMPED"
-    fan = bpy.data.materials["FX_coupe_fan_glow"]
-    set_keys(fan.node_tree, EMIS, 0, [fa, fb], [0.0, 8.0])
     # headlight flashes: 0 -> 20 -> 0 twice, 4 frames on / 4 off (crisp, constant interpolation)
     hl = bpy.data.materials["CAR_coupe_headlight"]
     fr, vs = [1], [0.0]
@@ -214,11 +203,11 @@ def fx(cars):
     cou = cars["CAR_coupe"]
     d0, d1 = K.COUPE_KEYS["dust"]
     base = coupe_pos(cou, d0)
-    dust_m = mat("FX_dust", K.C["dust"], rough=1.0, alpha=0.45)
+    dust_m = _vapour_material("FX_dust", K.C["dust"], K.THRUST["dust_density"])
     bw = mat("FX_bag_white", K.C["bag_white"], rough=0.6)
     bb = mat("FX_bag_blue", K.C["bag_blue"], rough=0.6)
     mb = MeshBuilder()
-    mb.sphere(dust_m, (0, 0, 0), 0.06, segs=12, rings=8)
+    mb.sphere(dust_m, (0, 0, 0), 0.25, segs=12, rings=8)
     dust_mesh = mb.to_object("FX_dust_src", "FX").data
     bpy.data.objects.remove(bpy.data.objects["FX_dust_src"])
     frames = list(range(d0 - 1, d1 + 1, 2))
@@ -242,6 +231,8 @@ def fx(cars):
         key_vec(ob, "location", frames, locs)
         for ax in range(3):
             set_keys(ob, "scale", ax, frames, scs)
+        set_keys(ob, "color", 3, frames, [0.0 if f < start else min(1.0, (f - start) / 4) * (1.0 - smoothstep((f - (d1 - 20)) / 20))
+                                           for f in frames])
     for i in range(K.N_BAGS):
         mb = MeshBuilder()
         mb.box(bw if i % 2 == 0 else bb, (0, 0, 0), (0.28, 0.32, 0.004))
@@ -278,6 +269,151 @@ def fx(cars):
     card.visible_shadow = True
     card["workbench_hide"] = True
     return card
+
+
+def coupe_matrix(cou, f):
+    loc = Vector([fcurve(cou, "location", i).evaluate(f) for i in range(3)])
+    rot = Euler([fcurve(cou, "rotation_euler", i).evaluate(f) for i in range(3)], "XYZ")
+    return Matrix.Translation(loc) @ rot.to_matrix().to_4x4()
+
+
+def _thrust_intensity(f):
+    keys = K.THRUST["intensity"]
+    if f <= keys[0][0]:
+        return 0.0 if f < keys[0][0] else keys[0][1]
+    for (fa, va), (fb, vb) in zip(keys, keys[1:]):
+        if fa <= f <= fb:
+            return va + (vb - va) * (f - fa) / (fb - fa)
+    return 0.0
+
+
+def _vapour_material(name="FX_thrust_vapour", colour=None, density=None):
+    """Soft smoke-puff surface: opaque-ish core, transparent rim, noise breakup.
+    Per-puff fade comes from the object colour alpha (keyed)."""
+    T = K.THRUST
+    colour = colour or T["colour"]
+    opacity = min(1.0, (density or T["density"]) / 30.0)
+    m = bpy.data.materials.new(name)
+    m.use_nodes = True
+    nt = m.node_tree
+    b = nt.nodes["Principled BSDF"]
+    b.inputs["Base Color"].default_value = (*colour, 1)
+    b.inputs["Roughness"].default_value = 1.0
+    b.inputs["Specular IOR Level"].default_value = 0.0
+    b.inputs["Subsurface Weight"].default_value = 0.0
+    info = nt.nodes.new("ShaderNodeObjectInfo")
+    lw = nt.nodes.new("ShaderNodeLayerWeight")
+    lw.inputs["Blend"].default_value = 0.5
+    inv = nt.nodes.new("ShaderNodeMath")
+    inv.operation = "SUBTRACT"
+    inv.inputs[0].default_value = 1.0
+    pw = nt.nodes.new("ShaderNodeMath")
+    pw.operation = "POWER"
+    pw.inputs[1].default_value = 2.2
+    tc = nt.nodes.new("ShaderNodeTexCoord")
+    noise = nt.nodes.new("ShaderNodeTexNoise")
+    noise.inputs["Scale"].default_value = 1.8
+    noise.inputs["Detail"].default_value = 4.0
+    ramp = nt.nodes.new("ShaderNodeMapRange")
+    ramp.inputs["From Min"].default_value = 0.3
+    ramp.inputs["From Max"].default_value = 0.7
+    m1 = nt.nodes.new("ShaderNodeMath")
+    m1.operation = "MULTIPLY"
+    m2 = nt.nodes.new("ShaderNodeMath")
+    m2.operation = "MULTIPLY"
+    m3 = nt.nodes.new("ShaderNodeMath")
+    m3.operation = "MULTIPLY"
+    m3.inputs[1].default_value = opacity
+    nt.links.new(lw.outputs["Facing"], inv.inputs[1])
+    nt.links.new(inv.outputs[0], pw.inputs[0])
+    nt.links.new(tc.outputs["Object"], noise.inputs["Vector"])
+    nt.links.new(noise.outputs["Fac"], ramp.inputs["Value"])
+    nt.links.new(pw.outputs[0], m1.inputs[0])
+    nt.links.new(ramp.outputs[0], m1.inputs[1])
+    nt.links.new(m1.outputs[0], m2.inputs[0])
+    nt.links.new(info.outputs["Alpha"], m2.inputs[1])
+    nt.links.new(m2.outputs[0], m3.inputs[0])
+    nt.links.new(m3.outputs[0], b.inputs["Alpha"])
+    m.surface_render_method = "BLENDED"
+    m.use_transparency_overlap = True
+    m.use_transparent_shadow = True
+    m.diffuse_color = (*colour, 0.35)   # Workbench: translucent puffs
+    return m
+
+
+def thrust_fx(cars):
+    """Air jets from the 4 vents: vapour puffs blast down, hit the road and billow outward."""
+    T = K.THRUST
+    rnd = random.Random(K.SEED + 11)
+    cou = cars["CAR_coupe"]
+    m = _vapour_material()
+    mb = MeshBuilder()
+    mb.sphere(m, (0, 0, 0), 1.0, segs=16, rings=10)
+    src = mb.to_object("FX_thrust_src", "FX")
+    mesh = src.data
+    bpy.data.objects.remove(src)
+    n = 0
+    ground = 0.10
+    for fb in range(T["start"], T["end"], T["every"]):
+        inten = _thrust_intensity(fb)
+        if inten <= 0.02:
+            continue
+        M = coupe_matrix(cou, fb)
+        centre = M.translation.copy()
+        down = (M.to_3x3() @ Vector((0, 0, -1))).normalized()
+        for (nx, ny) in T["nozzles"]:
+            p0 = M @ Vector((nx, ny, T["nozzle_z"] - 0.05))
+            jit = Vector((rnd.uniform(-0.15, 0.15), rnd.uniform(-0.15, 0.15), 0))
+            d = (down + jit).normalized()
+            v = T["jet_speed"] * (0.6 + 0.4 * inten)
+            k = T["drag"]
+            out_dir = Vector((p0.x - centre.x + rnd.uniform(-0.3, 0.3), p0.y - centre.y + rnd.uniform(-0.3, 0.3), 0))
+            out_dir = out_dir.normalized() if out_dir.length > 1e-3 else Vector((1, 0, 0))
+            life = int(T["life"] * (0.8 + 0.4 * rnd.random()))
+            fr = list(range(fb, fb + life + 1, 2))
+            locs, scs, alphas = [], [], []
+            t_hit = None
+            for f in fr:
+                t = (f - fb) / K.FPS
+                s = v * (1 - math.exp(-k * t)) / k
+                p = p0 + d * s
+                if p.z < ground:
+                    if t_hit is None:
+                        # time when the jet column met the road
+                        lo, hi = 0.0, t
+                        for _ in range(20):
+                            mid = (lo + hi) / 2
+                            if (p0 + d * (v * (1 - math.exp(-k * mid)) / k)).z < ground:
+                                hi = mid
+                            else:
+                                lo = mid
+                        t_hit = hi
+                    th = t_hit
+                    ph = p0 + d * (v * (1 - math.exp(-k * th)) / k)
+                    vh = v * math.exp(-k * th) * T["spread_keep"] + 1.5
+                    tt = t - th
+                    sp = vh * (1 - math.exp(-1.4 * tt)) / 1.4
+                    p = Vector((ph.x, ph.y, ground)) + out_dir * sp + Vector((0, 0, 0.35 * (1 - math.exp(-1.2 * tt))))
+                locs.append(p)
+                age = (f - fb) / life
+                r = (0.10 + 0.55 * age + (0.35 * age if t_hit is not None else 0.0)) * (0.7 + 0.5 * inten)
+                scs.append(r)
+                a_in = min(1.0, (f - fb) / 4.0)
+                a_out = 1.0 - smoothstep((age - 0.45) / 0.55)
+                alphas.append(inten * a_in * a_out)
+            ob = bpy.data.objects.new(f"FX_thrust_{n:03d}", mesh)
+            link(ob, "FX")
+            n += 1
+            key_vec(ob, "location", fr, locs)
+            frs = [fb - 1] + fr + [fr[-1] + 1]
+            scv = [0.0] + scs + [0.0]
+            for ax in range(3):
+                fc = set_keys(ob, "scale", ax, frs, scv)
+                fc.keyframe_points[0].interpolation = "CONSTANT"
+                fc.keyframe_points[-2].interpolation = "CONSTANT"
+            set_keys(ob, "color", 3, [fb - 1] + fr, [0.0] + alphas)
+    REPORT["thrust_puffs"] = n
+    return n
 
 
 def shadow_card_anim(card, hero_head):
@@ -632,3 +768,49 @@ def conductor_anim(arm, cou, minibus):
         p["rot"] = r
         return p
     CH.key_timeline(arm, pose, list(range(F0, F1 + 1, 2)))
+
+
+# ============================================================================ background people
+
+
+def _walk_rot(ph, sn, amp=1.0):
+    return {"thigh.L": (0, -22 * sn * amp, 0), "thigh.R": (0, 22 * sn * amp, 0),
+            "shin.L": (0, 6 + 22 * amp * max(0, math.sin(ph + 1.2)), 0),
+            "shin.R": (0, 6 + 22 * amp * max(0, math.sin(ph + 1.2 + math.pi)), 0),
+            "upper_arm.L": (8, 14 * sn * amp, 0), "upper_arm.R": (-8, -14 * sn * amp, 0),
+            "forearm.L": (0, -18, 0), "forearm.R": (0, -18, 0), "pelvis": (0, 0, 4 * sn), "chest": (0, 0, -3 * sn)}
+
+
+def ped_anim(arm, x0, y, heading, speed, facing_deg, seed):
+    """Walkers: constant-speed walk cycle along X. Standers: weight shift + small head turns."""
+    rnd = random.Random(seed)
+    frames = list(range(F0, F1 + 1, 2))
+    phase0 = rnd.uniform(0, 2 * math.pi)
+    if heading != 0:
+        arm.rotation_euler.z = 0.0 if heading > 0 else math.pi
+        xs = [x0 + heading * speed * (f - 1) / K.FPS for f in frames]
+        set_keys(arm, "location", 0, frames, xs, interp="LINEAR")
+        cadence = 24.0 * 1.0 / max(0.5, speed)   # frames per stride cycle
+
+        def pose(f):
+            p = CH.blank_pose()
+            ph = phase0 + 2 * math.pi * f / cadence
+            sn = math.sin(ph)
+            p["rot"] = _walk_rot(ph, sn, min(1.0, speed / 1.1))
+            p["root"] = Vector((0, 0, 0.018 * abs(math.cos(ph)) - 0.01))
+            return p
+    else:
+        arm.rotation_euler.z = math.radians(facing_deg)
+        arm.location.x = x0
+
+        def pose(f):
+            p = CH.blank_pose()
+            w = math.sin(phase0 + 2 * math.pi * f / 110.0)
+            look = 25 * math.sin(phase0 * 2 + 2 * math.pi * f / 260.0)
+            p["rot"] = {"pelvis": (3 * w, 0, 0), "spine": (-2 * w, 0, 0), "head": (0, 3, look),
+                        "upper_arm.L": (6, 4, 0), "upper_arm.R": (-6, 4, 0), "forearm.L": (0, -12, 0),
+                        "forearm.R": (0, -12, 0), "thigh.L": (0, 0, 0), "shin.L": (0, 3 * max(0, w), 0)}
+            p["root"] = Vector((0, 0.02 * w, 0))
+            return p
+    arm.location.y = y
+    CH.key_timeline(arm, pose, frames)

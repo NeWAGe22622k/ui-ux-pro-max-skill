@@ -1,5 +1,33 @@
 # Fly Nah: changes from the brief (and why)
 
+## Revision 2 (your review notes)
+- **The wheels no longer fold.** They stay upright and still for the whole lift-off and flight. No hover-fan glow.
+- **Air thrust lifts the coupe.** Four vents under the body glow soft blue and blast vapour down from
+  frame 655. The vapour hits the road and billows outward and upward as a ground-hugging cloud (about 300
+  puffs; soft-edged, noise broken, each one fading in and out). The jets peak at lift-off (685), keep
+  running through the hover and glide, then trail off during the fly-away (to frame 812). Dust is now soft
+  dust clouds, and the plastic bags still blow out. The underglow now sits only in the vents, strength 6
+  instead of 15, so the underside doesn't read as a white panel. Check 7 now verifies the wheels stay
+  upright and that the jets are active under the car at frame 700.
+- **Lagos road setting** (all text-free and logo-free):
+  - Lagos-style buildings: painted 2-4 storey shop-houses with burglar-proof window bars, balconies, AC units,
+    roll-up shop shutters and rusty zinc awnings. Houses with hipped corrugated-zinc roofs behind compound walls
+    and gates. Unfinished bare-concrete frames with rebar sticking up. Flat roofs with black water tanks and
+    satellite dishes.
+  - Shipping-container shops with open doors and goods. Colourful segmented umbrellas over trader tables with
+    produce. Generators, plain colour signboards, kiosks.
+  - Black-and-yellow painted kerbs on the pavements, the BRT lane and the median base. Open drainage gutters
+    with cover slabs.
+  - Concrete electricity poles every 38 m with sagging cables and pole-mounted transformers.
+  - Worn, patched asphalt with darker wheel tracks, sand drifts along the shoulder and median, muddy
+    potholes, and litter (sachet-water bags, bottles).
+  - Palm trees and dusty shrubs. A bus shelter with people waiting, pedestrians walking both pavements,
+    and two more hawkers with trays working the jam.
+  - Traffic: a petrol tanker and a covered lorry in the oncoming lanes, Sienna-style minivans and a
+    Hilux-style pickup in the mix.
+  - Weathered procedural materials: grime and rising damp on walls, rust on zinc, corrugation, worn concrete.
+
+
 ## Environment / engine
 1. **Blender 5.2.3 LTS as the `bpy` Python module** (cloud box, no GPU, no blender.org access). Scripts run with
    `python3 <script>.py`. Engine IDs here are `BLENDER_EEVEE` (EEVEE Next), `BLENDER_WORKBENCH`, `CYCLES`.
@@ -26,8 +54,6 @@
 11a. **Coupe body**: wheel radius 0.34 m (not set in the brief) and a slightly taller nose (0.68 m), so the
     wheel wells don't cut through the front fenders. Paint stays glossy black, coat 1.0, roughness 0.15. Specular
     level is 0.2 and coat IOR 1.3, so the hood doesn't mirror the bright hazy sky as white (it must read black).
-11. **Folded wheels**: the 90-degree fold and 0.1 m slide are as specified. The discs sit in deep wheel wells at the
-    corners and stick out about 0.3 m past the body sides, like hover fans, rather than fully underneath.
 12. **Generic cars**: 7 distinct designs (sedan/SUV/hatch in white, red, dark blue, beige, grey), reused as
     linked copies (27 generic cars) so every lane has traffic. More minibuses in L2/L4, and 2 stopped cars ahead
     of the minibus in L3 (the "jammed traffic ahead" HERO points at). None are black.

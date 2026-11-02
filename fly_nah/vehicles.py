@@ -54,8 +54,11 @@ def _lower_body(name, S, paint, kind, door_open=False):
     xs = [p[0] for p in S["profile"]]
     x_front = S["A"][0] - 0.2 if kind not in ("minibus", "brt") else max(xs) - 0.25
     x_rear = S["D"][0] + 0.2 if kind not in ("minibus", "brt") else min(xs) + 0.12
-    if kind == "sedan" or kind == "hatch":
+    if kind in ("sedan", "hatch", "pickup"):
         x_rear = max(x_rear, S["seat_hip"][0] - 1.35)
+    if "bed" in S:   # open pickup bed
+        b0, b1 = S["bed"]
+        cutters.append(cutter_box(((b0 + b1) / 2, 0, S["belt"] + 1.2), (b1 - b0, W - 0.16, 3.0 - 0.0)))
     cutters.append(cutter_box(((x_front + x_rear) / 2, 0, floor + 1.5), (x_front - x_rear, W - 0.14, 3.0)))
     r = S["wheel_r"]
     for ax in (S["axle_x"], -S["axle_x"]):
@@ -147,7 +150,7 @@ def _interior(name, S, M, kind="sedan"):
         rot = Matrix.Rotation(math.radians(-14), 3, "Y")
         mb.box(M["interior"], (x - 0.22, y, hz + 0.27), (0.12, 0.48, 0.66), rot=rot)
         mb.box(M["interior"], (x - 0.30, y, hz + 0.70), (0.10, 0.26, 0.18), rot=rot)
-    if kind in ("sedan", "suv", "hatch"):
+    if kind in ("sedan", "suv", "hatch", "minivan", "pickup"):
         rx = hx - 0.95
         mb.box(M["interior"], (rx + 0.05, 0, hz - 0.11), (0.48, W - 0.25, 0.12))
         mb.box(M["interior"], (rx - 0.22, 0, hz + 0.22), (0.12, W - 0.25, 0.56),
@@ -268,10 +271,14 @@ def coupe():
     for s in (1, -1):
         mb.box(head, (2.38, s * (W / 2 - 0.26), 0.55), (0.06, 0.32, 0.045))
     lights = mb.to_object("CAR_coupe_lights", COL, parent=root)
-    # underglow
+    # thrust vents under the body (the air jets that lift the car) + their glow
     ug = mat("FX_coupe_underglow", c["underglow"], emission=c["underglow"], strength=0.0)
+    M = _common()
     mb = MeshBuilder()
-    mb.box(ug, (0, 0, 0.11), (3.6, 1.5, 0.01))
+    vz = K.THRUST["nozzle_z"]
+    for nx, ny in K.THRUST["nozzles"]:
+        mb.cyl(M["trim"], (nx, ny, vz + 0.02), K.THRUST["nozzle_r"] + 0.03, 0.05, segs=24)
+        mb.cyl(ug, (nx, ny, vz - 0.008), K.THRUST["nozzle_r"], 0.01, segs=24)
     ob = mb.to_object("FX_coupe_underglow", "FX", parent=root)
     # dashboard button at HORNER's right-hand reach
     btn = mat("FX_coupe_button", c["button"], emission=c["button"], strength=2.0)
@@ -280,15 +287,6 @@ def coupe():
     b = mb.to_object("FX_coupe_button", "FX", parent=root)
     b.location = K.COUPE_BUTTON
     b.rotation_euler = (0, math.radians(-50), 0)
-    # hover-fan glow ring on each wheel rim
-    fan = mat("FX_coupe_fan_glow", c["fan_glow"], emission=c["fan_glow"], strength=0.0)
-    for piv in [o for o in root.children if o.name.startswith("EMP_coupe_wheel")]:
-        wh = piv.children[0]
-        s = 1 if piv.location.y > 0 else -1
-        mb = MeshBuilder()
-        mb.torus(fan, (0, s * (S["wheel_w"] / 2 + 0.005), 0), S["wheel_r"] * 0.78, 0.012,
-                 rot=Matrix.Rotation(math.radians(90), 3, "X"))
-        mb.to_object(f"FX_coupe_fan_{piv.name[-2:]}", "FX", parent=wh)
     return root
 
 
@@ -372,6 +370,64 @@ def keke(name):
     return root
 
 
+def truck(name, variant):
+    """Petrol tanker or covered lorry: cab + chassis + tank/cargo, 3 axles. Origin = ground centre."""
+    T = K.TRUCK
+    M = _common()
+    c = K.C
+    cab_m = mat(f"PAINT_{name}", T["cab_colours"][variant], metallic=0.3, rough=0.4, coat=0.3)
+    mb = MeshBuilder()
+    Lh, W = T["L"] / 2, T["W"]
+    x0, x1 = T["cab"]
+    h = T["cab_h"]
+    mb.box(M["trim"], (0, 0.75, 0.95), (T["L"] - 0.3, 0.15, 0.25))
+    mb.box(M["trim"], (0, -0.75, 0.95), (T["L"] - 0.3, 0.15, 0.25))
+    mb.box(cab_m, ((x0 + x1) / 2, 0, 0.75 + (1.55 - 0.75) / 2), (x1 - x0, W, 0.8))     # lower cab
+    mb.box(cab_m, ((x0 + x1) / 2 - 0.1, 0, 1.55 + (h - 1.55) / 2), (x1 - x0 - 0.2, W - 0.06, h - 1.55))
+    mb.box(M["trim"], (x1 + 0.02, 0, 1.0), (0.06, W - 0.3, 0.45))                      # grille
+    for s_ in (1, -1):
+        mb.box(M["head"], (x1 + 0.03, s_ * (W / 2 - 0.3), 0.85), (0.05, 0.3, 0.15))
+        mb.box(M["tail"], (-Lh + 0.05, s_ * (W / 2 - 0.25), 1.0), (0.05, 0.25, 0.15))
+        mb.box(cab_m, (x1 - 0.3, s_ * (W / 2 + 0.12), 2.0), (0.08, 0.06, 0.45))          # mirror arms
+    if variant == "tanker":
+        tm = mat(f"PAINT_{name}_tank", T["tank"], metallic=0.8, rough=0.3)
+        bm_ = mat(f"PAINT_{name}_band", T["band"], metallic=0.3, rough=0.4)
+        tl = x0 - 0.3 - (-Lh + 0.2)
+        cx = (x0 - 0.3 + (-Lh + 0.2)) / 2
+        r = T["tank_r"]
+        mb.cyl(tm, (cx, 0, 1.1 + r), r, tl - 2 * 0.25, axis="X", segs=28)
+        for e in (1, -1):
+            mb.sphere(tm, (cx + e * (tl / 2 - 0.25), 0, 1.1 + r), r, scale=(0.25 / r, 1, 1), segs=24, rings=12)
+        mb.cyl(bm_, (cx, 0, 1.1 + r), r + 0.01, 0.5, axis="X", segs=28)
+        mb.box(M["trim"], (cx, 0, 1.1 + 2 * r + 0.08), (tl - 1.0, 0.5, 0.12))
+    else:
+        tarp = mat(f"PAINT_{name}_tarp", T["tarp"], rough=0.8)
+        wood = mat(f"PAINT_{name}_wood", T["wood"], rough=0.9)
+        cl = x0 - 0.25 - (-Lh + 0.1)
+        cx = (x0 - 0.25 + (-Lh + 0.1)) / 2
+        mb.box(wood, (cx, 0, 1.4), (cl, W, 0.9))
+        mb.box(tarp, (cx, 0, 1.85 + 0.85), (cl - 0.1, W - 0.1, 1.7))
+    root = mb.to_object(name, COL)
+    bevel(root, width=0.04, segs=2, angle=40)
+    g = MeshBuilder()
+    g.poly(M["glass"], [(x1 + 0.005, -W / 2 + 0.15, 1.6), (x1 + 0.005, W / 2 - 0.15, 1.6),
+                        (x1 - 0.18, W / 2 - 0.15, h - 0.15), (x1 - 0.18, -W / 2 + 0.15, h - 0.15)])
+    g.to_object(f"{name}_glass", COL, parent=root, recalc=False)
+    sw = MeshBuilder()
+    wc = Vector((x1 - 0.55, 0.55, 1.75))
+    sw.torus(M["trim"], wc, 0.22, 0.02, rot=Matrix.Rotation(math.radians(-55), 3, "Y"))
+    sw.to_object(f"{name}_steering", COL, parent=root)
+    S = dict(wheel_r=T["wheel_r"], wheel_w=T["wheel_w"])
+    for i, ax in enumerate(T["axles"]):
+        for side, s_ in (("L", 1), ("R", -1)):
+            _wheel(f"{name}_wheel_{i}{side}", S, M, root, (ax, s_ * T["track"], T["wheel_r"]), s_)
+    root["kind"] = "truck"
+    root["wheel_r"] = T["wheel_r"]
+    root["L"] = T["L"]
+    root["W"] = W
+    return root
+
+
 def instance(src_root, new_name):
     """Linked-duplicate a whole car hierarchy (shares mesh data + materials)."""
     old = src_root.name
@@ -438,8 +494,12 @@ def build_all():
     for (n, x, v) in K.KEKES:
         cars[n] = keke(n) if not any(k.startswith("CAR_keke") for k in cars) else instance(cars["CAR_keke_01"], n)
     for i, (lane, x, design) in enumerate(K.OPP_TRAFFIC):
-        n = f"CAR_generic_opp_{i:02d}"
-        cars[n] = generic(n, design)
+        if isinstance(design, str):
+            n = f"CAR_{design}_{i:02d}"
+            cars[n] = truck(n, design)
+        else:
+            n = f"CAR_generic_opp_{i:02d}"
+            cars[n] = generic(n, design)
     # remove temp collection used by cutters
     t = bpy.data.collections.get("_TMP")
     if t:

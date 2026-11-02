@@ -52,7 +52,8 @@ C = dict(
     brt_blue=(0.03, 0.15, 0.55), brt_white=(0.80, 0.80, 0.80),
     keke_yellow=(0.80, 0.60, 0.03), keke_green=(0.05, 0.35, 0.08),
     generic=dict(white=(0.80, 0.80, 0.78), red=(0.50, 0.03, 0.03), darkblue=(0.03, 0.06, 0.22),
-                 beige=(0.55, 0.45, 0.30), grey=(0.25, 0.26, 0.27)),
+                 beige=(0.55, 0.45, 0.30), grey=(0.25, 0.26, 0.27), champagne=(0.52, 0.45, 0.33),
+                 maroon=(0.22, 0.03, 0.04)),
     glass_tint=(0.75, 0.85, 0.85), rubber=(0.02, 0.02, 0.02), rim=(0.45, 0.45, 0.47),
     trim=(0.04, 0.04, 0.045), interior=(0.07, 0.065, 0.06), interior_light=(0.30, 0.26, 0.20),
     headlight=(1.0, 0.97, 0.9), taillight=(0.8, 0.02, 0.01), lightbar=(1.0, 1.0, 1.0),
@@ -63,7 +64,7 @@ C = dict(
     building=[(0.55, 0.45, 0.35), (0.50, 0.50, 0.42), (0.45, 0.38, 0.33), (0.60, 0.55, 0.45),
               (0.40, 0.42, 0.40), (0.55, 0.40, 0.30), (0.62, 0.58, 0.50), (0.42, 0.36, 0.28)],
     window=(0.04, 0.05, 0.06), skyline=(0.22, 0.24, 0.28),
-    billboard=[(0.70, 0.10, 0.08), (0.08, 0.40, 0.15), (0.10, 0.25, 0.65)],
+    billboard=[(0.70, 0.10, 0.08), (0.08, 0.40, 0.15), (0.10, 0.25, 0.65), (0.85, 0.60, 0.05), (0.55, 0.08, 0.35)],
     kiosk=[(0.10, 0.35, 0.60), (0.65, 0.12, 0.10), (0.20, 0.50, 0.20)],
     tree_trunk=(0.12, 0.07, 0.04), tree_leaf=(0.06, 0.20, 0.04),
     dust=(0.50, 0.42, 0.33), bag_white=(0.85, 0.85, 0.85), bag_blue=(0.10, 0.25, 0.70),
@@ -87,7 +88,8 @@ LIGHT_HEIGHT = 9.0
 LIGHT_ARM = 2.6
 BRIDGE_X = 70.0
 BRIDGE = dict(deck_z=6.2, width=3.0, y0=-21.0, y1=17.0, truss_h=2.2, stair_len=11.0)
-BILLBOARDS = [(40.0, -20.5, 8.0, 4.0, 7.0), (-55.0, 16.5, 8.0, 4.0, 7.0), (135.0, -20.5, 9.0, 4.5, 8.0)]
+BILLBOARDS = [(40.0, -20.5, 8.0, 4.0, 7.0), (-55.0, 16.5, 8.0, 4.0, 7.0), (135.0, -20.5, 9.0, 4.5, 8.0),
+              (-30.0, 16.8, 10.0, 5.0, 9.0), (95.0, 16.8, 9.0, 4.5, 8.5)]
 SKYLINE_X0 = 260.0
 SUN = dict(elevation=18.0, azimuth=-8.0, color=(1.0, 0.78, 0.55), strength=4.0, angle=1.5)
 HAZE_DENSITY = 0.002
@@ -134,6 +136,18 @@ GENERIC = dict(
              profile=[(2.10, 0.22), (2.35, 0.38), (2.37, 0.80), (2.20, 0.98), (1.15, 1.05), (-2.30, 1.10),
                       (-2.36, 0.90), (-2.35, 0.38), (-2.10, 0.22)],
              seat_hip=(0.0, 0.40, 0.62), dash_x=(0.65, 1.15), dash_z=1.08),
+    minivan=dict(L=5.05, W=1.95, H=1.75, clear=0.17, belt=0.98, wheel_r=0.34, wheel_w=0.22, axle_x=1.50, track=0.83,
+                 A=(1.30, 0.98), B=(0.55, 1.72), Cr=(-2.35, 1.72), D=(-2.45, 1.05), hw_b=0.92, hw_t=0.80,
+                 pillars_x=[-0.15, -1.30], roof_t=0.06,
+                 profile=[(2.30, 0.17), (2.52, 0.32), (2.53, 0.70), (2.30, 0.92), (1.30, 0.98), (-2.45, 1.05),
+                          (-2.52, 0.85), (-2.50, 0.32), (-2.30, 0.17)],
+                 seat_hip=(0.25, 0.40, 0.62), dash_x=(0.85, 1.30), dash_z=1.0),
+    pickup=dict(L=5.3, W=1.85, H=1.8, clear=0.25, belt=1.08, wheel_r=0.38, wheel_w=0.24, axle_x=1.55, track=0.78,
+                A=(1.05, 1.08), B=(0.35, 1.78), Cr=(-1.15, 1.78), D=(-1.25, 1.10), hw_b=0.88, hw_t=0.78,
+                pillars_x=[-0.40], roof_t=0.06,
+                profile=[(2.30, 0.25), (2.62, 0.45), (2.64, 0.85), (2.45, 1.02), (1.05, 1.08), (-1.25, 1.10),
+                         (-2.60, 1.05), (-2.65, 0.45), (-2.40, 0.25)],
+                seat_hip=(-0.05, 0.40, 0.70), dash_x=(0.60, 1.05), dash_z=1.10, bed=(-2.55, -1.35)),
     hatch=dict(L=4.0, W=1.75, H=1.50, clear=0.16, belt=0.92, wheel_r=0.31, wheel_w=0.20, axle_x=1.25, track=0.74,
                A=(0.85, 0.92), B=(0.05, 1.45), Cr=(-1.55, 1.45), D=(-1.90, 1.00), hw_b=0.84, hw_t=0.72,
                pillars_x=[-0.55], roof_t=0.05,
@@ -141,9 +155,9 @@ GENERIC = dict(
                         (-2.00, 0.80), (-2.00, 0.30), (-1.80, 0.16)],
                seat_hip=(-0.20, 0.37, 0.50), dash_x=(0.35, 0.85), dash_z=0.95),
 )
-# 7 distinct generic designs (body type, colour); traffic re-uses them as linked copies
+# 10 distinct generic designs (body type, colour); traffic re-uses them as linked copies
 GENERIC_DESIGNS = [("sedan", "white"), ("sedan", "red"), ("suv", "darkblue"), ("sedan", "beige"),
-                   ("suv", "grey"), ("hatch", "white"), ("suv", "beige")]
+                   ("suv", "grey"), ("hatch", "white"), ("suv", "beige"), ("minivan", "champagne"), ("pickup", "white"), ("minivan", "maroon")]
 
 # ---------------------------------------------------------------- traffic
 SEDAN_CRAWL = 0.5            # m/s, frames 1..300
@@ -155,12 +169,12 @@ MINIBUS_AHEAD = 7.1
 # (name, design, lane, x at frame 1, speed m/s). Speeds never increase front-to-back -> gaps never close.
 TRAFFIC_L2 = [  # front to back
     ("CAR_generic_01", 0, 29.0, 1.5), ("CAR_generic_02", 2, 21.4, 1.5), ("CAR_minibus_02", "minibus", 13.8, 1.45),
-    ("CAR_generic_03", 3, 6.4, 1.4), ("CAR_generic_04", 4, -0.8, 1.4),
+    ("CAR_generic_03", 3, 6.4, 1.4), ("CAR_generic_04", 7, -0.8, 1.4),
     # deliberate gap (camera corridor for S01 / S06), then slower cars
     ("CAR_generic_05", 1, -29.0, 1.0), ("CAR_generic_06", 5, -36.6, 1.0)]
 TRAFFIC_L4 = [
     ("CAR_generic_07", 6, 26.0, 1.5), ("CAR_generic_08", 0, 18.6, 1.4), ("CAR_minibus_03", "minibus", 10.8, 1.3),
-    ("CAR_generic_09", 3, 3.2, 1.2), ("CAR_generic_10", 1, -4.4, 1.1),
+    ("CAR_generic_09", 8, 3.2, 1.2), ("CAR_generic_10", 1, -4.6, 1.1),
     ("CAR_minibus_conductor", "minibus", None, 1.0),  # x solved so it sits at MINIBUS_COND_X at MINIBUS_COND_F
     ("CAR_generic_11", 4, -50.0, 1.0), ("CAR_generic_12", 2, -57.4, 1.0)]
 MINIBUS_COND_X, MINIBUS_COND_F = 14.0, 798
@@ -172,9 +186,12 @@ KEKES = [("CAR_keke_01", -30.0, 2.0), ("CAR_keke_02", -100.0, 2.0)]
 KEKE_Y = -16.4
 OPP_SPEED = 5.0
 OPP_TRAFFIC = [  # lane index, x at frame 1, design
-    (0, 290, 0), (0, 210, 2), (0, 140, 6), (0, 60, 3),
-    (1, 270, 4), (1, 185, 1), (1, 100, 5), (1, 20, 0),
-    (2, 250, 3), (2, 160, 6), (2, 75, 2)]
+    (0, 290, 0), (0, 210, 2), (0, 140, 9), (0, 60, "lorry"),
+    (1, 270, 4), (1, 185, 7), (1, 100, 5), (1, 20, 0),
+    (2, 250, 3), (2, 160, "tanker"), (2, 75, 8)]
+TRUCK = dict(L=11.5, W=2.5, cab=(3.55, 5.75), cab_h=3.0, wheel_r=0.52, wheel_w=0.30, axles=[4.6, -3.4, -4.7],
+             track=0.95, tank_r=1.1, cab_colours=dict(tanker=(0.75, 0.75, 0.73), lorry=(0.55, 0.06, 0.05)),
+             tank=(0.72, 0.72, 0.70), band=(0.75, 0.40, 0.03), tarp=(0.06, 0.20, 0.55), wood=(0.35, 0.22, 0.12))
 
 # ---------------------------------------------------------------- characters
 HERO_HEIGHT, HORNER_HEIGHT = 1.78, 1.75
@@ -189,8 +206,8 @@ ENVELOPE_DROP_F = 452
 
 # ---------------------------------------------------------------- coupe flight
 COUPE_KEYS = dict(
-    underglow=((649, 0.0), (670, 15.0)), lightbar_base=6.0, lightbar_boost=1.5,
-    fold=(655, 691), dust=(660, 720), rise=(685, 735, 3.5), hover_bob=0.03,
+    underglow=((649, 0.0), (670, 6.0)), lightbar_base=6.0, lightbar_boost=1.5,
+    dust=(660, 720), rise=(685, 735, 3.5), hover_bob=0.03,
     glide=(745, 780, 8.0, 5.0), fly=(781, 846, 80.0, 18.0), fly_extra=(864, 115.0, 23.0),
     fly_y=(-19.5, -23.5))  # y at 846 / 864: drifts toward the sun azimuth
 HEADLIGHT_FLASHES = [390, 398]    # each: 4 frames on, 4 off
@@ -198,6 +215,12 @@ HEADLIGHT_FLASH_STRENGTH = 20.0
 BUTTON_KEYS = ((632, 2.0), (636, 25.0))
 SHADOW_CARD = dict(size=(3.0, 1.5), frames=(752, 770), dist=3.0, sweep=4.0)
 N_DUST, N_BAGS = 70, 7
+# Air-thrust lift: 4 vents under the coupe blow vapour down; it hits the road and billows outward.
+# intensity: (frame, 0..1) keys, linear between them.  Wheels stay upright the whole time.
+THRUST = dict(nozzles=[(1.0, 0.42), (1.0, -0.42), (-1.05, 0.42), (-1.05, -0.42)], nozzle_z=0.12, nozzle_r=0.15,
+              start=655, end=812, every=2, life=36, jet_speed=8.0, drag=1.7, spread_keep=0.8,
+              intensity=[(655, 0.25), (672, 0.7), (685, 1.0), (735, 0.85), (745, 0.75), (780, 0.6), (812, 0.0)],
+              density=27.0, colour=(0.9, 0.9, 0.92), dust_density=11.0)
 
 # ---------------------------------------------------------------- lip sync
 LINE_START, LINE_END = 515, 565
@@ -236,3 +259,52 @@ CLEARANCE = 0.3
 ENGINE_OVERRIDE = {"S03": "cycles"}
 CYCLES_SAMPLES = 48
 REVIEW_EEVEE_SAMPLES = 8   # review stills only; finals use the scene setting
+
+# ---------------------------------------------------------------- Lagos set dressing
+LAGOS = dict(
+    walls=[(0.72, 0.64, 0.48), (0.72, 0.48, 0.34), (0.45, 0.55, 0.60), (0.48, 0.56, 0.40), (0.68, 0.67, 0.62),
+           (0.66, 0.50, 0.22), (0.68, 0.44, 0.44), (0.55, 0.52, 0.47), (0.62, 0.60, 0.35), (0.40, 0.47, 0.55)],
+    cloth=[(0.75, 0.08, 0.06), (0.85, 0.65, 0.03), (0.06, 0.25, 0.65), (0.08, 0.45, 0.15), (0.80, 0.80, 0.78),
+           (0.55, 0.10, 0.40), (0.90, 0.40, 0.05)],
+    goods=[(0.80, 0.35, 0.02), (0.75, 0.70, 0.10), (0.85, 0.85, 0.85), (0.20, 0.45, 0.10), (0.60, 0.10, 0.08),
+           (0.15, 0.30, 0.65), (0.45, 0.30, 0.15)],
+    containers=[(0.08, 0.22, 0.45), (0.50, 0.12, 0.08), (0.10, 0.35, 0.18), (0.55, 0.45, 0.30)],
+    shutters=[(0.35, 0.36, 0.38), (0.10, 0.25, 0.45), (0.15, 0.35, 0.20), (0.45, 0.15, 0.10)],
+    kerb_block=1.0, gutter_w=0.7,
+    pole_spacing=38.0, pole_y_right=-21.2, pole_y_left=17.2, pole_h=9.0, sag=0.6,
+    bus_shelter_x=-62.0,
+    patches=[(18, -13.2, 3.5, 2.0), (32, -12.6, 5.0, 1.6), (-6, -5.6, 4.0, 2.2), (6, -12.8, 2.5, 1.8),
+             (-25, -9.6, 6.0, 2.5), (45, -9.4, 3.0, 2.0), (-14, -16.2, 4.0, 1.5), (60, -5.8, 7.0, 3.0),
+             (-48, -13.0, 5.0, 2.6), (90, -12.9, 4.0, 2.0), (-2, 6.0, 6.0, 2.5), (25, 2.4, 4.0, 2.0)],
+    potholes=[(-3, -16.8, 0.45), (14, -17.2, 0.6), (27, -14.5, 0.35), (-20, -17.0, 0.5), (40, -16.5, 0.4),
+              (8, -14.3, 0.3)],
+    palms=[(-140, -21.3), (-95, -21.4), (-38, -21.3), (12, -21.4), (48, -21.3), (105, -21.4), (150, -21.3),
+           (190, -21.4), (-120, 17.3), (-60, 17.4), (-10, 17.3), (30, 17.4), (90, 17.3), (130, 17.4)],
+)
+
+# ---------------------------------------------------------------- background people (proxy, low detail)
+# name, x at frame 1, y, heading (+1 walks +X, -1 walks -X, 0 stands), speed m/s, facing deg (standers), tray
+PED_WALK_Y_RIGHT, PED_WALK_Y_LEFT = -19.3, 15.3
+PEDS = [
+    ("CHR_ped_01", -40.0, PED_WALK_Y_RIGHT, 1, 1.2, 0, False),
+    ("CHR_ped_02", 30.0, PED_WALK_Y_RIGHT - 0.4, -1, 1.1, 0, False),
+    ("CHR_ped_03", 62.0, PED_WALK_Y_RIGHT, -1, 1.3, 0, False),
+    ("CHR_ped_04", -12.0, PED_WALK_Y_RIGHT - 0.3, 1, 1.0, 0, True),
+    ("CHR_ped_05", -30.0, PED_WALK_Y_LEFT, 1, 1.2, 0, False),
+    ("CHR_ped_06", 40.0, PED_WALK_Y_LEFT + 0.3, -1, 1.1, 0, False),
+    ("CHR_ped_07", -63.5, -20.7, 0, 0.0, 90, False),     # bus shelter
+    ("CHR_ped_08", -61.8, -20.6, 0, 0.0, 70, False),
+    ("CHR_ped_09", -60.2, -20.8, 0, 0.0, 110, False),
+    ("CHR_ped_10", -5.0, -21.0, 0, 0.0, 95, False),      # by the shops
+    ("CHR_ped_11", 31.0, -21.05, 0, 0.0, 80, True),
+    ("CHR_hawker_02", 40.0, -7.6, -1, 0.5, 0, True),     # more hawkers working the jam
+    ("CHR_hawker_03", 72.0, -11.2, -1, 0.45, 0, True),
+]
+PED_LOOKS = [  # top, bottom, skin, shoes, hair
+    ((0.70, 0.70, 0.68), (0.10, 0.12, 0.25), (0.28, 0.17, 0.11), (0.05, 0.04, 0.03), (0.015, 0.012, 0.01)),
+    ((0.65, 0.35, 0.05), (0.65, 0.35, 0.05), (0.25, 0.15, 0.10), (0.08, 0.05, 0.03), (0.30, 0.08, 0.30)),
+    ((0.08, 0.30, 0.55), (0.06, 0.06, 0.07), (0.30, 0.18, 0.12), (0.75, 0.75, 0.75), (0.015, 0.012, 0.01)),
+    ((0.55, 0.08, 0.10), (0.35, 0.28, 0.18), (0.22, 0.13, 0.09), (0.05, 0.04, 0.03), (0.015, 0.012, 0.01)),
+    ((0.12, 0.40, 0.18), (0.12, 0.40, 0.18), (0.27, 0.16, 0.11), (0.08, 0.05, 0.03), (0.60, 0.45, 0.05)),
+    ((0.85, 0.85, 0.82), (0.25, 0.25, 0.27), (0.24, 0.14, 0.10), (0.05, 0.04, 0.03), (0.015, 0.012, 0.01)),
+]

@@ -165,15 +165,19 @@ def main():
         minclear = min(minclear, lo_c.z - hi_s.z)
     allok &= result(6, "coupe >= 1.2 m above sedan roof during 745-780", minclear >= 1.2, f"min clearance {minclear:.2f} m")
 
-    # 7 wheels vertical at 700
+    # 7 wheels stay upright (no fold) + air-thrust vapour present under the coupe at lift-off
     sc.frame_set(700)
     angs = []
     for piv in [o for o in cou.children if o.name.startswith("EMP_coupe_wheel")]:
         wh = piv.children[0]
         axle = (wh.matrix_world.to_3x3() @ Vector((0, 1, 0))).normalized()
-        angs.append(math.degrees(math.acos(min(1, abs(axle.z)))))
-    allok &= result(7, "coupe wheel axles within 5 deg of vertical at f700", max(angs) <= 5.0,
-                    "angles " + ", ".join(f"{a:.1f}" for a in angs))
+        angs.append(math.degrees(math.asin(min(1, abs(axle.z)))))
+    c = cou.matrix_world.translation
+    puffs = [o for o in bpy.data.objects if o.name.startswith("FX_thrust_") and o.scale.x > 0.05 and o.color[3] > 0.15
+             and (Vector((o.location.x - c.x, o.location.y - c.y))).length < 4.0 and o.location.z < c.z + 0.2]
+    ok7 = max(angs) <= 5.0 and len(puffs) >= 8
+    allok &= result(7, "coupe wheels stay upright (axles within 5 deg of horizontal) + thrust vapour under it at f700", ok7,
+                    "axle tilt " + ", ".join(f"{a:.1f}" for a in angs) + f"; {len(puffs)} vapour puffs active")
 
     # 8 hero head/arm vs window opening 505-600
     hero = bpy.data.objects["CHR_hero"]

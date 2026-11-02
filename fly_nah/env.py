@@ -50,10 +50,9 @@ def build():
 
     # pavements (raised)
     mb = MeshBuilder()
-    for (a, b) in (K.PAVEMENT_RIGHT, K.PAVEMENT_LEFT):
+    gut = K.LAGOS["gutter_w"] + 0.27   # kerb + open gutter + gutter wall between road and pavement
+    for (a, b) in ((K.PAVEMENT_RIGHT[0], K.PAVEMENT_RIGHT[1] - gut), (K.PAVEMENT_LEFT[0] + gut, K.PAVEMENT_LEFT[1])):
         mb.box(M["pave"], (xc, (a + b) / 2, K.PAVEMENT_H / 2), (L, b - a, K.PAVEMENT_H))
-    mb.box(M["kerb"], (xc, K.PAVEMENT_RIGHT[1], 0.09), (L, 0.2, 0.18))
-    mb.box(M["kerb"], (xc, K.PAVEMENT_LEFT[0], 0.09), (L, 0.2, 0.18))
     mb.to_object("ENV_pavements", COL)
 
     # median barrier (Jersey-ish profile)
@@ -92,8 +91,16 @@ def build():
     mb.to_object("ENV_lane_markings", COL)
 
     _street_lights(M)
-    _buildings(M, rnd)
-    _kiosks_trees(M, rnd)
+    import lagos
+    lagos.build()
+    _kiosks(M)
+    # weathered procedural surfaces for the big pieces
+    LM = lagos.materials()
+    bpy.data.objects["ENV_road"].data.materials[0] = LM["asphalt"]
+    bpy.data.objects["ENV_median"].data.materials[0] = LM["concrete"]
+    bpy.data.objects["ENV_pavements"].data.materials[0] = lagos.pmat("ENV_pavement_worn", K.C["pavement"], "concrete", scale=2.0)
+    bpy.data.objects["ENV_brt_kerb"].hide_render = True    # replaced by the painted kerb
+    bpy.data.objects["ENV_brt_kerb"].hide_viewport = True
     _billboards(M)
     _bridge(M)
     _skyline(M, rnd)
@@ -180,21 +187,15 @@ def _buildings(M, rnd):
             x += w + rnd.uniform(1.5, 6)
 
 
-def _kiosks_trees(M, rnd):
+def _kiosks(M):
     mb = MeshBuilder()
-    for j, x in enumerate([-120, -64, -18, 22, 95, 160, 210]):
+    for j, x in enumerate([-120, -18, 22, 95, 160, 210]):
         col = mat(f"ENV_kiosk_{j % 3}", K.C["kiosk"][j % 3], rough=0.6)
         y = (K.PAVEMENT_RIGHT[0] + K.PAVEMENT_RIGHT[1]) / 2 - 0.3
         mb.box(col, (x, y, 1.15 + K.PAVEMENT_H), (2.2, 1.6, 2.3))
         mb.box(col, (x, y + 1.0, 2.35 + K.PAVEMENT_H), (2.6, 0.9, 0.06),
                rot=Matrix.Rotation(math.radians(-12), 3, "X"))
     mb.to_object("ENV_kiosks", COL)
-    mb = MeshBuilder()
-    for x, y in [(-150, -19.6), (-92, -19.4), (-40, 15.6), (8, -19.8), (55, 15.8), (118, -19.5), (180, 15.5)]:
-        hgt = rnd.uniform(4.5, 6.5)
-        mb.cyl(M["trunk"], (x, y, hgt / 2), 0.18, hgt, segs=10, r2=0.12)
-        mb.sphere(M["leaf"], (x, y, hgt + 0.8), 2.2, scale=(1, 1, 0.75), segs=12, rings=8)
-    mb.to_object("ENV_trees", COL)
 
 
 def _billboards(M):

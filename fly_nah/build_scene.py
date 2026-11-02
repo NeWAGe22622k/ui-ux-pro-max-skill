@@ -69,6 +69,18 @@ def main():
     conductor = CH.build_proxy("CHR_conductor", kind="conductor", height=K.CONDUCTOR_HEIGHT, seated=False, girth=0.9,
                                look=dict(skin=c["conductor_skin"], top=c["conductor_shirt"], bottom=c["conductor_jeans"],
                                          shoes=c["sneakers"], hair=c["hero_hair"], sleeve="short"))
+    peds = []
+    for k, (pn, px, py, ph, pv, pf, tray) in enumerate(K.PEDS):
+        top, bottom, skin, shoes, hair = K.PED_LOOKS[k % len(K.PED_LOOKS)]
+        female = (k % 2 == 1) or pn.startswith("CHR_hawker")
+        arm = CH.build_proxy(pn, kind="ped", height=1.62 + 0.04 * (k % 4), seated=False, girth=0.92 + 0.04 * (k % 3),
+                             look=dict(skin=skin, top=top, bottom=skin if female else bottom, shoes=shoes, hair=hair,
+                                       sleeve="short"))
+        if female:
+            CH.add_wrapper(arm, bottom, top, name=f"{pn}_wrapper")
+        if tray:
+            CH.add_tray(arm, name=f"{pn}_tray")
+        peds.append((arm, px, py, ph, pv, pf, k))
     mbc = cars["CAR_minibus_conductor"]
     conductor.parent = mbc
     conductor.location = K.CONDUCTOR_LOCAL
@@ -82,7 +94,10 @@ def main():
     AN.horner_anim(horner, cou)
     AN.hawker_anim(hawker, cou)
     AN.conductor_anim(conductor, cou, mbc)
+    for arm, px, py, ph, pv, pf, k in peds:
+        AN.ped_anim(arm, px, py, ph, pv, pf, K.SEED + 50 + k)
     card = AN.fx(cars)
+    AN.thrust_fx(cars)
     sc.frame_set(762)
     AN.shadow_card_anim(card, CH.head_world(hero, 762))
     if wav:

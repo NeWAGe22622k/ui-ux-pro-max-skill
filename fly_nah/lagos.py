@@ -367,7 +367,7 @@ def build():
 def _road_wear(M, rnd):
     x0, x1 = K.ROAD_X
     mb = MeshBuilder()
-    lanes = [K.LANES[k] for k in ("L2", "L3", "L4")] + list(K.OPP_LANES) + [K.LANES["L1"]]
+    lanes = list(K.LANES.values()) + list(K.OPP_LANES)
     for y in lanes:
         for s in (-0.8, 0.8):
             mb.box(M["track"], ((x0 + x1) / 2, y + s, 0.0015), (x1 - x0, 0.5, 0.003))
@@ -381,7 +381,8 @@ def _road_wear(M, rnd):
         mb.cyl(M["mud"], (x, y, 0.005), r, 0.008, segs=18)
         mb.cyl(M["sand"], (x + 0.1, y, 0.004), r * 1.35, 0.006, segs=18)
     # sand drifts along the shoulder edge and the median base
-    for y, w in ((K.SHOULDER[0] + 0.45, 0.9), (-0.55, 0.45), (0.55, 0.45), (K.OPP_SHOULDER[1] - 0.4, 0.8)):
+    my = K.MEDIAN["y"]
+    for y, w in ((K.SHOULDER[0] + 0.45, 0.9), (my - 0.55, 0.45), (my + 0.55, 0.45), (K.OPP_SHOULDER[1] - 0.4, 0.8)):
         x = x0
         while x < x1:
             ln = rnd.uniform(6, 22)
@@ -396,15 +397,14 @@ def _kerbs_and_gutters(M):
     mb = MeshBuilder()
     blk = L["kerb_block"]
     n = int((x1 - x0) / blk)
-    # painted kerbs (white / black): road-side pavement kerbs, BRT kerb, median base band
+    # painted kerbs (white / black): road-side pavement kerbs and the median base band
     for i in range(n):
         x = x0 + (i + 0.5) * blk
         m = M["kerb_light"] if i % 2 == 0 else M["kerb_dark"]
         mb.box(m, (x, K.PAVEMENT_RIGHT[1], 0.11), (blk, 0.22, 0.22))
         mb.box(m, (x, K.PAVEMENT_LEFT[0], 0.11), (blk, 0.22, 0.22))
-        mb.box(m, (x, K.BRT_KERB["y"], 0.09), (blk, 0.27, 0.18))
         for s in (1, -1):
-            mb.box(m, (x, s * (K.MEDIAN["width"] / 2 + 0.003), 0.13), (blk, 0.006, 0.26))
+            mb.box(m, (x, K.MEDIAN["y"] + s * (K.MEDIAN["width"] / 2 + 0.003), 0.13), (blk, 0.006, 0.26))
     mb.to_object("ENV_painted_kerbs", COL)
     # open drainage gutters between kerb and pavement (with the odd cover slab)
     mb = MeshBuilder()
@@ -468,7 +468,8 @@ def _street_furniture(M, rnd):
     for side_y in ((K.PAVEMENT_RIGHT[0] + K.PAVEMENT_RIGHT[1]) / 2 - 0.3, (K.PAVEMENT_LEFT[0] + K.PAVEMENT_LEFT[1]) / 2 + 0.3):
         x = -160.0
         while x < 200:
-            if abs(x - K.BRIDGE_X) > 10 and abs(x - L["bus_shelter_x"]) > 6:
+            clear_cam = side_y < 0 and L["stall_free_x"][0] < x < L["stall_free_x"][1]   # S08 camera spot
+            if abs(x - K.BRIDGE_X) > 10 and abs(x - L["bus_shelter_x"]) > 6 and not clear_cam:
                 umbrella_stall(mb, M, rnd, x, side_y + rnd.uniform(-0.3, 0.3))
             x += rnd.uniform(5, 16) if -60 < x < 120 else rnd.uniform(14, 30)
     mb.to_object("ENV_umbrella_stalls", COL)
@@ -482,7 +483,8 @@ def _street_furniture(M, rnd):
     for k in range(160):
         x = rnd.uniform(-150, 200)
         y = rnd.choice([K.PAVEMENT_RIGHT[1] + rnd.uniform(0.05, 0.6), K.SHOULDER[0] + rnd.uniform(0.0, 1.2),
-                        K.PAVEMENT_LEFT[0] - rnd.uniform(0.05, 0.6), -0.4 - rnd.random() * 0.3, 0.4 + rnd.random() * 0.3])
+                        K.PAVEMENT_LEFT[0] - rnd.uniform(0.05, 0.6), K.MEDIAN["y"] - 0.4 - rnd.random() * 0.3,
+                        K.MEDIAN["y"] + 0.4 + rnd.random() * 0.3])
         if rnd.random() < 0.6:
             mb.box(M["litter_w"], (x, y, 0.01), (0.12, 0.18, 0.012), rot=Matrix.Rotation(rnd.uniform(0, 3), 3, "Z"))
         else:

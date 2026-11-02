@@ -1,8 +1,8 @@
 === FLY NAH AUTOMATED CHECKS ===
 [PASS]  1. cameras S01..S10 + S03B exist, render ranges match, >= 96 frames
 [PASS]  2. no text objects / no image textures -- 0 text objects, 0 image textures
-[PASS]  3. every car left-hand drive (steering wheel on +Y) -- 34 cars OK; kekes centre-steered (handlebar), exempt: 2
-[PASS]  4. no vehicle bounding boxes overlap (every 6 frames) -- 36 vehicles, 144 samples
+[PASS]  3. every car left-hand drive (steering wheel on +Y) -- 26 cars OK; kekes centre-steered (handlebar), exempt: 2
+[PASS]  4. no vehicle bounding boxes overlap (every 6 frames) -- 28 vehicles, 144 samples
 [PASS]  5. camera clearance >= 0.3 m (every 4 frames; S02/S03/S03B exempt from sedan) -- min: S01 0.84, S02 >2, S03 >2, S03B >2, S04 0.51, S05 0.94, S06 2.20, S07 0.49, S08 >2, S09 0.42, S10 >2
 [PASS]  6. coupe >= 1.2 m above sedan roof during 745-780 -- min clearance 1.91 m
 [PASS]  7. coupe wheels stay upright (axles within 5 deg of horizontal) + thrust vapour under it at f700 -- axle tilt 0.0, 0.0, 0.0, 0.0; 20 vapour puffs active

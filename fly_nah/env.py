@@ -60,8 +60,9 @@ def build():
     w, h = K.MEDIAN["width"], K.MEDIAN["height"]
     prof = [(-w / 2, 0), (w / 2, 0), (w / 2 - 0.05, 0.25), (0.09, h), (-0.09, h), (-w / 2 + 0.05, 0.25)]
     # profile is in YZ -> build as prism along X by swapping axes
-    a = [mb.bm.verts.new((x0, y, z)) for y, z in prof]
-    b = [mb.bm.verts.new((x1, y, z)) for y, z in prof]
+    my = K.MEDIAN["y"]
+    a = [mb.bm.verts.new((x0, y + my, z)) for y, z in prof]
+    b = [mb.bm.verts.new((x1, y + my, z)) for y, z in prof]
     mb.bm.faces.new(a)
     mb.bm.faces.new(list(reversed(b)))
     for i in range(len(prof)):
@@ -71,22 +72,16 @@ def build():
         f.material_index = mb._mi(M["concrete"])
     mb.to_object("ENV_median", COL)
 
-    # BRT kerb
-    mb = MeshBuilder()
-    k = K.BRT_KERB
-    mb.box(M["kerb"], (xc, k["y"], k["height"] / 2), (L, k["width"], k["height"]))
-    mb.to_object("ENV_brt_kerb", COL)
-
     # lane markings: plain paint only
     mb = MeshBuilder()
-    dashed = [K.LANES["L2"] + K.LANE_W / 2, K.LANES["L3"] + K.LANE_W / 2, K.LANES["L4"] + K.LANE_W / 2,
-              K.OPP_LANES[0] + K.LANE_W / 2, K.OPP_LANES[1] + K.LANE_W / 2]
+    # one dashed divider per carriageway (2 lanes each way)
+    dashed = [K.LANES["L3"] + K.LANE_W / 2, K.OPP_LANES[0] + K.LANE_W / 2]
     for y in dashed:
         x = x0 + 1
         while x < x1 - 3:
             mb.box(M["paint"], (x + 1.5, y, 0.003), (3.0, 0.12, 0.006))
             x += 9.0
-    for y in (K.LANES["L4"] - K.LANE_W / 2 + 0.15, K.OPP_EDGE - 0.15, -0.55, 0.55):
+    for y in (K.LANES["L3"] - K.LANE_W / 2 + 0.15, K.OPP_EDGE - 0.15, K.MEDIAN["y"] - 0.4, K.MEDIAN["y"] + 0.4):
         mb.box(M["paint"], (xc, y, 0.003), (L, 0.12, 0.006))
     mb.to_object("ENV_lane_markings", COL)
 
@@ -99,8 +94,7 @@ def build():
     bpy.data.objects["ENV_road"].data.materials[0] = LM["asphalt"]
     bpy.data.objects["ENV_median"].data.materials[0] = LM["concrete"]
     bpy.data.objects["ENV_pavements"].data.materials[0] = lagos.pmat("ENV_pavement_worn", K.C["pavement"], "concrete", scale=2.0)
-    bpy.data.objects["ENV_brt_kerb"].hide_render = True    # replaced by the painted kerb
-    bpy.data.objects["ENV_brt_kerb"].hide_viewport = True
+
     _billboards(M)
     _bridge(M)
     _skyline(M, rnd)
@@ -119,7 +113,7 @@ def _street_lights(M):
             mb.slab_between(M["pole"], (0, 0, top - 0.3), (0, s * K.LIGHT_ARM, top), 0.08, 0.08)
             mb.box(M["lamp"], (0, s * (K.LIGHT_ARM + 0.2), top - 0.05), (0.35, 0.6, 0.12))
         ob = mb.to_object(f"ENV_street_light_{i:02d}", COL)
-        ob.location = (x, 0, 0)
+        ob.location = (x, K.MEDIAN["y"], 0)
 
 
 def _facade_building(name, M, rnd, x, y_front, facing, width, depth, floors, color):

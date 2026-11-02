@@ -1,4 +1,4 @@
-"""Vehicles: hero sedan, coupe, minibuses, BRT bus, kekes, generic cars.
+"""Vehicles: hero sedan, coupe, minibuses, kekes, generic cars, tanker, lorry.
 
 Every car: origin at ground centre, faces +X, LEFT-HAND DRIVE (steering wheel on +Y side).
 Children: _cabin (roof/pillars/lights), _glass, _interior, _steering, _wheel_XX.
@@ -480,7 +480,7 @@ def build_all():
     cars["CAR_coupe"] = coupe()
     cars["CAR_minibus_ahead"] = minibus_any("CAR_minibus_ahead")
     cars["CAR_minibus_conductor"] = minibus_any("CAR_minibus_conductor", door_open=True)
-    for lane in (K.TRAFFIC_L2, K.TRAFFIC_L4):
+    for lane in (K.TRAFFIC_L2,):
         for (n, design, x, v) in lane:
             if n in cars:
                 continue
@@ -491,7 +491,7 @@ def build_all():
         cars[n] = generic(n, design)
     for (n, x, v) in K.BRT_TRAFFIC:
         cars[n] = brt(n)
-    for (n, x, v) in K.KEKES:
+    for (n, x, v) in list(K.KEKES) + list(K.KEKES_L2):
         cars[n] = keke(n) if not any(k.startswith("CAR_keke") for k in cars) else instance(cars["CAR_keke_01"], n)
     for i, (lane, x, design) in enumerate(K.OPP_TRAFFIC):
         if isinstance(design, str):

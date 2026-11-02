@@ -72,24 +72,25 @@ C = dict(
 
 # ---------------------------------------------------------------- road layout
 ROAD_X = (-300.0, 300.0)
-MEDIAN = dict(y=0.0, width=0.5, height=0.8)
+MEDIAN = dict(y=-3.6, width=0.5, height=0.8)
 LANE_W = 3.6
-LANES = dict(L1=-2.2, L2=-5.8, L3=-9.4, L4=-13.0)
-OPP_LANES = [2.4, 6.0, 9.6]
-SHOULDER = (-18.0, -14.8)
-PAVEMENT_RIGHT = (-21.5, -18.0)
-OPP_EDGE = 11.4
-OPP_SHOULDER = (11.4, 14.0)
-PAVEMENT_LEFT = (14.0, 17.5)
+# Two lanes each way (no BRT lane). Our side: L2 (inner) and L3 (HERO's lane), hard shoulder outside L3.
+LANES = dict(L2=-5.8, L3=-9.4)
+OPP_LANES = [-1.4, 2.2]
+SHOULDER = (-14.4, -11.2)
+PAVEMENT_RIGHT = (-17.9, -14.4)
+OPP_EDGE = 4.0
+OPP_SHOULDER = (4.0, 6.6)
+PAVEMENT_LEFT = (6.6, 10.1)
 PAVEMENT_H = 0.15
 BRT_KERB = dict(y=-4.0, width=0.25, height=0.15)
 LIGHT_SPACING = 30.0
 LIGHT_HEIGHT = 9.0
 LIGHT_ARM = 2.6
 BRIDGE_X = 70.0
-BRIDGE = dict(deck_z=6.2, width=3.0, y0=-21.0, y1=17.0, truss_h=2.2, stair_len=11.0)
-BILLBOARDS = [(40.0, -20.5, 8.0, 4.0, 7.0), (-55.0, 16.5, 8.0, 4.0, 7.0), (135.0, -20.5, 9.0, 4.5, 8.0),
-              (-30.0, 16.8, 10.0, 5.0, 9.0), (95.0, 16.8, 9.0, 4.5, 8.5)]
+BRIDGE = dict(deck_z=6.2, width=3.0, y0=-17.4, y1=9.6, truss_h=2.2, stair_len=11.0)
+BILLBOARDS = [(40.0, -16.9, 8.0, 4.0, 7.0), (-55.0, 9.1, 8.0, 4.0, 7.0), (135.0, -16.9, 9.0, 4.5, 8.0),
+              (-30.0, 9.4, 10.0, 5.0, 9.0), (95.0, 9.4, 9.0, 4.5, 8.5)]
 SKYLINE_X0 = 260.0
 SUN = dict(elevation=18.0, azimuth=-8.0, color=(1.0, 0.78, 0.55), strength=4.0, angle=1.5)
 HAZE_DENSITY = 0.002
@@ -172,23 +173,21 @@ TRAFFIC_L2 = [  # front to back
     ("CAR_generic_03", 3, 6.4, 1.4), ("CAR_generic_04", 7, -0.8, 1.4),
     # deliberate gap (camera corridor for S01 / S06), then slower cars
     ("CAR_generic_05", 1, -29.0, 1.0), ("CAR_generic_06", 5, -36.6, 1.0)]
-TRAFFIC_L4 = [
-    ("CAR_generic_07", 6, 26.0, 1.5), ("CAR_generic_08", 0, 18.6, 1.4), ("CAR_minibus_03", "minibus", 10.8, 1.3),
-    ("CAR_generic_09", 8, 3.2, 1.2), ("CAR_generic_10", 1, -4.6, 1.1),
-    ("CAR_minibus_conductor", "minibus", None, 1.0),  # x solved so it sits at MINIBUS_COND_X at MINIBUS_COND_F
-    ("CAR_generic_11", 4, -50.0, 1.0), ("CAR_generic_12", 2, -57.4, 1.0)]
+TRAFFIC_L4 = []   # outer lane removed; the conductor's danfo now uses the hard shoulder
 MINIBUS_COND_X, MINIBUS_COND_F = 14.0, 798
+MINIBUS_COND_Y = -12.8      # conductor's danfo crawls along the hard shoulder (Lagos style)
+MINIBUS_COND_SPEED = 1.0
 TRAFFIC_L3_EXTRA_AHEAD = [("CAR_generic_13", 2, 6.9), ("CAR_generic_14", 0, 14.0)]  # offsets ahead of minibus_ahead
 TRAFFIC_L3_BEHIND = [("CAR_generic_15", 4), ("CAR_generic_16", 3)]
 L3_GAP = 2.5
-BRT_TRAFFIC = [("CAR_brt_01", -90.0, 3.0)]
-KEKES = [("CAR_keke_01", -30.0, 2.0), ("CAR_keke_02", -100.0, 2.0)]
-KEKE_Y = -16.4
+BRT_TRAFFIC = []   # BRT lane removed
+KEKES = [("CAR_keke_01", -10.0, 2.0)]   # on the shoulder, ahead of the conductor's danfo (faster -> never meets it)
+KEKES_L2 = [("CAR_keke_02", -42.2, 1.0)]  # one keke filtering at the back of L2
+KEKE_Y = -12.8
 OPP_SPEED = 5.0
 OPP_TRAFFIC = [  # lane index, x at frame 1, design
-    (0, 290, 0), (0, 210, 2), (0, 140, 9), (0, 60, "lorry"),
-    (1, 270, 4), (1, 185, 7), (1, 100, 5), (1, 20, 0),
-    (2, 250, 3), (2, 160, "tanker"), (2, 75, 8)]
+    (0, 290, 0), (0, 250, 3), (0, 210, 2), (0, 160, "tanker"), (0, 140, 9), (0, 60, "lorry"),
+    (1, 270, 4), (1, 185, 7), (1, 100, 5), (1, 75, 8), (1, 20, 0)]
 TRUCK = dict(L=11.5, W=2.5, cab=(3.55, 5.75), cab_h=3.0, wheel_r=0.52, wheel_w=0.30, axles=[4.6, -3.4, -4.7],
              track=0.95, tank_r=1.1, cab_colours=dict(tanker=(0.75, 0.75, 0.73), lorry=(0.55, 0.06, 0.05)),
              tank=(0.72, 0.72, 0.70), band=(0.75, 0.40, 0.03), tarp=(0.06, 0.20, 0.55), wood=(0.35, 0.22, 0.12))
@@ -196,11 +195,11 @@ TRUCK = dict(L=11.5, W=2.5, cab=(3.55, 5.75), cab_h=3.0, wheel_r=0.52, wheel_w=0
 # ---------------------------------------------------------------- characters
 HERO_HEIGHT, HORNER_HEIGHT = 1.78, 1.75
 HAWKER_HEIGHT, CONDUCTOR_HEIGHT = 1.66, 1.72
-HAWKER_Y = -11.2
+HAWKER_Y = -11.0
 HAWKER_SPEED = 1.0
 HAWKER_FREEZE_F = 680
 CONDUCTOR_LOCAL = (0.90, -1.10, 0.30)
-CONDUCTOR_LEAN = 12.0                    # deg, hangs out of the doorway   # on the door step, minibus local
+CONDUCTOR_LEAN = 16.0                    # deg, hangs out of the doorway   # on the door step, minibus local
 ENVELOPE_SEAT = (0.10, -0.22, 0.49)       # sedan local (passenger seat edge)
 ENVELOPE_DROP_F = 452
 
@@ -252,7 +251,7 @@ CAM = dict(
     S07=dict(lens=65.0, fstop=4.0, front=1.0, height=1.25),
     S08=dict(lens=24.0, fstop=8.0, pos=(-9.5, -16.5, 0.6), look=(-1.8, -9.4, 2.1)),
     S09=dict(lens=35.0, fstop=4.0, side=1.0, ahead=0.9, z=0.9, aim_up=0.08),
-    S10=dict(lens=35.0, fstop=8.0, pos=(5.0, -13.8, 0.4), look=(60.0, -19.5, 12.0), creep=1.5),
+    S10=dict(lens=35.0, fstop=8.0, pos=(5.0, -13.55, 0.4), look=(60.0, -19.5, 12.0), creep=1.5),
 )
 CLEARANCE = 0.3
 # shots rendered with Cycles instead of EEVEE on this machine (EEVEE planar probe is noise under CPU/llvmpipe)
@@ -272,34 +271,31 @@ LAGOS = dict(
     shutters=[(0.35, 0.36, 0.38), (0.10, 0.25, 0.45), (0.15, 0.35, 0.20), (0.45, 0.15, 0.10)],
     kerb_block=1.0, gutter_w=0.7,
     kerb_colours=((0.78, 0.78, 0.75), (0.02, 0.02, 0.02)),   # painted kerbs: white / black
-    pole_spacing=38.0, pole_y_right=-21.2, pole_y_left=17.2, pole_h=9.0, sag=0.6,
+    pole_spacing=38.0, pole_y_right=-17.6, pole_y_left=9.8, pole_h=9.0, sag=0.6,
     bus_shelter_x=-62.0,
-    patches=[(18, -13.2, 3.5, 2.0), (32, -12.6, 5.0, 1.6), (-6, -5.6, 4.0, 2.2), (6, -12.8, 2.5, 1.8),
-             (-25, -9.6, 6.0, 2.5), (45, -9.4, 3.0, 2.0), (-14, -16.2, 4.0, 1.5), (60, -5.8, 7.0, 3.0),
-             (-48, -13.0, 5.0, 2.6), (90, -12.9, 4.0, 2.0), (-2, 6.0, 6.0, 2.5), (25, 2.4, 4.0, 2.0)],
-    potholes=[(-3, -16.8, 0.45), (14, -17.2, 0.6), (27, -14.5, 0.35), (-20, -17.0, 0.5), (40, -16.5, 0.4),
-              (8, -14.3, 0.3)],
-    palms=[(-140, -21.3), (-95, -21.4), (-38, -21.3), (12, -21.4), (48, -21.3), (105, -21.4), (150, -21.3),
-           (190, -21.4), (-120, 17.3), (-60, 17.4), (-10, 17.3), (30, 17.4), (90, 17.3), (130, 17.4)],
+    stall_free_x=(-16.0, -3.0),   # keep the pavement clear around the S08 camera
+    patches=[(18, -9.6, 3.5, 2.0), (32, -9.0, 5.0, 1.6), (-6, -5.6, 4.0, 2.2), (6, -9.2, 2.5, 1.8), (-25, -9.6, 6.0, 2.5), (45, -9.4, 3.0, 2.0), (-14, -12.6, 4.0, 1.5), (60, -5.8, 7.0, 3.0), (-48, -9.4, 5.0, 2.6), (90, -9.3, 4.0, 2.0), (-2, 2.4, 6.0, 2.5), (25, 2.4, 4.0, 2.0)],
+    potholes=[(-3, -13.2, 0.45), (14, -13.6, 0.6), (27, -10.9, 0.35), (-20, -13.4, 0.5), (40, -12.9, 0.4), (8, -10.7, 0.3)],
+    palms=[(-140, -17.7), (-95, -17.8), (-38, -17.7), (12, -17.8), (48, -17.7), (105, -17.8), (150, -17.7), (190, -17.8), (-120, 9.9), (-60, 10.0), (-10, 9.9), (30, 10.0), (90, 9.9), (130, 10.0)],
 )
 
 # ---------------------------------------------------------------- background people (proxy, low detail)
 # name, x at frame 1, y, heading (+1 walks +X, -1 walks -X, 0 stands), speed m/s, facing deg (standers), tray
-PED_WALK_Y_RIGHT, PED_WALK_Y_LEFT = -19.3, 15.3
+PED_WALK_Y_RIGHT, PED_WALK_Y_LEFT = -15.7, 7.9
 PEDS = [
-    ("CHR_ped_01", -40.0, PED_WALK_Y_RIGHT, 1, 1.2, 0, False),
+    ("CHR_ped_01", -70.0, PED_WALK_Y_RIGHT, 1, 1.2, 0, False),
     ("CHR_ped_02", 30.0, PED_WALK_Y_RIGHT - 0.4, -1, 1.1, 0, False),
     ("CHR_ped_03", 62.0, PED_WALK_Y_RIGHT, -1, 1.3, 0, False),
     ("CHR_ped_04", -12.0, PED_WALK_Y_RIGHT - 0.3, 1, 1.0, 0, True),
     ("CHR_ped_05", -30.0, PED_WALK_Y_LEFT, 1, 1.2, 0, False),
     ("CHR_ped_06", 40.0, PED_WALK_Y_LEFT + 0.3, -1, 1.1, 0, False),
-    ("CHR_ped_07", -63.5, -20.7, 0, 0.0, 90, False),     # bus shelter
-    ("CHR_ped_08", -61.8, -20.6, 0, 0.0, 70, False),
-    ("CHR_ped_09", -60.2, -20.8, 0, 0.0, 110, False),
-    ("CHR_ped_10", -5.0, -21.0, 0, 0.0, 95, False),      # by the shops
-    ("CHR_ped_11", 31.0, -21.05, 0, 0.0, 80, True),
+    ("CHR_ped_07", -63.5, -17.1, 0, 0.0, 90, False),     # bus shelter
+    ("CHR_ped_08", -61.8, -17.0, 0, 0.0, 70, False),
+    ("CHR_ped_09", -60.2, -17.2, 0, 0.0, 110, False),
+    ("CHR_ped_10", -5.0, -17.4, 0, 0.0, 95, False),      # by the shops
+    ("CHR_ped_11", 31.0, -17.45, 0, 0.0, 80, True),
     ("CHR_hawker_02", 40.0, -7.6, -1, 0.5, 0, True),     # more hawkers working the jam
-    ("CHR_hawker_03", 72.0, -11.2, -1, 0.45, 0, True),
+    ("CHR_hawker_03", 72.0, -11.0, -1, 0.45, 0, True),
 ]
 PED_LOOKS = [  # top, bottom, skin, shoes, hair
     ((0.70, 0.70, 0.68), (0.10, 0.12, 0.25), (0.28, 0.17, 0.11), (0.05, 0.04, 0.03), (0.015, 0.012, 0.01)),

@@ -110,11 +110,13 @@ def traffic(cars):
         c.location = (x + K.SEDAN_START_X, L3, 0)
         _key_l3_follower(c, x)
         back = x - c["L"] / 2
-    for lane, y in ((K.TRAFFIC_L2, K.LANES["L2"]), (K.TRAFFIC_L4, K.LANES["L4"])):
-        for (n, design, x, v) in lane:
-            if x is None:
-                x = K.MINIBUS_COND_X - v * (K.MINIBUS_COND_F - 1) / K.FPS
-            _const_speed(cars[n], y, x, v)
+    for (n, design, x, v) in K.TRAFFIC_L2:
+        _const_speed(cars[n], K.LANES["L2"], x, v)
+    for (n, x, v) in K.KEKES_L2:
+        _const_speed(cars[n], K.LANES["L2"], x, v)
+    v = K.MINIBUS_COND_SPEED
+    _const_speed(cars["CAR_minibus_conductor"], K.MINIBUS_COND_Y,
+                 K.MINIBUS_COND_X - v * (K.MINIBUS_COND_F - 1) / K.FPS, v)
     for (n, x, v) in K.BRT_TRAFFIC:
         _const_speed(cars[n], K.LANES["L1"], x, v)
     for (n, x, v) in K.KEKES:
@@ -758,7 +760,7 @@ def conductor_anim(arm, cou, minibus):
         if f >= 760:
             head = minibus.matrix_world.copy()
             mx = fcurve(minibus, "location", 0).evaluate(f)
-            src = Vector((mx + K.CONDUCTOR_LOCAL[0], K.LANES["L4"] + K.CONDUCTOR_LOCAL[1], 1.6 * s + 0.3))
+            src = Vector((mx + K.CONDUCTOR_LOCAL[0], K.MINIBUS_COND_Y + K.CONDUCTOR_LOCAL[1], 1.6 * s + 0.3))
             yaw, pitch = _look_angles(src, coupe_pos(cou, f))
             w = _sm(f, 760, 772)
             pitch = max(-60, min(10, pitch))

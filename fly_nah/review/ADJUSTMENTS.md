@@ -1,5 +1,19 @@
 # Fly Nah: changes from the brief (and why)
 
+## Revision 3 (your review notes)
+- **Two lanes each way.** The BRT lane, BRT kerb and BRT bus are gone, and so is the outer lane (L4). Our side is
+  now L2 (inner) plus L3 (HERO's lane) with a hard shoulder outside it. The oncoming side mirrors it. The median
+  moved in to y = -3.6, the shoulder, pavements and buildings moved in on both sides, and the cars from the
+  third oncoming lane are spread across the two that remain.
+- **The conductor's danfo** now crawls along the hard shoulder (y = -12.8), the way Lagos danfos use it. It
+  still reaches x of about +12 for S10. The S10 camera sits at road level on the shoulder behind it, and the
+  conductor leans 16 degrees out of the door so he reads past the bus. One keke rides the shoulder ahead of the
+  danfo; the other filters at the back of L2.
+- **S08** keeps the brief's position (y = -16.5, 0.6 m up). With the narrower road that spot is now the
+  pavement edge, so it is kept clear of stalls, and the kerb and gutter sit in the foreground.
+- **Kerbs** are painted white and black (were yellow and black).
+- The main hawker walks on the L3 edge line (y = -11.0), clear of the shoulder traffic.
+
 ## Revision 2 (your review notes)
 - **The wheels no longer fold.** They stay upright and still for the whole lift-off and flight. No hover-fan glow.
 - **Air thrust lifts the coupe.** Four vents under the body glow soft blue and blast vapour down from
@@ -9,7 +23,7 @@
   dust clouds, and the plastic bags still blow out. The underglow now sits only in the vents, strength 6
   instead of 15, so the underside doesn't read as a white panel. Check 7 now verifies the wheels stay
   upright and that the jets are active under the car at frame 700.
-- **Lagos road setting** (all text-free and logo-free):
+- **Lagos road setting** (the kerbs were later changed to white and black) (all text-free and logo-free):
   - Lagos-style buildings: painted 2-4 storey shop-houses with burglar-proof window bars, balconies, AC units,
     roll-up shop shutters and rusty zinc awnings. Houses with hipped corrugated-zinc roofs behind compound walls
     and gates. Unfinished bare-concrete frames with rebar sticking up. Flat roofs with black water tanks and

@@ -172,8 +172,18 @@ def coupe_anim(cars):
     lb = K.COUPE_KEYS["lightbar_base"]
     for mn in ("CAR_coupe_lightbar", "CAR_coupe_tailbar"):
         m = bpy.data.materials[mn]
-        fcm = set_keys(m.node_tree, EMIS, 0,
-                       [ck["underglow"][0][0], ck["underglow"][1][0]], [lb, lb * ck["lightbar_boost"]])
+        fr_l, vs_l = [ck["underglow"][0][0], ck["underglow"][1][0]], [lb, lb * ck["lightbar_boost"]]
+        n_flash = 0
+        if mn == "CAR_coupe_lightbar":   # the front bar flashes with the headlights (it is what shows in the mirror)
+            pre_f, pre_v = [1], [lb]
+            for st in K.HEADLIGHT_FLASHES:
+                pre_f += [st, st + 4]
+                pre_v += [K.LIGHTBAR_FLASH_STRENGTH, lb]
+            n_flash = len(pre_f)
+            fr_l, vs_l = pre_f + fr_l, pre_v + vs_l
+        fcm = set_keys(m.node_tree, EMIS, 0, fr_l, vs_l)
+        for kp in list(fcm.keyframe_points)[:n_flash]:
+            kp.interpolation = "CONSTANT"
     ug = bpy.data.materials["FX_coupe_underglow"]
     (u0, s0), (u1, s1) = ck["underglow"]
     fcu = set_keys(ug.node_tree, EMIS, 0, [u0, u1], [s0, s1])
@@ -185,6 +195,20 @@ def coupe_anim(cars):
         fr += [st, st + 4]
         vs += [K.HEADLIGHT_FLASH_STRENGTH, 0.0]
     fch = set_keys(hl.node_tree, EMIS, 0, fr, vs, interp="CONSTANT")
+    # headlight beams: spot lights keyed with the same on/off pattern
+    hb = K.HEADLIGHT_BEAM
+    for s in (1, -1):
+        ld = bpy.data.lights.new(f"LGT_coupe_beam_{'L' if s > 0 else 'R'}", "SPOT")
+        ld.spot_size, ld.spot_blend = math.radians(hb["size"]), hb["blend"]
+        ld.color, ld.shadow_soft_size = hb["colour"], 0.05
+        ld.volume_factor = 0.0      # don't light up the FX_haze box (EEVEE washes the whole street out)
+        ob = bpy.data.objects.new(ld.name, ld)
+        cou.users_collection[0].objects.link(ob)
+        ob.parent = cou
+        ob.visible_volume_scatter = False   # same for Cycles
+        ob.location = (hb["pos"][0], s * hb["pos"][1], hb["pos"][2])
+        ob.rotation_euler = (0.0, math.radians(hb["tilt"]), 0.0)
+        set_keys(ld, "energy", 0, fr, [v / K.HEADLIGHT_FLASH_STRENGTH * hb["energy"] for v in vs], interp="CONSTANT")
     btn = bpy.data.materials["FX_coupe_button"]
     (b0, v0), (b1, v1) = K.BUTTON_KEYS
     set_keys(btn.node_tree, EMIS, 0, [b0, b1], [v0, v1])

@@ -212,6 +212,9 @@ COUPE_KEYS = dict(
     fly_y=(-19.5, -23.5))  # y at 846 / 864: drifts toward the sun azimuth
 HEADLIGHT_FLASHES = [390, 398]    # each: 4 frames on, 4 off
 HEADLIGHT_FLASH_STRENGTH = 20.0
+LIGHTBAR_FLASH_STRENGTH = 40.0    # the nose light bar flashes too (base 6)
+# real headlight beams (spot lights) that fire with the flashes, so the flash lights the sedan and reads in S03/S03B
+HEADLIGHT_BEAM = dict(energy=2000.0, size=70.0, blend=0.6, pos=(2.42, 0.62, 0.55), tilt=-84.0, colour=(1.0, 0.97, 0.9))
 BUTTON_KEYS = ((632, 2.0), (636, 25.0))
 SHADOW_CARD = dict(size=(3.0, 1.5), frames=(752, 770), dist=3.0, sweep=4.0)
 N_DUST, N_BAGS = 70, 7

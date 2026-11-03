@@ -87,7 +87,11 @@ def bsdf(m):
 
 
 def glass_mat(name="glass", tint=(0.75, 0.85, 0.85)):
-    return mat(name, tint, rough=0.03, transmission=1.0, ior=1.45, alpha=0.35)
+    # Thin see-through glass: a dark, glossy 18 % layer over a clear 82 %. No refraction -- in EEVEE the
+    # refraction samples the bright hazy sky probe and lays a milky veil over everything seen through a window.
+    m = mat(name, tuple(c * 0.12 for c in tint), rough=0.03, ior=1.45, alpha=0.18)
+    m.diffuse_color = (*tint, 0.12)   # Workbench look unchanged
+    return m
 
 # ------------------------------------------------------------------ bmesh primitives (all take a 4x4 matrix)
 

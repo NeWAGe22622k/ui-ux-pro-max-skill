@@ -4,8 +4,15 @@
 - **Opening flicker fixed.** At 100 m up, the road, lane paint, patches and ground were z-fighting (brown
   flashes and stripes). Every camera now has its own near-clip distance (S01's is animated as the drone
   descends) and the road layers are spaced a few mm apart.
-- **Coupe paint is satin black** (coat 0.3, roughness 0.35, specular 0.1). Glossy paint mirrored the hazy sky and
-  read light tan at 1080p.
+- **Coupe paint is matte-satin black** (no clear coat, roughness 0.6, specular 0.05, not metallic). Glossy paint
+  mirrored the hazy sky: light tan at 1080p in EEVEE, and a light grey hood in the Cycles mirror shot.
+- **Clear car glass.** Windows were refractive at 35 % opacity. In EEVEE the refraction samples the bright hazy sky,
+  which laid a milky veil over everything seen through a window (worst in S03B, through two windows, where the
+  coupe read beige). Glass is now a dark, glossy 18 % layer with no refraction.
+- **The S03 flash reads.** The coupe's headlights sit just below the mirror's view, so their flash didn't show.
+  Two headlight spot lights (`LGT_coupe_beam_L/R`, 2000 W, not lighting the haze) now fire with the flashes
+  (390 and 398, 4 frames each) and wash the sedan interior with light. The nose light bar, which does show in the
+  mirror, flashes with them (6 to 40).
 - **Finals at 1920x1080** come in three versions: `*_workbench.mp4` (flat lighting), `*_eevee_fast.mp4` (8 samples,
   coarser shadows, no fast GI) and `*.mp4` (full EEVEE, 16 samples). S03 uses Cycles in both EEVEE versions
   (24 / 48 samples). Measured CPU time per frame: Workbench about 5-18 s, EEVEE fast about 95 s, EEVEE full about 195 s.

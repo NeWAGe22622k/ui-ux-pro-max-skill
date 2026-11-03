@@ -263,6 +263,7 @@ def coupe():
     pb.inputs["Coat Weight"].default_value = K.COUPE_PAINT["coat"]
     pb.inputs["Coat Roughness"].default_value = K.COUPE_PAINT["coat_rough"]
     pb.inputs["Roughness"].default_value = K.COUPE_PAINT["rough"]
+    pb.inputs["Metallic"].default_value = K.COUPE_PAINT["metallic"]
     c = K.C
     bar = mat("CAR_coupe_lightbar", c["lightbar"], emission=c["lightbar"], strength=K.COUPE_KEYS["lightbar_base"])
     head = mat("CAR_coupe_headlight", c["headlight"], emission=c["headlight"], strength=0.6)

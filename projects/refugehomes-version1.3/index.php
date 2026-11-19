@@ -13,10 +13,6 @@ $heroStats = [];
 for ($i = 1; $i <= 4; $i++) {
     if (($s["hero_stat{$i}_value"] ?? '') !== '') $heroStats[] = [$s["hero_stat{$i}_value"], $s["hero_stat{$i}_label"] ?? ''];
 }
-$impact = [];
-for ($i = 1; $i <= 5; $i++) {
-    if (($s["impact{$i}_value"] ?? '') !== '') $impact[] = [$s["impact{$i}_value"], $s["impact{$i}_title"] ?? '', $s["impact{$i}_text"] ?? ''];
-}
 
 require __DIR__ . '/includes/header.php';
 ?>
@@ -63,13 +59,12 @@ require __DIR__ . '/includes/header.php';
       <h2 class="h2">More Than Properties.<br><em>It's About People.</em></h2>
     </div>
     <div class="reveal">
+      <p class="why-lead">Everyone deserves a comfortable, decent place to call home.</p>
       <div class="prose">
-        <p>At Refuge Homes, we believe a property is more than a building or an investment. Behind every property are people with different needs, aspirations and expectations — whether it's a resident looking for a comfortable place to call home, a landlord seeking peace of mind, or an investor looking to create lasting value.</p>
-        <p>As homeownership becomes increasingly out of reach for many, we believe that renting should not mean compromising on the quality and comfort of the place you call home.</p>
-        <p>Our purpose is to help bridge that gap by creating and providing quality rental homes through trusted landlord partnerships, responsible property management and thoughtful investment.</p>
-        <p class="prose-strong">We believe that when we understand the people behind every property, we can create better homes, stronger partnerships and lasting value for everyone involved.</p>
+        <p>As homeownership becomes less accessible, renting should still offer quality, comfort and a sense of belonging.</p>
+        <p>That's why we partner with landlords and investors to bring more homes into our care, improve residential accommodation and support the people who live in it.</p>
       </div>
-      <a class="link-arrow" href="about.php">Discover Our Story <?= icon('arrow-right', 16) ?></a>
+      <a class="link-arrow" href="about.php">Discover our story <?= icon('arrow-up-right', 16) ?></a>
     </div>
   </div>
 </section>
@@ -119,31 +114,6 @@ require __DIR__ . '/includes/header.php';
     <div class="grid grid-3">
       <?php foreach ($featured as $p) property_card($p, true); ?>
     </div>
-  </div>
-</section>
-<?php endif; ?>
-
-<?php if ($impact): ?>
-<!-- Our impact -->
-<section class="section section-sand">
-  <div class="container">
-    <div class="section-head">
-      <div>
-        <p class="eyebrow">Our impact</p>
-        <h2 class="h2 h2-line">The numbers behind our work.</h2>
-      </div>
-      <p class="lead impact-intro">A snapshot of the homes, partnerships and investment activity that reflect our growth and impact.</p>
-    </div>
-    <ol class="impact">
-      <?php foreach ($impact as $i => [$value, $t, $d]): ?>
-        <li class="reveal">
-          <span class="impact-num">0<?= $i + 1 ?></span>
-          <strong class="impact-value"><?= h($value) ?></strong>
-          <h3><?= h($t) ?></h3>
-          <?php if ($d !== ''): ?><p><?= h($d) ?></p><?php endif; ?>
-        </li>
-      <?php endforeach; ?>
-    </ol>
   </div>
 </section>
 <?php endif; ?>

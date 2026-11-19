@@ -677,6 +677,7 @@ a.tile-link:hover .tile-go .icon { transform: translateX(3px); }
 .why .split { gap: 32px clamp(40px, 6vw, 96px); }
 .why .h2 { font-size: clamp(1.85rem, 3.1vw, 2.65rem); }
 .why .eyebrow { margin-bottom: 16px; }
+.why-lead { margin: 0 0 18px; max-width: 30ch; font-size: clamp(1.25rem, 1.8vw, 1.55rem); line-height: 1.35; color: var(--ink); }
 .why .prose { font-size: 15px; line-height: 1.65; max-width: 60ch; }
 .why .prose p { margin-bottom: .85em; }
 .why .link-arrow { margin-top: 20px; }

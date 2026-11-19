@@ -29,23 +29,6 @@ $fields = [
         'hero_stat4_value' => ['Top strip 4: number', 'text'],
         'hero_stat4_label' => ['Top strip 4: label', 'text'],
     ],
-    'Homepage numbers: "The numbers behind our work" (leave a number blank to hide it)' => [
-        'impact1_value' => ['Impact 1: number', 'text'],
-        'impact1_title' => ['Impact 1: title', 'text'],
-        'impact1_text'  => ['Impact 1: description', 'text'],
-        'impact2_value' => ['Impact 2: number', 'text'],
-        'impact2_title' => ['Impact 2: title', 'text'],
-        'impact2_text'  => ['Impact 2: description', 'text'],
-        'impact3_value' => ['Impact 3: number', 'text'],
-        'impact3_title' => ['Impact 3: title', 'text'],
-        'impact3_text'  => ['Impact 3: description', 'text'],
-        'impact4_value' => ['Impact 4: number', 'text'],
-        'impact4_title' => ['Impact 4: title', 'text'],
-        'impact4_text'  => ['Impact 4: description', 'text'],
-        'impact5_value' => ['Impact 5: number', 'text'],
-        'impact5_title' => ['Impact 5: title', 'text'],
-        'impact5_text'  => ['Impact 5: description', 'text'],
-    ],
 ];
 $s = settings();
 $errors = [];

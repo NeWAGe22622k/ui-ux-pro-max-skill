@@ -113,7 +113,7 @@ Two complete, separate versions of the site live side by side in this repository
 |---|---|---|
 | **version1.1** | `projects/refugehomes-version1.1/` | The site as deployed live in October 2026, with the original Services page (four alternating image/text blocks). |
 | **version1.2** | `projects/refugehomes-version1.2/` | Same site with the redesigned Services page: service index, guaranteed-rent flagship section with "How it works", condition tags, numbered service list, linked audience tiles. |
-| **version1.3** | `projects/refugehomes-version1.3/` | version1.2 with the homepage updated from the "Website Update" brief: new hero text, buttons and numbers strip; Why We Exist; Who We Serve; Real homes. Real people. Lasting impact.; The numbers behind our work; new client stories. Rentals moved off the homepage. Homepage numbers are editable in Admin → Site details. |
+| **version1.3** | `projects/refugehomes-version1.3/` | version1.2 with the homepage updated from the "Website Update" brief: new hero text, buttons and numbers strip; Why We Exist; Who We Serve; Real homes. Real people. Lasting impact.; new client stories. Rentals moved off the homepage. Homepage numbers are editable in Admin → Site details. |
 
 Both versions include the same mobile optimisations (phone-sized photo copies, 44px tap targets, quick-contact bar, swipeable filters, touch-friendly before/after slider, pinned pop-up title and Enquire button, phone-friendly admin with a pinned Save button).
 

@@ -74,7 +74,7 @@ function page_start(string $title, array $opts = []): void
 <link rel="apple-touch-icon" href="<?= e(url('assets/img/logo-badge.png')) ?>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@500;600;700&display=swap">
 <link rel="stylesheet" href="<?= e(asset('css/app.css')) ?>">
 <script src="<?= e(asset('js/app.js')) ?>" defer></script>
 </head>

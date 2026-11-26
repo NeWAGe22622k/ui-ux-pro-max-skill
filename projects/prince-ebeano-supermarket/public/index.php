@@ -104,6 +104,17 @@ page_start('', ['active' => 'home', 'branch_prompt' => true]);
   </div>
 </section>
 
+<section class="facts-section">
+  <div class="container">
+    <div class="facts">
+      <div class="fact"><span class="fact-icon"><?= icon('clock') ?></span><strong>Checked every morning</strong><span>Staff update each aisle before opening.</span></div>
+      <div class="fact"><span class="fact-icon"><?= icon('tag') ?></span><strong>Shelf prices in Naira</strong><span>The same price you pay at the till.</span></div>
+      <div class="fact"><span class="fact-icon"><?= icon('store') ?></span><strong><?= $branchCount ?> stores</strong><span><?= e(implode(' and ', $cities)) ?>, open <?= e(today_hours()) ?> today.</span></div>
+      <div class="fact"><span class="fact-icon"><?= icon('gift') ?></span><strong>Gift vouchers</strong><span>Redeemable at every Prince Ebeano store.</span></div>
+    </div>
+  </div>
+</section>
+
 <section class="section">
   <div class="container">
     <?= section_head('', 'Shop by aisle', '', url('shop.php'), 'All aisles') ?>
@@ -113,13 +124,11 @@ page_start('', ['active' => 'home', 'branch_prompt' => true]);
         $withPhoto = array_values(array_filter($items, fn($r) => !empty($r['image_path'])));
         $cover = $withPhoto[0] ?? ['image_path' => null];
         $cover['category_icon'] = $c['icon'];
-        $names = array_map(fn($r) => preg_replace('/\s+\d.*$/', '', $r['name']), array_slice($items, 0, 3));
         $available = count(array_filter($items, fn($r) => in_array($r['stock_status'] ?? '', ['in_stock', 'low_stock'], true))); ?>
         <a class="aisle-card" href="<?= e(url('shop.php?category=' . urlencode($c['slug']))) ?>">
-          <?php if ($cover['image_path']): ?><?= product_media($cover, 'aisle-card-media') ?><?php else: ?><span class="aisle-card-icon"><?= icon($c['icon']) ?></span><?php endif; ?>
+          <span class="aisle-card-media"><?php if ($cover['image_path']): ?><img src="<?= e(url($cover['image_path'])) ?>" alt="" loading="lazy" width="400" height="300"><?php else: ?><?= icon($c['icon']) ?><?php endif; ?></span>
           <span class="aisle-card-name"><?= e($c['name']) ?></span>
-          <span class="aisle-card-sub"><?= $names ? e(implode(', ', $names)) . '…' : 'Coming soon' ?></span>
-          <?php if ($branch): ?><span class="aisle-card-count"><?= $available ?> available</span><?php endif; ?>
+          <span class="aisle-card-count"><?= $branch ? $available . ' available' : count($items) . ' products' ?></span>
         </a>
       <?php endforeach; ?>
     </div>

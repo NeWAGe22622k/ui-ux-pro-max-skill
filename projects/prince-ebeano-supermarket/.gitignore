@@ -8,3 +8,6 @@ public/uploads/**
 !public/uploads/products/.gitkeep
 !public/uploads/qr/
 !public/uploads/qr/.gitkeep
+
+# Local test output (screenshots, built previews)
+dev/out/

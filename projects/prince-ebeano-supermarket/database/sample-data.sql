@@ -34,14 +34,14 @@ INSERT INTO products (category_id, name, description) VALUES
 ((SELECT id FROM categories WHERE slug='cereals'), 'Nutribom Rice Infant Cereal 400g', ''),
 ((SELECT id FROM categories WHERE slug='cereals'), 'Golden Morn 900g', 'Maize & soya cereal'),
 ((SELECT id FROM categories WHERE slug='cereals'), 'Quaker Oats 500g', ''),
-((SELECT id FROM categories WHERE slug='dairy'), 'Peak Full Cream Milk Powder 400g', ''),
+((SELECT id FROM categories WHERE slug='dairy'), 'Peak Full Cream Evaporated Milk 160g', ''),
 ((SELECT id FROM categories WHERE slug='dairy'), 'Three Crowns Evaporated Milk 160g', ''),
 ((SELECT id FROM categories WHERE slug='dairy'), 'Farm Fresh Eggs (Crate of 30)', ''),
 ((SELECT id FROM categories WHERE slug='dairy'), 'Blue Band Margarine 450g', ''),
 ((SELECT id FROM categories WHERE slug='household'), 'Morning Fresh Dishwashing Liquid 900ml', ''),
 ((SELECT id FROM categories WHERE slug='household'), 'Hypo Bleach 1L', ''),
-((SELECT id FROM categories WHERE slug='household'), 'Kenwood Steam Iron', 'Non-stick soleplate'),
-((SELECT id FROM categories WHERE slug='household'), 'Rite-Tek Blender 1.5L', ''),
+((SELECT id FROM categories WHERE slug='household'), 'Philips Steam Iron', 'Non-stick soleplate'),
+((SELECT id FROM categories WHERE slug='household'), 'Kitchen Blender 1.5L', 'Glass jar, two speeds'),
 ((SELECT id FROM categories WHERE slug='toiletries'), 'Dettol Antiseptic Liquid 500ml', ''),
 ((SELECT id FROM categories WHERE slug='toiletries'), 'Closeup Toothpaste 140g', ''),
 ((SELECT id FROM categories WHERE slug='toiletries'), 'Nivea Body Lotion 400ml', ''),
@@ -80,14 +80,14 @@ SET s.price_kobo = 100 * (CASE p.name
     WHEN 'Nutribom Rice Infant Cereal 400g' THEN 3900
     WHEN 'Golden Morn 900g' THEN 5200
     WHEN 'Quaker Oats 500g' THEN 3500
-    WHEN 'Peak Full Cream Milk Powder 400g' THEN 6500
+    WHEN 'Peak Full Cream Evaporated Milk 160g' THEN 850
     WHEN 'Three Crowns Evaporated Milk 160g' THEN 650
     WHEN 'Farm Fresh Eggs (Crate of 30)' THEN 6800
     WHEN 'Blue Band Margarine 450g' THEN 2900
     WHEN 'Morning Fresh Dishwashing Liquid 900ml' THEN 3400
     WHEN 'Hypo Bleach 1L' THEN 1600
-    WHEN 'Kenwood Steam Iron' THEN 45000
-    WHEN 'Rite-Tek Blender 1.5L' THEN 38000
+    WHEN 'Philips Steam Iron' THEN 45000
+    WHEN 'Kitchen Blender 1.5L' THEN 38000
     WHEN 'Dettol Antiseptic Liquid 500ml' THEN 4200
     WHEN 'Closeup Toothpaste 140g' THEN 1900
     WHEN 'Nivea Body Lotion 400ml' THEN 7500
@@ -105,6 +105,28 @@ SET s.price_kobo = 100 * (CASE p.name
 INSERT INTO category_reviews (branch_id, category_id, reviewed_at, staff_name)
 SELECT b.id, c.id, NOW() - INTERVAL ((b.id + c.id) % 5) HOUR, ELT(1 + (b.id + c.id) % 6, 'Chioma', 'Emeka', 'Aisha', 'Tunde', 'Ngozi', 'Bola')
 FROM branches b CROSS JOIN categories c;
+
+-- Sample product photos (credits in public/assets/img/products/CREDITS.txt).
+UPDATE products SET image_path = 'assets/img/products/coca-cola-50cl.webp' WHERE name = 'Coca-Cola 50cl';
+UPDATE products SET image_path = 'assets/img/products/fanta-orange-50cl.webp' WHERE name = 'Fanta Orange 50cl';
+UPDATE products SET image_path = 'assets/img/products/chivita-orange-juice-1l.webp' WHERE name = 'Chivita 100% Orange Juice 1L';
+UPDATE products SET image_path = 'assets/img/products/kelloggs-corn-flakes-500g.webp' WHERE name = 'Kellogg''s Corn Flakes 500g';
+UPDATE products SET image_path = 'assets/img/products/morning-fresh-900ml.webp' WHERE name = 'Morning Fresh Dishwashing Liquid 900ml';
+UPDATE products SET image_path = 'assets/img/products/molfix-diapers.webp' WHERE name = 'Molfix Diapers Size 4 (Jumbo)';
+UPDATE products SET image_path = 'assets/img/products/nivea-body-lotion-400ml.webp' WHERE name = 'Nivea Body Lotion 400ml';
+UPDATE products SET image_path = 'assets/img/products/pampers-baby-wipes.webp' WHERE name = 'Pampers Baby Wipes (64)';
+UPDATE products SET image_path = 'assets/img/products/closeup-toothpaste.webp' WHERE name = 'Closeup Toothpaste 140g';
+UPDATE products SET image_path = 'assets/img/products/philips-steam-iron.webp' WHERE name = 'Philips Steam Iron';
+UPDATE products SET image_path = 'assets/img/products/farm-fresh-eggs.webp' WHERE name = 'Farm Fresh Eggs (Crate of 30)';
+UPDATE products SET image_path = 'assets/img/products/sliced-family-bread.webp' WHERE name = 'Sliced Family Bread';
+UPDATE products SET image_path = 'assets/img/products/meat-pie.webp' WHERE name = 'Meat Pie';
+UPDATE products SET image_path = 'assets/img/products/kitchen-blender.webp' WHERE name = 'Kitchen Blender 1.5L';
+UPDATE products SET image_path = 'assets/img/products/blue-band-450g.webp' WHERE name = 'Blue Band Margarine 450g';
+UPDATE products SET image_path = 'assets/img/products/milo-400g-tin.webp' WHERE name = 'Nestlé Milo 400g Tin';
+UPDATE products SET image_path = 'assets/img/products/nan-optipro-1.webp' WHERE name = 'Nestlé NAN Optipro 1 400g';
+UPDATE products SET image_path = 'assets/img/products/mcvities-hobnobs.webp' WHERE name = 'McVitie''s Hobnobs 300g';
+UPDATE products SET image_path = 'assets/img/products/quaker-oats.webp' WHERE name = 'Quaker Oats 500g';
+UPDATE products SET image_path = 'assets/img/products/peak-evaporated-milk.webp' WHERE name = 'Peak Full Cream Evaporated Milk 160g';
 
 INSERT INTO jobs (title, branch_id, summary, is_open) VALUES
 ('Sales Associate', (SELECT id FROM branches WHERE slug='ikeja'), 'Help customers find what they need, keep shelves full and tidy, and support the morning stock check.', 1),

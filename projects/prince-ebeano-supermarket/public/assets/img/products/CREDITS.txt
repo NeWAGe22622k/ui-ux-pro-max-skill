@@ -1,0 +1,27 @@
+Sample product photos.
+
+Photos from Open Food Facts / Open Beauty Facts / Open Products Facts are licensed CC BY-SA 3.0
+(https://creativecommons.org/licenses/by-sa/3.0/), by the contributors of each product page below.
+Photos from Pexels are free to use under the Pexels License (https://www.pexels.com/license/).
+All were trimmed, squared and resized for the site.
+
+blue-band-450g.webp  https://world.openfoodfacts.org/product/6034000482072  (Blue Band Blue Band)
+chivita-orange-juice-1l.webp  https://world.openfoodfacts.org/product/6151100050014  (Chivita Orange Juice Blend 100% Fruit Juice)
+closeup-toothpaste.webp  https://world.openbeautyfacts.org/product/8717163913987  ( Close up denti 75ml red)
+coca-cola-50cl.webp  https://world.openfoodfacts.org/product/5449000000439  (Coca-Cola Coca Cola Original Taste 1.5L)
+fanta-orange-50cl.webp  https://world.openfoodfacts.org/product/5449000052926  (Fanta Fanta orange 1.5l)
+farm-fresh-eggs.webp  https://www.pexels.com/photo/17903969/  (Pexels)
+kelloggs-corn-flakes-500g.webp  https://world.openfoodfacts.org/product/8410188012092  (KELLOGG ESPAÑA S.L. Kelloggs corn flakes the original)
+kitchen-blender.webp  https://www.pexels.com/photo/17890637/  (Pexels)
+mcvities-hobnobs.webp  https://world.openfoodfacts.org/product/5000168034928  (McVitie's Hobnobs)
+meat-pie.webp  https://www.pexels.com/photo/18784857/  (Pexels)
+milo-400g-tin.webp  https://world.openfoodfacts.org/product/9300605003910  (Milo, Nestlé Milo)
+molfix-diapers.webp  https://world.openproductsfacts.org/product/6130793009479  (molfix 5 11-25 kg)
+morning-fresh-900ml.webp  https://world.openproductsfacts.org/product/9300615055671  (Morning Fresh Morning Fresh - Original)
+nan-optipro-1.webp  https://world.openfoodfacts.org/product/7501058636584  (NAN Formula Nan 0-6 HMO OP)
+nivea-body-lotion-400ml.webp  https://world.openbeautyfacts.org/product/4005900418135  (K, Nivea Body Lotion)
+pampers-baby-wipes.webp  https://world.openbeautyfacts.org/product/4015400636649  (Pampers Sensitive Wipes)
+peak-evaporated-milk.webp  https://world.openfoodfacts.org/product/87162240  (Peak Peak Full Cream)
+philips-steam-iron.webp  https://world.openproductsfacts.org/product/8720389019753  (Phillips Steam iron 1000 Series)
+quaker-oats.webp  https://world.openfoodfacts.org/product/6291108070215  (Quaker Whole oats)
+sliced-family-bread.webp  https://www.pexels.com/photo/166021/  (Pexels)

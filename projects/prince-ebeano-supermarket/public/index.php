@@ -137,7 +137,7 @@ page_start('', ['active' => 'home', 'branch_prompt' => true]);
         $items = $byCat[(int)$c['id']] ?? [];
         $available = count(array_filter($items, fn($r) => in_array($r['stock_status'] ?? '', ['in_stock', 'low_stock'], true))); ?>
         <a class="aisle-card" href="<?= e(url('shop.php?category=' . urlencode($c['slug']))) ?>">
-          <span class="aisle-card-media"><?= art(category_art($c), '', 'aisle-art') ?></span>
+          <span class="aisle-card-media"><?= aisle_image($c) ?></span>
           <span class="aisle-card-name"><?= e($c['name']) ?></span>
           <span class="aisle-card-count"><?= $branch ? $available . ' available' : count($items) . ' products' ?></span>
         </a>

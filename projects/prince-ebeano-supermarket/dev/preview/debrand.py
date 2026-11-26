@@ -75,7 +75,7 @@ for name in os.listdir(SRC):
     s = re.sub(r'(google\.com/maps/search/\?api=1&amp;query=)[^"]*', r'\1supermarket+Lagos', s)
     open(os.path.join(OUT, name), 'w').write(s)
 open(os.path.join(OUT, 'assets/img/sample-mark.svg'), 'w').write(MARK)
-for d in ('art', 'photos', 'products'):
+for d in ('art', 'photos', 'products', 'aisles'):
     shutil.copytree(os.path.join(SRC, 'assets/img', d), os.path.join(OUT, 'assets/img', d))
 open(os.path.join(OUT, 'assets/img/sample-badge.svg'), 'w').write(BADGE)
 

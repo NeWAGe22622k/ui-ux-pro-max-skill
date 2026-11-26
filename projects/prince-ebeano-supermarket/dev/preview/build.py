@@ -201,7 +201,7 @@ for p in OWNER_PAGES:
 
 for img in ('logo-mark.svg', 'favicon.svg', 'logo-badge.png', 'logo-badge.svg'):
     shutil.copy(os.path.join(PROJECT, 'public/assets/img', img), os.path.join(OUT, 'assets/img', img))
-for d in ('art', 'photos', 'products'):
+for d in ('art', 'photos', 'products', 'aisles'):
     shutil.copytree(os.path.join(PROJECT, 'public/assets/img', d), os.path.join(OUT, 'assets/img', d))
 
 # index.html opens the first-visit home page (so the preview folder can be double-clicked).

@@ -147,6 +147,16 @@ function banner_photo(string $name, string $position = 'center', bool $eager = f
         . ($eager ? ' fetchpriority="high"' : ' loading="lazy"') . ' decoding="async" style="object-position:' . e($position) . '"></span>';
 }
 
+/** Aisle tile picture: assets/img/aisles/<slug>.webp when there is one, otherwise the aisle's illustration. */
+function aisle_image(array $c): string
+{
+    $file = 'assets/img/aisles/' . $c['slug'] . '.webp';
+    if (is_file(PUBLIC_DIR . '/' . $file)) {
+        return '<img class="aisle-photo" src="' . e(url($file)) . '" alt="" width="480" height="480" loading="lazy" decoding="async">';
+    }
+    return art(category_art($c), '', 'aisle-art');
+}
+
 /** Illustration for an aisle, chosen by the aisle's icon so new aisles get one too. */
 function category_art(array $c): string
 {

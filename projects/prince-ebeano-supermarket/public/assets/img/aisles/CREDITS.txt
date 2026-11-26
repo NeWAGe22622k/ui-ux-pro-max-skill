@@ -1,0 +1,13 @@
+Aisle photos from Pexels (https://www.pexels.com), free to use under the Pexels License
+(https://www.pexels.com/license/). Cropped square and resized.
+
+drinks.webp  https://www.pexels.com/photo/5516061/
+cereals.webp  https://www.pexels.com/photo/12449963/
+dairy.webp  https://www.pexels.com/photo/7118900/
+household.webp  https://www.pexels.com/photo/5217887/
+toiletries.webp  https://www.pexels.com/photo/7879774/
+mothercare.webp  https://www.pexels.com/photo/6134673/
+bakery.webp  https://www.pexels.com/photo/1756061/
+wine.webp  https://www.pexels.com/photo/1494410/
+
+A new aisle without a photo here shows an illustration instead; add <aisle-slug>.webp to use a photo.

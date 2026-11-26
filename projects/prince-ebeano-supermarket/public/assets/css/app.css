@@ -409,6 +409,8 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .aisle-card-media .icon { width: 34px; height: 34px; stroke-width: 1.4; }
 .aisle-card-media .aisle-art { width: 58%; height: auto; padding: 0; object-fit: contain; filter: drop-shadow(0 8px 10px rgba(40, 50, 40, .12)); transition: transform .4s cubic-bezier(.2, .7, .2, 1); }
 .aisle-card:hover .aisle-art { transform: translateY(-3px) scale(1.05); }
+.aisle-card-media img.aisle-photo { width: 100%; height: 100%; padding: 0; object-fit: cover; transition: transform .6s cubic-bezier(.2, .7, .2, 1); }
+.aisle-card:hover .aisle-photo { transform: scale(1.06); }
 .aisle-card-name { font-weight: 500; font-size: .95rem; line-height: 1.3; }
 .aisle-card-count { font-size: .78rem; color: var(--ink-3); }
 
@@ -508,7 +510,10 @@ button, input, select, textarea { font: inherit; color: inherit; }
   position: relative; aspect-ratio: 1 / 1; display: grid; place-items: center; overflow: hidden;
   border-radius: var(--radius); background: var(--stone); color: var(--ink-3);
 }
-.product-media img { width: 100%; height: 100%; object-fit: contain; padding: 6%; border-radius: 10px; mix-blend-mode: multiply; }
+/* Product photos fill the tile on white; only items without a photo keep the grey tile. */
+.product-media:not(.is-blank) { background: #fff; }
+.product-media img { width: 100%; height: 100%; object-fit: contain; padding: 0; transition: transform .5s cubic-bezier(.2, .7, .2, 1); }
+.product-card:hover .product-media:not(.is-blank) img { transform: scale(1.04); }
 .product-media .media-icon { width: 30px; height: 30px; stroke-width: 1.5; opacity: .45; }
 .product-media img.media-art { width: 44%; height: auto; padding: 0; filter: drop-shadow(0 10px 12px rgba(40, 50, 40, .12)); transition: transform .4s cubic-bezier(.2, .7, .2, 1); }
 .product-card:hover .media-art { transform: translateY(-3px) scale(1.04); }

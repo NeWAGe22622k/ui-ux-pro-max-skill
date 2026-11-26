@@ -2,7 +2,8 @@
 declare(strict_types=1);
 require __DIR__ . '/../app/bootstrap.php';
 
-$denoms = array_filter(array_map('trim', explode(',', setting('voucher_denominations', '₦5,000, ₦10,000, ₦20,000, ₦50,000, ₦100,000, ₦200,000'))));
+// Values are separated by ", " or a new line; the comma inside ₦5,000 has no space after it.
+$denoms = array_filter(array_map('trim', preg_split('/,\s+|\s*[;\n]\s*/u', setting('voucher_denominations', '₦5,000, ₦10,000, ₦20,000, ₦50,000, ₦100,000, ₦200,000'))));
 $note = setting('voucher_note', 'Gift vouchers are sold at the customer service desk of every Prince Ebeano store. For corporate orders, call us and we\'ll put together a package for you.');
 $phones = config('store.phones', []);
 
@@ -57,7 +58,7 @@ page_start('Gift vouchers', [
         <p><?= e($note) ?></p>
         <div class="btn-row" style="display:flex;flex-wrap:wrap;gap:.5rem">
           <?php if ($phones): ?><a class="btn btn-primary" href="<?= e(phone_href($phones[0])) ?>"><?= icon('phone', 'icon icon-sm') ?> Call <?= e($phones[0]) ?></a><?php endif; ?>
-          <a class="btn btn-ghost" style="border-color:var(--forest-deep)" href="<?= e(url('stores.php')) ?>">Find a store</a>
+          <a class="btn btn-ghost" href="<?= e(url('stores.php')) ?>">Find a store</a>
         </div>
       </div>
       <div class="gift-card" aria-hidden="true">

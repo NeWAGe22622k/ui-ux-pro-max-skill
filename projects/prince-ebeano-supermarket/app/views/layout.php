@@ -5,14 +5,14 @@ const PUBLIC_NAV = [
     'home'     => ['Home', '', 'home'],
     'shop'     => ['Shop', 'shop.php', 'basket'],
     'stores'   => ['Stores', 'stores.php', 'map-pin'],
-    'about'    => ['About', 'about.php', 'heart'],
+    'about'    => ['About Us', 'about.php', 'heart'],
     'vouchers' => ['Gift Vouchers', 'gift-vouchers.php', 'gift'],
     'careers'  => ['Careers', 'careers.php', 'briefcase'],
-    'contact'  => ['Contact', 'contact.php', 'phone'],
+    'contact'  => ['Contact Us', 'contact.php', 'phone'],
 ];
 
-/** Store-information pages, shown as small links in the strip above the header. */
-const INFO_NAV = ['stores', 'about', 'vouchers', 'careers', 'contact'];
+/** Order of the links in the main menu bar. */
+const MAIN_NAV = ['home', 'shop', 'stores', 'vouchers', 'about', 'careers', 'contact'];
 
 /** The current page URL with some query parameters changed. */
 function current_url_with(array $changes): string
@@ -74,21 +74,24 @@ function page_start(string $title, array $opts = []): void
 <link rel="apple-touch-icon" href="<?= e(url('assets/img/logo-badge.png')) ?>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap">
 <link rel="stylesheet" href="<?= e(asset('css/app.css')) ?>">
 <script src="<?= e(asset('js/app.js')) ?>" defer></script>
 </head>
 <body class="<?= e($opts['body_class'] ?? '') ?>">
 <a class="skip-link" href="#main">Skip to content</a>
 
+<?php $checked = $branch ? branch_last_checked((int)$branch['id']) : null; ?>
 <div class="topbar">
   <div class="container topbar-inner">
-    <span>Open today <?= e(today_hours()) ?><?php if ($firstPhone): ?> · Call <a href="<?= e(phone_href($firstPhone)) ?>"><?= e($firstPhone) ?></a><?php endif; ?></span>
-    <nav class="topbar-links" aria-label="Store information">
-      <?php foreach (INFO_NAV as $key): [$label, $href] = PUBLIC_NAV[$key]; ?>
-        <a href="<?= e(url($href)) ?>"<?= $active === $key ? ' aria-current="page"' : '' ?>><?= e($label) ?></a>
-      <?php endforeach; ?>
-    </nav>
+    <span class="topbar-location"><?= icon('map-pin', 'icon icon-sm') ?>
+      <?php if ($branch && $branch['address']): ?>Store location: <?= e($branch['name']) ?>, <?= e($branch['address']) ?>
+      <?php else: ?><?= count(branches()) ?> stores in Lagos and Abuja<?php endif; ?>
+    </span>
+    <span class="topbar-meta">
+      <span>Open today <?= e(today_hours()) ?></span>
+      <?php if ($branch): ?><span>Stock checked <span data-checked-time><?= e(fresh_label($checked)) ?></span></span><?php endif; ?>
+    </span>
   </div>
 </div>
 
@@ -99,26 +102,20 @@ function page_start(string $title, array $opts = []): void
       <span class="brand-text"><strong>Prince Ebeano</strong><small>Supermarket</small></span>
     </a>
 
-    <button type="button" class="branch-pill" data-open-branch aria-haspopup="dialog" aria-controls="branch-sheet">
-      <?= icon('map-pin', 'icon') ?>
-      <span class="branch-pill-text">
-        <?php if ($branch): $checked = branch_last_checked((int)$branch['id']); ?>
-          <strong><?= e($branch['name']) ?></strong>
-          <small><?= $checked ? 'Checked ' . e(fresh_label($checked)) : 'Not checked yet' ?></small>
-        <?php else: ?>
-          <strong>Choose store</strong>
-          <small>to see live stock</small>
-        <?php endif; ?>
-      </span>
-      <?= icon('chevron-down', 'icon icon-sm') ?>
-    </button>
-
     <form class="header-search" action="<?= e(url('shop.php')) ?>" method="get" role="search">
       <?= icon('search') ?>
       <label for="site-q" class="visually-hidden">Search products</label>
-      <input id="site-q" name="q" type="search" value="<?= e($opts['search'] ?? '') ?>" placeholder="Search products<?= $branch ? ' at ' . e($branch['name']) : '' ?>" autocomplete="off">
-      <button class="btn btn-primary btn-sm" type="submit">Search</button>
+      <input id="site-q" name="q" type="search" value="<?= e($opts['search'] ?? '') ?>" placeholder="Search for products…" autocomplete="off">
+      <button class="btn btn-primary" type="submit">Search</button>
     </form>
+
+    <button type="button" class="branch-pill" data-open-branch aria-haspopup="dialog" aria-controls="branch-sheet">
+      <span class="branch-pill-icon"><?= icon('store') ?></span>
+      <span class="branch-pill-text">
+        <small>Your store:</small>
+        <strong><?= $branch ? e($branch['name']) : 'Choose store' ?> <?= icon('chevron-down', 'icon icon-sm') ?></strong>
+      </span>
+    </button>
 
     <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="mobile-nav" data-nav-toggle>
       <?= icon('menu', 'icon icon-open') ?><?= icon('x', 'icon icon-close') ?>
@@ -126,19 +123,39 @@ function page_start(string $title, array $opts = []): void
     </button>
   </div>
 
-  <nav class="aisle-bar" aria-label="Aisles">
-    <div class="container aisle-bar-inner">
-      <a href="<?= e(url('shop.php')) ?>"<?= ($opts['aisle'] ?? '') === 'all' ? ' aria-current="page"' : '' ?>>All aisles</a>
-      <?php foreach (categories() as $c): ?>
-        <a href="<?= e(url('shop.php?category=' . urlencode($c['slug']))) ?>"<?= ($opts['aisle'] ?? '') === $c['slug'] ? ' aria-current="page"' : '' ?>><?= e($c['name']) ?></a>
-      <?php endforeach; ?>
+  <nav class="main-bar" aria-label="Main">
+    <div class="container main-bar-inner">
+      <ul class="main-menu">
+        <?php foreach (MAIN_NAV as $key): [$label, $href] = PUBLIC_NAV[$key]; ?>
+          <?php if ($key === 'shop'): ?>
+            <li class="has-menu">
+              <a href="<?= e(url($href)) ?>"<?= $active === $key ? ' aria-current="page"' : '' ?>><?= e($label) ?> <?= icon('chevron-down', 'icon icon-sm') ?></a>
+              <div class="menu-panel">
+                <a href="<?= e(url('shop.php')) ?>">All aisles</a>
+                <?php foreach (categories() as $c): ?>
+                  <a href="<?= e(url('shop.php?category=' . urlencode($c['slug']))) ?>"><?= e($c['name']) ?></a>
+                <?php endforeach; ?>
+              </div>
+            </li>
+          <?php else: ?>
+            <li><a href="<?= e(url($href)) ?>"<?= $active === $key ? ' aria-current="page"' : '' ?>><?= e($label) ?></a></li>
+          <?php endif; ?>
+        <?php endforeach; ?>
+      </ul>
+      <?php if ($firstPhone): ?>
+        <a class="main-bar-phone" href="<?= e(phone_href($firstPhone)) ?>"><?= icon('phone') ?> <?= e($firstPhone) ?></a>
+      <?php endif; ?>
     </div>
   </nav>
 
   <nav id="mobile-nav" class="mobile-nav" aria-label="Mobile" hidden>
     <div class="container">
-      <?php foreach (PUBLIC_NAV as $key => [$label, $href]): ?>
+      <?php foreach (MAIN_NAV as $key): [$label, $href] = PUBLIC_NAV[$key]; ?>
         <a href="<?= e(url($href)) ?>"<?= $active === $key ? ' aria-current="page"' : '' ?>><?= e($label) ?></a>
+      <?php endforeach; ?>
+      <p class="mobile-nav-title">Aisles</p>
+      <?php foreach (categories() as $c): ?>
+        <a href="<?= e(url('shop.php?category=' . urlencode($c['slug']))) ?>"><?= e($c['name']) ?></a>
       <?php endforeach; ?>
     </div>
   </nav>
@@ -179,11 +196,12 @@ function page_end(): void
   <div class="container footer-grid">
     <div class="footer-brand">
       <a class="brand" href="<?= e(url()) ?>">
-        <img src="<?= e(url('assets/img/logo-mark.svg')) ?>" width="32" height="32" alt="">
+        <img src="<?= e(url('assets/img/logo-mark.svg')) ?>" width="40" height="40" alt="">
         <span class="brand-text"><strong>Prince Ebeano</strong><small>Supermarket</small></span>
       </a>
-      <p><?= e(config('store.tagline', '')) ?></p>
+      <p><?= e(config('store.tagline', '')) ?>. Check what is on our shelves and the shelf price at your store before you leave home.</p>
       <?php if ($socials): ?>
+        <h2 class="footer-title">Follow us</h2>
         <div class="socials">
           <?php foreach ($socials as $net => $link): ?>
             <a href="<?= e($link) ?>" rel="noopener" target="_blank" aria-label="<?= e(ucfirst($net === 'x' ? 'X (Twitter)' : $net)) ?>"><?= icon($net === 'x' ? 'x-social' : $net) ?></a>
@@ -200,22 +218,25 @@ function page_end(): void
       </ul>
     </div>
     <div>
-      <h2 class="footer-title">Call us</h2>
+      <h2 class="footer-title">Quick links</h2>
       <ul class="footer-list">
-        <?php foreach ($phones as $p): ?>
-          <li><a href="<?= e(phone_href($p)) ?>"><?= e($p) ?></a></li>
+        <?php foreach (MAIN_NAV as $key): if ($key === 'home') continue; [$label, $href] = PUBLIC_NAV[$key]; ?>
+          <li><a href="<?= e(url($href)) ?>"><?= e($label) ?></a></li>
         <?php endforeach; ?>
-        <?php if (config('store.whatsapp')): ?>
-          <li><a href="https://wa.me/<?= e(config('store.whatsapp')) ?>" rel="noopener" target="_blank">Chat on WhatsApp</a></li>
-        <?php endif; ?>
       </ul>
     </div>
     <div>
-      <h2 class="footer-title">Explore</h2>
-      <ul class="footer-list footer-links">
-        <?php foreach (PUBLIC_NAV as $key => [$label, $href]): if ($key === 'home') continue; ?>
-          <li><a href="<?= e(url($href)) ?>"><?= e($label) ?></a></li>
+      <h2 class="footer-title">Contact us</h2>
+      <ul class="footer-contact">
+        <?php foreach (array_slice($phones, 0, 2) as $p): ?>
+          <li><span class="footer-contact-icon"><?= icon('phone', 'icon icon-sm') ?></span><a class="footer-phone" href="<?= e(phone_href($p)) ?>"><?= e($p) ?></a></li>
         <?php endforeach; ?>
+        <?php if (config('store.whatsapp')): ?>
+          <li><span class="footer-contact-icon"><?= icon('message', 'icon icon-sm') ?></span><a href="https://wa.me/<?= e(config('store.whatsapp')) ?>" rel="noopener" target="_blank">Chat on WhatsApp</a></li>
+        <?php endif; ?>
+        <?php if (config('store.email')): ?>
+          <li><span class="footer-contact-icon"><?= icon('mail', 'icon icon-sm') ?></span><a href="mailto:<?= e(config('store.email')) ?>"><?= e(config('store.email')) ?></a></li>
+        <?php endif; ?>
       </ul>
     </div>
   </div>

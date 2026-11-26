@@ -58,9 +58,9 @@ BADGE = '''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="i
 <g transform="translate(88 44)"><rect width="64" height="64" rx="15" fill="url(#t)" stroke="#fff" stroke-opacity=".35" stroke-width="1.5"/>
 <g fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" transform="translate(14 13) scale(1.5)">
 <path d="m15 11-1 9"/><path d="m19 11-4-7"/><path d="M2 11h20"/><path d="m3.5 11 1.6 7.4a2 2 0 0 0 2 1.6h9.8a2 2 0 0 0 2-1.6l1.7-7.4"/><path d="M4.5 15.5h15"/><path d="m5 11 4-7"/><path d="m9 11 1 9"/></g></g>
-<g fill="#fff" text-anchor="middle" font-family="'Sora','Helvetica Neue',Arial,sans-serif" font-weight="700">
+<g fill="#fff" text-anchor="middle" font-family="'Poppins','Helvetica Neue',Arial,sans-serif" font-weight="700">
 <text x="120" y="142" font-size="27" letter-spacing="2">SAMPLE</text><text x="120" y="164" font-size="14" letter-spacing="2">SUPERMARKET</text></g>
-<text x="120" y="186" fill="#F2A93B" text-anchor="middle" font-family="'Inter',Arial,sans-serif" font-weight="700" font-size="9.5" letter-spacing="1.5">YOUR LOGO GOES HERE</text></svg>'''
+<text x="120" y="186" fill="#F2A93B" text-anchor="middle" font-family="'Poppins',Arial,sans-serif" font-weight="700" font-size="9.5" letter-spacing="1.5">YOUR LOGO GOES HERE</text></svg>'''
 
 if os.path.isdir(OUT):
     shutil.rmtree(OUT)

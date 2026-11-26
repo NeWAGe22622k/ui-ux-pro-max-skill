@@ -18,6 +18,7 @@ $perCategoryPreview = 12;
 $groups = [];
 $total = 0;
 $reviews = [];
+$aisleCounts = [];
 
 if ($branch) {
     $bid = (int)$branch['id'];
@@ -49,6 +50,13 @@ if ($branch) {
     foreach (q_all('SELECT category_id, reviewed_at, staff_name FROM category_reviews WHERE branch_id = ?', [$bid]) as $r) {
         $reviews[(int)$r['category_id']] = $r;
     }
+
+    // Sidebar counts: what this store lists in each aisle.
+    foreach (q_all('SELECT p.category_id, COUNT(*) AS n FROM branch_stock s
+                    JOIN products p ON p.id = s.product_id AND p.is_active = 1
+                    WHERE s.branch_id = ? GROUP BY p.category_id', [$bid]) as $r) {
+        $aisleCounts[(int)$r['category_id']] = (int)$r['n'];
+    }
 }
 
 $browsing = !$category && $search === '';
@@ -65,23 +73,21 @@ page_start($title, [
 ]);
 ?>
 
-<section class="page-head">
+<section class="page-banner">
   <div class="container">
+    <h1><?= $search !== '' ? 'Results for “' . e($search) . '”' : ($category ? e($category['name']) : 'All aisles') ?></h1>
     <nav class="breadcrumb" aria-label="Breadcrumb">
-      <a href="<?= e(url()) ?>">Home</a> <span aria-hidden="true">›</span>
+      <a href="<?= e(url()) ?>">Home</a> <span aria-hidden="true">/</span>
       <?php if ($category || $search !== ''): ?>
-        <a href="<?= e(url('shop.php')) ?>">Shop</a> <span aria-hidden="true">›</span>
+        <a href="<?= e(url('shop.php')) ?>">Shop</a> <span aria-hidden="true">/</span>
         <span aria-current="page"><?= $category ? e($category['name']) : 'Search' ?></span>
       <?php else: ?>
         <span aria-current="page">Shop</span>
       <?php endif; ?>
     </nav>
-    <h1><?= $search !== '' ? 'Results for “' . e($search) . '”' : ($category ? e($category['name']) : 'All aisles') ?></h1>
     <?php if ($branch): ?>
       <p class="fresh-line">Prices and stock at <?= e($branch['name']) ?>, last checked <span class="fresh-time"><?= e(fresh_label(branch_last_checked((int)$branch['id']))) ?></span>.
         <button type="button" class="btn-link" data-open-branch>Change store</button></p>
-    <?php else: ?>
-      <p>Choose your store and we'll show you what's on its shelves right now.</p>
     <?php endif; ?>
   </div>
 </section>
@@ -90,12 +96,31 @@ page_start($title, [
   <div class="container"><?= branch_chooser_inline() ?></div>
 <?php else: ?>
 
-<div class="container">
+<div class="container shop-layout">
+  <aside class="shop-sidebar" aria-label="Aisles">
+    <div class="side-box">
+      <h2>Aisles</h2>
+      <ul class="side-list">
+        <li><a href="<?= e(url('shop.php')) ?>" aria-current="<?= !$category && $search === '' ? 'true' : 'false' ?>">All aisles <span><?= array_sum($aisleCounts) ?></span></a></li>
+        <?php foreach (categories() as $c): ?>
+          <li><a href="<?= e(url('shop.php?category=' . urlencode($c['slug']))) ?>" aria-current="<?= $category && (int)$category['id'] === (int)$c['id'] ? 'true' : 'false' ?>"><?= e($c['name']) ?> <span><?= $aisleCounts[(int)$c['id']] ?? 0 ?></span></a></li>
+        <?php endforeach; ?>
+      </ul>
+    </div>
+    <div class="side-box side-store">
+      <h2>Your store</h2>
+      <p><strong><?= e($branch['name']) ?></strong><br><?= e($branch['address'] ?? $branch['city']) ?></p>
+      <p>Open <?= e(today_hours()) ?> today</p>
+      <button type="button" class="btn-link" data-open-branch>Change store</button>
+    </div>
+  </aside>
+
+  <div class="shop-main">
   <form class="toolbar" method="get" action="<?= e(url('shop.php')) ?>">
     <input type="hidden" name="branch" value="<?= e($branch['slug']) ?>">
     <?php if ($category): ?><input type="hidden" name="category" value="<?= e($category['slug']) ?>"><?php endif; ?>
     <input type="hidden" name="q" value="<?= e($search) ?>">
-    <p class="toolbar-count"><span data-result-count><?= $total ?></span> product<?= $total === 1 ? '' : 's' ?></p>
+    <p class="toolbar-count">Showing <span data-result-count><?= $total ?></span> product<?= $total === 1 ? '' : 's' ?></p>
     <div class="toolbar-controls">
       <label class="check toggle"><input type="checkbox" name="hide_out" value="1" <?= $hideOut ? 'checked' : '' ?> data-autosubmit> Hide sold out</label>
       <label class="sort">
@@ -109,24 +134,20 @@ page_start($title, [
       <noscript><button class="btn btn-ghost btn-sm" type="submit">Apply</button></noscript>
     </div>
   </form>
-</div>
 
-<div class="container">
   <?php if ($search !== ''): ?>
     <p class="results-meta"><a href="<?= e(current_url_with(['q' => null])) ?>">Clear search</a></p>
   <?php endif; ?>
 
   <?php if (!$groups): ?>
-    <div style="margin-top:2rem">
-      <?= empty_state(
-          'basket',
-          $search !== '' ? 'Nothing matches that search' : 'Nothing listed here yet',
-          $search !== ''
-              ? 'Try a shorter word, or check another aisle. Our staff may not have added this item online yet — feel free to call the store.'
-              : 'Our team at ' . $branch['name'] . ' hasn\'t listed items in this aisle yet. Please check back after the morning stock check.',
-          '<a class="btn btn-primary" href="' . e(url('shop.php')) . '">See all aisles</a>'
-      ) ?>
-    </div>
+    <?= empty_state(
+        'basket',
+        $search !== '' ? 'Nothing matches that search' : 'Nothing listed here yet',
+        $search !== ''
+            ? 'Try a shorter word, or check another aisle. Our staff may not have added this item online yet — feel free to call the store.'
+            : 'Our team at ' . $branch['name'] . ' hasn\'t listed items in this aisle yet. Please check back after the morning stock check.',
+        '<a class="btn btn-primary" href="' . e(url('shop.php')) . '">See all aisles</a>'
+    ) ?>
   <?php endif; ?>
 
   <?php foreach (categories() as $c):
@@ -140,10 +161,10 @@ page_start($title, [
         <h2 id="h-<?= e($c['slug']) ?>"<?= $category ? ' class="visually-hidden"' : '' ?>><?= e($c['name']) ?></h2>
         <span class="fresh-ribbon<?= $fresh ? '' : ' is-stale' ?>">
           <span class="chip-dot"></span>
-          <?= $review ? 'Freshly checked ' . e(fresh_label($review['reviewed_at'])) . ($review['staff_name'] ? ' by ' . e($review['staff_name']) : '') : 'Not checked yet' ?>
+          <?= $review ? 'Checked ' . e(fresh_label($review['reviewed_at'])) . ($review['staff_name'] ? ' by ' . e($review['staff_name']) : '') : 'Not checked yet' ?>
         </span>
       </div>
-      <div class="product-grid is-wide">
+      <div class="product-grid">
         <?php foreach ($shown as $p) echo product_card($p, false); ?>
       </div>
       <?php if ($browsing && count($items) > $perCategoryPreview): ?>
@@ -152,7 +173,8 @@ page_start($title, [
     </section>
   <?php endforeach; ?>
 
-  <p class="muted" style="margin-top:1.5rem;font-size:.88rem">Stock is checked by our staff each morning and can change during the day. Prices shown are shelf prices at <?= e($branch['name']) ?>.</p>
+  <p class="muted" style="font-size:.88rem">Stock is checked by our staff each morning and can change during the day. Prices shown are shelf prices at <?= e($branch['name']) ?>.</p>
+  </div>
 </div>
 <?php endif; ?>
 

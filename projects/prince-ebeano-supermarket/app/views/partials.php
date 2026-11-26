@@ -31,22 +31,34 @@ function product_media(array $p, string $class = 'product-media', bool $tinted =
 /**
  * $p needs: name, price_kobo, stock_status, image_path, category_name, category_icon, category_tint
  */
+/** Small tag on the photo: only for items that need a shopper's attention. */
+function product_badge(string $status): string
+{
+    if ($status === 'low_stock') {
+        return '<span class="product-badge">Few left</span>';
+    }
+    if ($status === 'out_of_stock') {
+        return '<span class="product-badge is-out">Sold out</span>';
+    }
+    return '';
+}
+
 function product_card(array $p, bool $showCategory = true): string
 {
     $status = $p['stock_status'];
     $out = $status === 'out_of_stock';
+    $media = product_media($p);
+    $media = substr($media, 0, strpos($media, '>') + 1) . product_badge($status) . substr($media, strpos($media, '>') + 1);
     ob_start(); ?>
 <article class="product-card<?= $out ? ' is-out' : '' ?>" data-pid="<?= (int)$p['id'] ?>" data-price="<?= (int)$p['price_kobo'] ?>" data-status="<?= e($status) ?>">
-  <?= product_media($p) ?>
+  <?= $media ?>
   <div class="product-body">
     <?php if ($showCategory): ?><p class="product-cat"><?= e($p['category_name']) ?></p><?php endif; ?>
     <h3 class="product-name"><?= e($p['name']) ?></h3>
     <?php if (!empty($p['description'])): ?><p class="product-desc"><?= e($p['description']) ?></p><?php endif; ?>
-    <div class="product-foot">
-      <span class="price"><?= $p['price_kobo'] > 0 ? e(naira((int)$p['price_kobo'])) : '<span class="price-ask">Ask in store</span>' ?></span>
-      <?= status_pill($status) ?>
-    </div>
+    <p class="price"><?= $p['price_kobo'] > 0 ? e(naira((int)$p['price_kobo'])) : '<span class="price-ask">Ask in store</span>' ?></p>
   </div>
+  <div class="product-status"><?= status_pill($status) ?></div>
 </article>
 <?php
     return (string)ob_get_clean();

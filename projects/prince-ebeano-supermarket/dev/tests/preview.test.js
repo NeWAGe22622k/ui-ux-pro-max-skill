@@ -32,8 +32,8 @@ const ck = (n, ok, d = '') => { results.push(ok); console.log((ok ? 'PASS ' : 'F
   const inOnly = await p.locator('.product-card:visible').count();
   ck('hide sold out removes out-of-stock items', inOnly < all, `${all} → ${inOnly}`);
 
-  await p.click('.aisle-bar a:has-text("Drinks")');
-  ck('aisle bar opens Drinks', p.url().endsWith('ikeja-shop-drinks.html'));
+  await p.click('.side-list a:has-text("Drinks")');
+  ck('aisle list opens Drinks', p.url().endsWith('ikeja-shop-drinks.html'));
   await p.selectOption('select[name=sort]', 'price_asc');
   const prices = await p.$$eval('.product-card:not([hidden])', els => els.map(e => +e.dataset.price));
   ck('sort by price works', prices.every((v, i) => i === 0 || prices[i - 1] <= v), prices.join(','));

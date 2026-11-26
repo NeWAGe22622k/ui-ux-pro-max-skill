@@ -78,6 +78,15 @@
         el.classList.toggle('is-out', o.status === 'out_of_stock');
         el.dataset.price = o.price;
         el.dataset.status = o.status;
+        var media = el.querySelector('.product-media');
+        var oldBadge = el.querySelector('.product-badge');
+        if (oldBadge) oldBadge.remove();
+        if (media && (o.status === 'low_stock' || o.status === 'out_of_stock')) {
+          var badge = document.createElement('span');
+          badge.className = 'product-badge' + (o.status === 'out_of_stock' ? ' is-out' : '');
+          badge.textContent = o.status === 'out_of_stock' ? 'Sold out' : 'Few left';
+          media.insertBefore(badge, media.firstChild);
+        }
       }
     });
 
@@ -91,8 +100,7 @@
       });
     });
     if (latest) {
-      var pillSmall = document.querySelector('.branch-pill-text small');
-      if (pillSmall) pillSmall.textContent = 'Checked ' + timeLabel(latest);
+      document.querySelectorAll('[data-checked-time]').forEach(function (t) { t.textContent = timeLabel(latest); });
       var freshTime = document.querySelector('.fresh-line .fresh-time');
       if (freshTime) freshTime.textContent = timeLabel(latest);
     }
@@ -135,7 +143,7 @@
     });
     var count = document.querySelector('[data-result-count]');
     if (count) count.textContent = total;
-    var h1 = document.querySelector('.page-head h1');
+    var h1 = document.querySelector('.page-banner h1');
     if (h1 && q) h1.textContent = 'Results for “' + q + '”';
     var meta = document.querySelector('.pv-meta');
     if (!meta) {

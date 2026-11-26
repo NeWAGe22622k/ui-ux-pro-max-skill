@@ -26,7 +26,7 @@ LITERAL = [
      'the team has grown the brand into several outlets across Lagos and Abuja'),
     ('Since 2009, Sample Supermarket has grown', 'Sample Supermarket has grown'),
     ('since 2009', 'for years'),
-    ('Regional Road, Seaside Beach Resort Estate, Jakande, Lekki', '12 Example Road, Jakande, Lekki'),
+    ('Regional Road, Seaside Beach Resort Estate, Agungi, Lekki', '12 Example Road, Agungi, Lekki'),
     ('14 Isaac John Street, G.R.A. Ikeja', '24 Example Street, Ikeja'),
     ('1 F Kusoya Street, Oniru, Lekki', '5 Example Close, Oniru, Lekki'),
     ('Chevron Drive, Lekki Peninsula II', '8 Example Drive, Lekki'),
@@ -75,7 +75,8 @@ for name in os.listdir(SRC):
     s = re.sub(r'(google\.com/maps/search/\?api=1&amp;query=)[^"]*', r'\1supermarket+Lagos', s)
     open(os.path.join(OUT, name), 'w').write(s)
 open(os.path.join(OUT, 'assets/img/sample-mark.svg'), 'w').write(MARK)
-shutil.copytree(os.path.join(SRC, 'assets/img/art'), os.path.join(OUT, 'assets/img/art'))
+for d in ('art', 'photos'):
+    shutil.copytree(os.path.join(SRC, 'assets/img', d), os.path.join(OUT, 'assets/img', d))
 open(os.path.join(OUT, 'assets/img/sample-badge.svg'), 'w').write(BADGE)
 
 # The artifact's main page: the first-visit home page without its document wrapper,

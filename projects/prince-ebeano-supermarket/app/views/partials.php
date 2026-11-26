@@ -137,6 +137,16 @@ function art_scene(array $items, string $class = 'banner-art'): string
     return $html . '</span>';
 }
 
+/**
+ * A banner photo from assets/img/photos/ (Pexels, see CREDITS.txt). It fills one side of the banner
+ * and fades into the banner's tint so the text side stays calm and readable.
+ */
+function banner_photo(string $name, string $position = 'center', bool $eager = false): string
+{
+    return '<span class="banner-media" aria-hidden="true"><img src="' . e(url('assets/img/photos/' . $name . '.webp')) . '" alt=""'
+        . ($eager ? ' fetchpriority="high"' : ' loading="lazy"') . ' decoding="async" style="object-position:' . e($position) . '"></span>';
+}
+
 /** Illustration for an aisle, chosen by the aisle's icon so new aisles get one too. */
 function category_art(array $c): string
 {

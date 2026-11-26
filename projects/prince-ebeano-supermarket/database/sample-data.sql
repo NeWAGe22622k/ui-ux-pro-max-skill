@@ -5,7 +5,7 @@
 SET NAMES utf8mb4;
 
 INSERT INTO branches (name, slug, city, address, phones, email, hours_text, sort_order) VALUES
-('Jakande', 'jakande', 'Lagos', 'Regional Road, Seaside Beach Resort Estate, Jakande, Lekki', '08077025847', 'jakande@princeebeano.com', 'Mon–Sat 8:00am–9:30pm · Sun 12pm–9pm', 1),
+('Agungi', 'agungi', 'Lagos', 'Regional Road, Seaside Beach Resort Estate, Agungi, Lekki', '08077025847', 'jakande@princeebeano.com', 'Mon–Sat 8:00am–9:30pm · Sun 12pm–9pm', 1),
 ('Ikeja',   'ikeja',   'Lagos', '14 Isaac John Street, G.R.A. Ikeja', '08123583239, 07051187146', 'ikeja@princeebeano.com', 'Mon–Sat 8:00am–9:30pm · Sun 12pm–9pm', 2),
 ('Oniru',   'oniru',   'Lagos', '1 F Kusoya Street, Oniru, Lekki', '', 'oniru@princeebeano.com', 'Mon–Sat 8:00am–9:30pm · Sun 12pm–9pm', 3),
 ('Chevron', 'chevron', 'Lagos', 'Chevron Drive, Lekki Peninsula II', '', 'chevron@princeebeano.com', 'Mon–Fri 8:00am–9:30pm · Sat 7am–9:30pm · Sun 12pm–9pm', 4),

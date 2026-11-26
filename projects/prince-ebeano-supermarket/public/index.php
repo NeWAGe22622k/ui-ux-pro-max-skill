@@ -92,11 +92,7 @@ page_start('', ['active' => 'home', 'branch_prompt' => true]);
             <p class="hero-line"><?= $fromLine(['drinks', 'cereals', 'dairy', 'bakery'], 'Live stock at ' . $branchCount . ' stores') ?></p>
             <a class="btn btn-dark" href="<?= e(url('shop.php')) ?>"><?= $shopNow ?></a>
           </div>
-          <?= art_scene([
-              ['leaves', 70, 0, 22, 25], ['leafy', 30, 6, 26, -18], ['corn', 53, 2, 24, 22], ['carrot', 42, 12, 20, 8],
-              ['basket', 18, 22, 60, 0], ['avocado', 0, 40, 20, -14], ['tangerine', 8, 66, 22, 0],
-              ['apple', 66, 60, 22, 8], ['lemon', 76, 30, 17, -12],
-          ], 'hero-art') ?>
+          <?= banner_photo('hero-groceries', '60% 50%', true) ?>
         </div>
         <div class="hero-slide" id="slide-2" aria-label="2 of 2">
           <div class="hero-copy">
@@ -105,10 +101,7 @@ page_start('', ['active' => 'home', 'branch_prompt' => true]);
             <p class="hero-line"><?= $fromLine(['household', 'toiletries', 'mothercare'], 'Cleaning, toiletries and baby care') ?></p>
             <a class="btn btn-dark" href="<?= e($aisle('household')) ?>"><?= $shopNow ?></a>
           </div>
-          <?= art_scene([
-              ['bubbles', 66, 2, 20, 0], ['babybottle', 14, 4, 24, -12], ['lotion', 42, 0, 28, 6], ['tissue', 0, 40, 26, 0],
-              ['sponge', 24, 52, 30, -10], ['soap', 52, 46, 32, 10], ['toothbrush', 74, 40, 24, 20],
-          ], 'hero-art') ?>
+          <?= banner_photo('hero-home-care', '50% 60%') ?>
         </div>
       </div>
       <div class="hero-dots" role="group" aria-label="Choose slide">
@@ -123,7 +116,7 @@ page_start('', ['active' => 'home', 'branch_prompt' => true]);
         <span class="banner-title">Drinks</span>
         <span class="btn btn-dark btn-sm"><?= $shopNow ?></span>
       </span>
-      <?= art_scene([['juicebox', 6, 14, 46, -8], ['cup', 42, 0, 52, 6], ['lemon', 0, 58, 34, -14], ['tangerine', 46, 54, 40, 0]]) ?>
+      <?= banner_photo('drinks', 'center') ?>
     </a>
     <a class="banner tone-pink hero-side" href="<?= e($aisle('bakery')) ?>">
       <span class="banner-copy">
@@ -131,7 +124,7 @@ page_start('', ['active' => 'home', 'branch_prompt' => true]);
         <span class="banner-title">Bakery</span>
         <span class="btn btn-dark btn-sm"><?= $shopNow ?></span>
       </span>
-      <?= art_scene([['bread', 24, 0, 58, -6], ['croissant', -4, 46, 54, -10], ['baguette', 44, 50, 56, 14]]) ?>
+      <?= banner_photo('bakery', '35% 50%') ?>
     </a>
   </div>
 </section>
@@ -172,12 +165,8 @@ page_start('', ['active' => 'home', 'branch_prompt' => true]);
 
 <section class="section" data-reveal>
   <div class="container">
-    <a class="banner banner-wide tone-mint" href="<?= e($aisle('dairy')) ?>">
-      <?= art_scene([
-          ['bread', 2, 10, 17, -10], ['baguette', 40, 0, 15, 32], ['milk', 22, 4, 13, 0], ['cheese', 18, 52, 15, 8],
-          ['croissant', 36, 46, 17, -12], ['egg', 56, 12, 8, 10], ['egg', 62, 30, 8, -14], ['butter', 60, 56, 14, 0],
-          ['strawberry', 2, 64, 10, -20], ['cupcake', 78, 8, 12, 0], ['pancakes', 80, 52, 14, 0],
-      ], 'banner-art banner-art-wide') ?>
+    <a class="banner banner-wide tone-mint has-photo" href="<?= e($aisle('dairy')) ?>">
+      <?= banner_photo('dairy', '40% 50%') ?>
       <span class="banner-copy">
         <span class="banner-title-lg">Dairy &amp; Bakery<br>Fresh every morning</span>
         <span class="banner-line"><strong>Checked before we open</strong> <?= $branch ? 'at ' . e($branch['name']) : 'at every store' ?></span>
@@ -207,7 +196,7 @@ page_start('', ['active' => 'home', 'branch_prompt' => true]);
           <span class="banner-title">Give the gift of choice</span>
           <span class="btn btn-dark btn-sm">See values <span aria-hidden="true">»</span></span>
         </span>
-        <?= art_scene([['gift', 18, 14, 64, -6]]) ?>
+        <?= banner_photo('gift', '65% 50%') ?>
       </a>
       <a class="banner tone-yellow" href="<?= e(url('stores.php')) ?>">
         <span class="banner-copy">
@@ -215,7 +204,7 @@ page_start('', ['active' => 'home', 'branch_prompt' => true]);
           <span class="banner-title"><?= $branchCount ?> stores near you</span>
           <span class="btn btn-dark btn-sm">Addresses <span aria-hidden="true">»</span></span>
         </span>
-        <?= art_scene([['store', 12, 12, 66, 0]]) ?>
+        <?= banner_photo('store', 'center') ?>
       </a>
       <a class="banner tone-mint" href="<?= e(url('careers.php')) ?>">
         <span class="banner-copy">
@@ -223,7 +212,7 @@ page_start('', ['active' => 'home', 'branch_prompt' => true]);
           <span class="banner-title">Grow with us</span>
           <span class="btn btn-dark btn-sm">Open roles <span aria-hidden="true">»</span></span>
         </span>
-        <?= art_scene([['shopbags', 14, 14, 62, -4]]) ?>
+        <?= banner_photo('careers', '50% 30%') ?>
       </a>
     </div>
   </div>

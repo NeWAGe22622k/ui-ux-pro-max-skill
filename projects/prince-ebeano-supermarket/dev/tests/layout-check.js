@@ -27,6 +27,9 @@ const widths = [[390, 844, 'phone'], [768, 1024, 'tablet'], [1440, 900, 'desktop
     p.on('pageerror', e => problems.push(`JS error: ${e.message}`));
     for (const [name, url] of pages) {
       await p.goto(BASE + url, { waitUntil: 'networkidle' });
+      // Scroll through once so lazy-loaded photos are in the full-page shots.
+      await p.evaluate(async () => { for (let y = 0; y < document.body.scrollHeight; y += 700) { window.scrollTo(0, y); await new Promise(r => setTimeout(r, 60)); } window.scrollTo(0, 0); });
+      await p.waitForLoadState('networkidle');
       const overflow = await p.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
       if (overflow > 0) problems.push(`${name} @${tag}: scrolls sideways by ${overflow}px`);
       await p.screenshot({ path: path.join(OUT, `${name}-${tag}.png`), fullPage: tag === 'desktop' });

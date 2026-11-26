@@ -14,7 +14,7 @@ BASE = os.environ.get('BASE', 'http://localhost:8000')
 HERE = os.path.dirname(os.path.abspath(__file__))
 PROJECT = os.path.dirname(os.path.dirname(HERE))
 OUT = os.path.join(PROJECT, 'dev', 'out', 'preview')
-BRANCHES = ['jakande', 'ikeja', 'oniru', 'chevron', 'lekki-phase-1', 'wuse']
+BRANCHES = ['agungi', 'ikeja', 'oniru', 'chevron', 'lekki-phase-1', 'wuse']
 CATS = ['drinks', 'cereals', 'dairy', 'household', 'toiletries', 'mothercare', 'bakery', 'wine']
 PUBLIC = ['index', 'shop', 'stores', 'about', 'gift-vouchers', 'careers', 'contact']
 OWNER_PAGES = ['branches', 'categories', 'accounts', 'jobs', 'messages', 'settings']
@@ -201,7 +201,8 @@ for p in OWNER_PAGES:
 
 for img in ('logo-mark.svg', 'favicon.svg', 'logo-badge.png', 'logo-badge.svg'):
     shutil.copy(os.path.join(PROJECT, 'public/assets/img', img), os.path.join(OUT, 'assets/img', img))
-shutil.copytree(os.path.join(PROJECT, 'public/assets/img/art'), os.path.join(OUT, 'assets/img/art'))
+for d in ('art', 'photos'):
+    shutil.copytree(os.path.join(PROJECT, 'public/assets/img', d), os.path.join(OUT, 'assets/img', d))
 
 # index.html opens the first-visit home page (so the preview folder can be double-clicked).
 shutil.copy(os.path.join(OUT, 'home.html'), os.path.join(OUT, 'index.html'))

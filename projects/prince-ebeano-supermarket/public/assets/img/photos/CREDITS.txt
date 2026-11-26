@@ -1,0 +1,13 @@
+Photos in this folder are from Pexels (https://www.pexels.com), free to use under the
+Pexels License (https://www.pexels.com/license/). Cropped and resized for the site.
+
+hero-groceries.webp  https://www.pexels.com/photo/vegetables-and-fruits-on-the-table-5843552/
+hero-home-care.webp  https://www.pexels.com/photo/bottles-with-cleaning-products-on-table-5217900/
+drinks.webp          https://www.pexels.com/photo/drinks-supermarket-cans-beverage-3008/
+bakery.webp          https://www.pexels.com/photo/assorted-bread-on-beige-wooden-table-2245293/
+dairy.webp           https://www.pexels.com/photo/a-glass-of-milk-beside-eggs-8963965/
+gift.webp            https://www.pexels.com/photo/a-white-and-pink-gift-box-5704738/
+store.webp           https://www.pexels.com/photo/fully-stocked-supermarket-interior-5951182/
+careers.webp         https://www.pexels.com/photo/photo-of-smiling-man-standing-in-front-of-supermarket-shelf-2479832/
+
+Swap any of these for photos of your own stores and products by replacing the file with the same name.

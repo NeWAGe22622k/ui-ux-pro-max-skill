@@ -20,7 +20,8 @@ const widths = [[390, 844, 'phone'], [768, 1024, 'tablet'], [1440, 900, 'desktop
   const browser = await chromium.launch();
   const problems = [];
   for (const [w, h, tag] of widths) {
-    const ctx = await browser.newContext({ viewport: { width: w, height: h }, deviceScaleFactor: tag === 'phone' ? 2 : 1 });
+    // Reduced motion: no scroll fade-ins (full-page shots never scroll) and no slider autoplay.
+    const ctx = await browser.newContext({ viewport: { width: w, height: h }, deviceScaleFactor: tag === 'phone' ? 2 : 1, reducedMotion: 'reduce' });
     await ctx.addCookies([{ name: 'pe_branch', value: STORE, url: BASE }]);
     const p = await ctx.newPage();
     p.on('pageerror', e => problems.push(`JS error: ${e.message}`));

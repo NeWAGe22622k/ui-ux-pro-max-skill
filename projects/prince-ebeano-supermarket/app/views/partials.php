@@ -47,7 +47,10 @@ function product_card(array $p, bool $showCategory = true): string
 {
     $status = $p['stock_status'];
     $out = $status === 'out_of_stock';
-    $media = product_media($p);
+    // No photo yet: show the aisle's illustration as a placeholder.
+    $media = empty($p['image_path'])
+        ? '<div class="product-media is-blank">' . art(category_art(['icon' => $p['category_icon'] ?? '']), '', 'media-art') . '</div>'
+        : product_media($p);
     $media = substr($media, 0, strpos($media, '>') + 1) . product_badge($status) . substr($media, strpos($media, '>') + 1);
     ob_start(); ?>
 <article class="product-card<?= $out ? ' is-out' : '' ?>" data-pid="<?= (int)$p['id'] ?>" data-price="<?= (int)$p['price_kobo'] ?>" data-status="<?= e($status) ?>">
@@ -112,6 +115,37 @@ function stock_select_sql(): string
             FROM branch_stock s
             JOIN products p   ON p.id = s.product_id AND p.is_active = 1
             JOIN categories c ON c.id = p.category_id';
+}
+
+/** A decorative illustration from assets/img/art/ (Fluent Emoji 3D, MIT licence). */
+function art(string $name, string $style = '', string $class = 'art'): string
+{
+    return '<img class="' . e($class) . '" src="' . e(url('assets/img/art/' . $name . '.webp')) . '" alt="" width="256" height="256" decoding="async"'
+        . ($style !== '' ? ' style="' . e($style) . '"' : '') . '>';
+}
+
+/**
+ * A banner illustration: each item is [name, x%, y%, width%, rotation deg] inside a box with a fixed shape,
+ * so the arrangement keeps its proportions at every screen size.
+ */
+function art_scene(array $items, string $class = 'banner-art'): string
+{
+    $html = '<span class="' . e($class) . '" aria-hidden="true">';
+    foreach ($items as [$name, $x, $y, $w, $r]) {
+        $html .= art($name, "--x:{$x}%;--y:{$y}%;--w:{$w}%;--r:{$r}deg");
+    }
+    return $html . '</span>';
+}
+
+/** Illustration for an aisle, chosen by the aisle's icon so new aisles get one too. */
+function category_art(array $c): string
+{
+    $byIcon = [
+        'cup-soda' => 'cup', 'wheat' => 'cereal', 'milk' => 'milk', 'sparkles' => 'sponge', 'spray-can' => 'lotion',
+        'baby' => 'babybottle', 'croissant' => 'bread', 'wine' => 'wine', 'apple' => 'apple', 'cookie' => 'cookie',
+        'gift' => 'gift', 'basket' => 'basket', 'package' => 'basket', 'heart' => 'strawberry',
+    ];
+    return $byIcon[$c['icon'] ?? ''] ?? 'basket';
 }
 
 /** Horizontal product row with previous/next buttons (buttons are added by app.js). */

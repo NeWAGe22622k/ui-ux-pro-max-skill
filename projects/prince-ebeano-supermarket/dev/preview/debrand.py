@@ -75,6 +75,7 @@ for name in os.listdir(SRC):
     s = re.sub(r'(google\.com/maps/search/\?api=1&amp;query=)[^"]*', r'\1supermarket+Lagos', s)
     open(os.path.join(OUT, name), 'w').write(s)
 open(os.path.join(OUT, 'assets/img/sample-mark.svg'), 'w').write(MARK)
+shutil.copytree(os.path.join(SRC, 'assets/img/art'), os.path.join(OUT, 'assets/img/art'))
 open(os.path.join(OUT, 'assets/img/sample-badge.svg'), 'w').write(BADGE)
 
 # The artifact's main page: the first-visit home page without its document wrapper,

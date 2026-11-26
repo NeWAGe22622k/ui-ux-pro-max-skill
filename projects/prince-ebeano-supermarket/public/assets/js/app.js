@@ -56,6 +56,31 @@
       revealables.forEach(function (el) { el.classList.add('is-visible'); });
     }
 
+    // Home hero slider: swipe or use the dots; turns every 7s unless hovered, focused or reduced motion.
+    document.querySelectorAll('[data-slider]').forEach(function (slider) {
+      const track = slider.querySelector('[data-slider-track]');
+      const dots = Array.prototype.slice.call(slider.querySelectorAll('[data-slide]'));
+      if (!track || dots.length < 2) return;
+      let current = 0;
+      let paused = false;
+      const go = function (i) {
+        track.scrollTo({ left: i * track.clientWidth, behavior: reduceMotion ? 'auto' : 'smooth' });
+      };
+      const mark = function () {
+        current = Math.round(track.scrollLeft / Math.max(track.clientWidth, 1));
+        dots.forEach(function (d, i) { d.setAttribute('aria-current', i === current ? 'true' : 'false'); });
+      };
+      dots.forEach(function (d, i) { d.addEventListener('click', function () { go(i); }); });
+      track.addEventListener('scroll', function () { window.requestAnimationFrame(mark); }, { passive: true });
+      ['mouseenter', 'focusin', 'touchstart'].forEach(function (ev) { slider.addEventListener(ev, function () { paused = true; }, { passive: true }); });
+      ['mouseleave', 'focusout'].forEach(function (ev) { slider.addEventListener(ev, function () { paused = false; }); });
+      if (!reduceMotion) {
+        window.setInterval(function () {
+          if (!paused && !document.hidden) go((current + 1) % dots.length);
+        }, 7000);
+      }
+    });
+
     // Product rows: previous / next buttons on wider screens.
     const chevron = function (d) {
       return '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="' + d + '"/></svg>';
